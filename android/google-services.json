@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "501593929464",
+    "firebase_url": "https://hikeside-3c074.firebaseio.com",
+    "project_id": "hikeside-3c074",
+    "storage_bucket": "hikeside-3c074.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501593929464:android:a3e300c772fb2acb",
+        "android_client_info": {
+          "package_name": "kom.hikeside"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501593929464-qm26ej1tbvou85i4ql4hdsvo3lsb4q7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kom.hikeside",
+            "certificate_hash": "474c7cc6376e71da2708c76e621c8f3e046cc5ee"
+          }
+        },
+        {
+          "client_id": "501593929464-j3vufk1msjf2vv2ia2tn01uaf153495b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaVU1xjI5CvMvAlHwtg63dwKiXFyoKZhI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501593929464-j3vufk1msjf2vv2ia2tn01uaf153495b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

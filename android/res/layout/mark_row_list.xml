@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <RelativeLayout
+        android:layout_width="175dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_mark_row_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:text="Описание" />
+
+        <TextView
+            android:id="@+id/text_mark_row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Название" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="onmap" />
+
+    <Button
+        android:id="@+id/button_mark_row_continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/text_mark_row_desc"
+        android:layout_alignBottom="@+id/text_mark_row_desc"
+        android:layout_alignParentEnd="true"
+        android:layout_weight="1"
+        android:text="Параметры" />
+
+</LinearLayout>

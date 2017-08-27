@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kom.hikeside.layoutCode.LoginActivity">
+
+    <EditText
+        android:id="@+id/editText_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editText_pass"
+        android:layout_alignStart="@+id/editText_pass"
+        android:layout_marginBottom="22dp"
+        android:ems="10"
+        android:hint="Почта"
+        android:inputType="textPersonName"
+        android:text="artem-koma@yandex.ru"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="232dp" />
+
+    <EditText
+        android:id="@+id/editText_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Пароль"
+        android:inputType="textPassword"
+        android:text="lullaby"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="300dp" />
+
+    <Button
+        android:id="@+id/button_auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button_register"
+        android:layout_alignBottom="@+id/button_register"
+        android:layout_alignStart="@+id/editText_pass"
+        android:text="SignUp" />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:layout_below="@+id/editText_pass"
+        android:layout_alignEnd="@+id/editText_pass"
+        android:layout_marginTop="15dp" />
+</RelativeLayout>
