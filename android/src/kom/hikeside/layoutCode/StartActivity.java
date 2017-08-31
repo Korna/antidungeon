@@ -55,8 +55,13 @@ public class StartActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
 
-        Button butt2 = (Button) findViewById(R.id.button2);
-        butt2.setOnClickListener(new View.OnClickListener() {
+        loadInterface();
+    }
+
+    private void loadInterface(){
+
+        Button buttonLogin = (Button) findViewById(R.id.button2);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -105,6 +110,7 @@ public class StartActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override

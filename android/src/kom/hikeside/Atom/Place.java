@@ -1,12 +1,14 @@
 package kom.hikeside.Atom;
 
+import android.support.annotation.NonNull;
+
 import kom.hikeside.Game.MapView;
 
 /**
  * Created by Koma on 13.08.2017.
  */
 
-public class Place {
+public class Place{
 
     String id;//primary key needed for Progress\Status online table
 
@@ -82,4 +84,5 @@ public class Place {
     public MapView getType() {
         return type;
     }
+
 }

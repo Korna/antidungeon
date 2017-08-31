@@ -56,20 +56,22 @@ public class MapObjBuilder {//проблемное место - карта. к �
         LatLng l = new LatLng(place.getLatitude(), place.getLongtitude());
 
         switch (type) {
-            case tower:
-            case crate:
+            case zone:
+            case zone2:
                 Crate crate = new Crate();
                 po = prepare(l, crate);
                 return build(map, po);
-            case wall:
+            case zone_long:
                 Wall wall = new Wall();
                 po = prepare(l, wall);
                 return build(map, po);
 
-            case wire:
-                MarkerOptions m = new MarkerOptions().title(place.getName()).snippet(place.getDescription()).position(l);
-                return build(map, m);
-
+            case enemy:
+                mo = new MarkerOptions().title("Enemy:" + place.getName()).snippet(place.getDescription()).position(l).snippet(place.getType().toString());
+                return build(map, mo);
+            case bag:
+                mo = new MarkerOptions().title("Bag:" + place.getName()).snippet(place.getDescription()).position(l).snippet(place.getType().toString());
+                return build(map, mo);
             default:
                 return null;
 

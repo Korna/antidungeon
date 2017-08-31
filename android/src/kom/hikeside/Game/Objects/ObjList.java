@@ -9,15 +9,12 @@ package kom.hikeside.Game.Objects;
 
 public class ObjList {//что, если, когда рядом зомби, надо внезапно сильно подорваться, чтоб выжить?
 
-
     public enum inventory{
         drink, food, backpack, gun, bandage, medkit, plank,//can be placed as crafted on map
         instrument, scrapMetal
     }
 
-    public enum entity{
-        zombie_horde, zombie_group, friend
-    }
+
 
 
 

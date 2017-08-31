@@ -122,7 +122,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
         instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
         String id = instance.myRef.push().getKey();
-        Place place = new Place(id, uid, name, description, latitude, longtitude, MapView.wall);
+        Place place = new Place(id, uid, name, description, latitude, longtitude, MapView.zone_long);
 
         instance.myRef.child(id).setValue(place);
     }
