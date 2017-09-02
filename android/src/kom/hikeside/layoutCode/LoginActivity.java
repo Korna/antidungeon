@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
     private void createDBReference(String uid){
 
         String id = instance.myRef.push().getKey();
-        User user = new User(id, 100, 1);
+        User user = new User(id, 100, 1, 0);
 
         instance.myRef = FirebaseDatabase.getInstance().getReference("users");
 

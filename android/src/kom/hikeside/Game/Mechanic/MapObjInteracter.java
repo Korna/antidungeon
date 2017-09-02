@@ -22,12 +22,17 @@ public class MapObjInteracter {
     double radius = 0.0001;
 
     HashMap<String, Place> map;
+    public MapObjInteracter(){}
+
+    public MapObjInteracter(double radius){
+        this.radius = radius;
+    }
     public void prepareBDToSearch(HashMap<String, Place> map){
         this.map = map;
 
     }
 
-
+//выдает глобальные айли ближайших объектов с которыми можно взаимодействовать
     public ArrayList<String> inRadius(LatLng myCoordinate){//выдаёт ключ объекта, с которым можно взаимодействовать. ОДИН, но не много
         //здесь запрос к функции firebase?
         //потому как глупо как то - получать БД, а потом парсить её

@@ -1,14 +1,20 @@
 package kom.hikeside.Custom.MarkerInfoWindows;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import kom.hikeside.AndroidLauncher;
 import kom.hikeside.R;
 
 /**
@@ -41,7 +47,17 @@ public class FightFragment extends Fragment {
         final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Well I don't have any...", Toast.LENGTH_SHORT).show();
+
+                switch (v.getId()) {
+                    case R.id.tv_button:
+                        setupDialog();
+
+                        break;
+                    default:
+                        break;
+                }
+
+
             }
         };
 
@@ -50,10 +66,45 @@ public class FightFragment extends Fragment {
         textViewName = (TextView) view.findViewById(R.id.tv_lat);
         textViewLvl = (TextView) view.findViewById(R.id.tv_lng);
 
-        fragmentInfo("SampleTitle", "SampleText");
+
     }
 
-    public void fragmentInfo(String title, String text){
+    private void setupDialog(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        alertDialog.setTitle("Битва");
+        alertDialog.setMessage("Вы уверены?");
+
+        final EditText input = new EditText(getActivity());
+        final String strInput = input.getText().toString();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+        //alertDialog.setIcon(R.drawable.ic_vpn_key_black_24dp);
+
+
+        alertDialog.setPositiveButton("ОК",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+
+                        Intent intent = new Intent(getActivity(), AndroidLauncher.class);
+                        startActivity(intent);
+
+
+                    }
+                });
+
+        alertDialog.setNegativeButton("Назад",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+    public void LoadWindowInfo(String title, String text){
 
         textViewName.setText(title);
         textViewLvl.setText(text);

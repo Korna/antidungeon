@@ -63,9 +63,9 @@ public class MapsActivity extends FragmentActivity implements
 
     Singleton instance = Singleton.getInstance();
     MapObjBuilder builder;
-    MapObjInteracter interacter;
+
     private void initMechanics(){
-        interacter = new MapObjInteracter();
+
         builder = new MapObjBuilder();
     }
 
@@ -81,7 +81,6 @@ public class MapsActivity extends FragmentActivity implements
 
         setContentView(R.layout.fragment_blank);
 
-
         context = this;
         if(googleServiceAvailable()){
           //  initMap();
@@ -90,7 +89,6 @@ public class MapsActivity extends FragmentActivity implements
             Toast.makeText(this, "Services not available", Toast.LENGTH_SHORT).show();
         }
 
-
         initMechanics();
         //занесение локации в синглтон
         myLocation();
@@ -98,8 +96,6 @@ public class MapsActivity extends FragmentActivity implements
         BuildFragment buildFragment = new BuildFragment();
         android.app.FragmentManager manager = getFragmentManager();
         manager.beginTransaction().replace(R.id.layout_map_build, buildFragment, buildFragment.getTag()).commit();
-
-
 
         final MapInfoWindowFragment mapInfoWindowFragment =
                 (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -120,23 +116,34 @@ public class MapsActivity extends FragmentActivity implements
               //  formWindow = new InfoWindow(marker2, markerSpec, new FightFragment());
 
                 mMap.setOnMarkerClickListener(MapsActivity.this);
+                setCamera(mMap, myLocation());
+
             }
         });
 
         infoWindowManager.setWindowShowListener(MapsActivity.this);
 
+
+
     }
+
     private static final String RECYCLER_VIEW = MapView.enemy.toString();
     private static final String FORM_VIEW = MapView.bag.toString();
 
     private InfoWindow recyclerWindow;
     private InfoWindow formWindow;
     private InfoWindowManager infoWindowManager;
+
+
+    Place selectedPlace = null;
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         String id = marker.getId();
-        Place p = idModelMap.get(id);//здесь может выскочить null pointer
-
+        Place p = cHandler.idModelMap.get(id);//здесь может выскочить null pointer
+        if(p==null){
+            Log.d("markerClick", "cant find place model for marker");
+        }
         final InfoWindow.MarkerSpecification markerSpec =
                 new InfoWindow.MarkerSpecification(5, 5);//offset: X, Y
 
@@ -155,34 +162,15 @@ public class MapsActivity extends FragmentActivity implements
         }
 
         if (infoWindow != null) {
+            selectedPlace = p;
             infoWindowManager.toggle(infoWindow, true);
-
-            f.fragmentInfo(p.getName(), p.getDescription());//однако требуется понимать какой фрагмент именно загружать инфой
+            f.LoadWindowInfo(p.getName(), p.getDescription());//однако требуется понимать какой фрагмент именно загружать инфой
 
         }
 
         return true;
     }
 
-    @Override
-    public void onWindowShowStarted(@NonNull InfoWindow infoWindow) {
-//        Log.d("debug", "onWindowShowStarted: " + infoWindow);
-    }
-
-    @Override
-    public void onWindowShown(@NonNull InfoWindow infoWindow) {
-//        Log.d("debug", "onWindowShown: " + infoWindow);
-    }
-
-    @Override
-    public void onWindowHideStarted(@NonNull InfoWindow infoWindow) {
-//        Log.d("debug", "onWindowHideStarted: " + infoWindow);
-    }
-
-    @Override
-    public void onWindowHidden(@NonNull InfoWindow infoWindow) {
-//        Log.d("debug", "onWindowHidden: " + infoWindow);
-    }
 
     private void initInterface(){
         final Context context = this;
@@ -191,16 +179,20 @@ public class MapsActivity extends FragmentActivity implements
         fButtonInteract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> list = nearby();
-/**
-                if(id!=null){
+                ArrayList<String> list = cHandler.nearby();
 
-                    //запрос к удаленной бд на удаление
-                    remoteDeleteMark(id);
-                    localDeleteMark(id);
+                if(selectedPlace!=null) {
+                    Log.d("interact", "selected");
 
-                }*/
+                    String key = selectedPlace.getId();
 
+                    if(includesId(key, list)){
+                        Log.d("includes:", key);
+                        remoteDeleteMark(key);
+                        cHandler.localDeleteMark(key);
+                      }
+
+                }
             }
         });
 
@@ -215,8 +207,6 @@ public class MapsActivity extends FragmentActivity implements
                // addNewCrate(instance.user.getUid(), name, desc, myLocation() );
                 addNewMark(instance.user.getUid(), name, desc, myLocation() , MapView.enemy);
                 setCamera(mMap, myLocation());
-                Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -224,32 +214,42 @@ public class MapsActivity extends FragmentActivity implements
         fButtonLoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> list = nearby();
+                ArrayList<String> list = cHandler.nearby();
 
-          /**      if(id!=null) {
-                    addItemInUserInventory(id, instance.user.getUid());
-                    Toast.makeText(context, "looting", Toast.LENGTH_SHORT).show();
-                    localDeleteMark(id);
-                }*/
+
+                if(selectedPlace!=null) {
+                    String key = selectedPlace.getId();
+
+                    String id = cHandler.keyViewMap.get(key).getId();
+
+                     MapView type = cHandler.idModelMap.get(id).getType();//отсюда берем item type
+
+                    addItemInUserInventory(type, instance.user.getUid());
+
+
+                }
+
             }
         });
     }
+
     private boolean includesId(String id, ArrayList<String> list){
+
         for(String record : list){
             if(record.equals(id))
                 return true;
         }
+
         return false;
     }
-    private void interact(String id){
 
 
-    }
 
-    private void remoteDeleteMark(String id){
+
+    private void remoteDeleteMark(String key){
         //запрос к удаленной бд на удаление
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query marksQuery = ref.child("marks").orderByChild("id").equalTo(id);
+        Query marksQuery = ref.child("marks").orderByChild("id").equalTo(key);
 
         marksQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -268,37 +268,57 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-    //fbkey - place model
-    // TreeMap<String, Place> modelObject = new TreeMap<>();//модель в памяти
+    public class CollectionHandler{    //TODO функция add complete MV, которая заносит по исходным данным все значения и манипулирует ими(контролирует? втф)
 
-    //fbkey - view marker
-    //  HashMap<String, Object> mapObject = new HashMap<>();//представление на карте
+        //global object key - local view object
+        public HashMap<String, Marker> keyViewMap = new HashMap<>();
+        //local object key - model global object
+        public HashMap<String, Place> idModelMap = new HashMap<>();
 
+        private MapObjInteracter interacter = new MapObjInteracter();
 
+        public void clear(){
+            keyViewMap.clear();
+            idModelMap.clear();
+        }
 
+        private ArrayList<String> nearby(){//получает глобальные ID мест
+            //interacter.prepareBDToSearch(modelObject);
+            interacter.prepareBDToSearch(idModelMap);
+            return interacter.inRadius(myLocation());
+        }
 
-    //global object key - local view object
-    HashMap<String, Marker> keyViewMap = new HashMap<>();
+        public void localDeleteMark(String key){//удаление по глобальному ключу
+            Marker m = keyViewMap.get(key);
 
-    //local object key - model global object
-    HashMap<String, Place> idModelMap = new HashMap<>();
+            if(m != null) {
+                String id = m.getId();
+                m.remove();//удаление маркера
 
+                keyViewMap.remove(key);//удаление из памяти
+                idModelMap.remove(id);//удаление из памяти
 
+            }else{
+                Log.e("localDeleteMark", "cant find by ID");
+            }
+
+        }
+
+    }
+
+    CollectionHandler cHandler = new CollectionHandler();
     FBPlace db = new FBPlace();
+
+
     private void loadMarkers(){
         db = new FBPlace();
-
         FirebaseDatabase.getInstance().getReference("marks").addValueEventListener(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.d("onDataChange", "refreshing markers");
 
-                        //mapObject.clear();
-                        //modelObject.clear();
-                        keyViewMap.clear();
-                        idModelMap.clear();
-
+                        cHandler.clear();
                         mMap.clear();
                         db.FBlist.clear();
 
@@ -308,91 +328,22 @@ public class MapsActivity extends FragmentActivity implements
 
                             Marker marker = (Marker) builder.smartBuild(mMap, place);
                             String id = marker.getId();
-                            keyViewMap.put(place.getId(), marker);
+                            cHandler.keyViewMap.put(place.getId(), marker);
 
-                            idModelMap.put(id, place);
-
-                            //modelObject.put(place.getId(), place);
-                            //mapObject.put(place.getId(), builder.smartBuild(mMap, place));
+                            cHandler.idModelMap.put(id, place);
 
                             ++i;
                         }
-                        Log.w("added", " "+ i + " objects in modelDB, mapDb and mapView");
-                    }
 
+                        Log.w("added", " "+ i + " objects in modelDB, mapDb and mapView");
+
+                    }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
-
                 });
-
-
-
     }
 
-    private ArrayList<String> nearby(){
-        //interacter.prepareBDToSearch(modelObject);
-        interacter.prepareBDToSearch(idModelMap);
-        return interacter.inRadius(myLocation());
-    }
 
-    private void localDeleteMark(String key){
-        /*
-        if(mapObject.get(id)!=null) {
-
-            try {
-                ((Marker) mapObject.get(id)).setVisible(false);
-                ((Marker) mapObject.get(id)).remove();
-            }catch(ClassCastException e){
-                try {
-                    ((Polygon) mapObject.get(id)).setVisible(false);
-                    ((Polygon) mapObject.get(id)).remove();
-                }catch(ClassCastException e2){
-                    try {
-                        ((Polyline) mapObject.get(id)).setVisible(false);
-                        ((Polyline) mapObject.get(id)).remove();
-                    }catch(ClassCastException e3){
-                        Log.e("cast", e3.toString());
-                    }
-                }
-            }
-
-            mapObject.remove(id);//сразу удаляет из модельной памяти и соответственно из карты
-            modelObject.remove(id);
-
-
-        }else{
-            Log.e("localDeleteMark", "cant find by ID");
-        }
-*/
-        Marker m = keyViewMap.get(key);
-        if(m != null) {
-            String id = m.getId();
-
-            m.remove();//удаление маркера
-
-            keyViewMap.remove(key);//удаление из памяти
-
-            idModelMap.remove(id);//удаление из памяти
-
-
-        }else{
-            Log.e("localDeleteMark", "cant find by ID");
-        }
-
-
-    }
-    /*
-    private void addNewCrate(String uid, String name, String description, LatLng latLng){
-
-        instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
-        String id = instance.myRef.push().getKey();
-        Place place = new Place(id, uid, name, description, latLng.latitude, latLng.longitude, MapView.zone2);
-        instance.myRef.child(id).setValue(place);
-
-
-        modelObject.put(place.getId(), place);
-        mapObject.put(place.getId(), builder.smartBuild(mMap, place));
-    }*/
 
     private void addNewMark(String uid, String name, String description, LatLng latLng, MapView type){
         instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
@@ -401,29 +352,35 @@ public class MapsActivity extends FragmentActivity implements
         Place place = new Place(key, uid, name, description, latLng.latitude, latLng.longitude, type);
         instance.myRef.child(key).setValue(place);
 
-       // modelObject.put(place.getId(), place);
-      //  mapObject.put(place.getId(), builder.smartBuild(mMap, place));
+        // modelObject.put(place.getId(), place);
+        //  mapObject.put(place.getId(), builder.smartBuild(mMap, place));
 
+        Marker mapObject = (Marker) builder.smartBuild(mMap, place);
+        String id = mapObject.getId();
 
-        Marker marker = (Marker) builder.smartBuild(mMap, place);
-        String id = marker.getId();
-        keyViewMap.put(place.getId(), marker);
-
-        idModelMap.put(id, place);
+        cHandler.keyViewMap.put(place.getId(), mapObject);
+        cHandler.idModelMap.put(id, place);
     }
 
+    /*
+    private void addNewCrate(String uid, String name, String description, LatLng latLng){
+
+        instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
+        String id = instance.myRef.push().getKey();
+        Place place = new Place(id, uid, name, description, latLng.latitude, latLng.longitude, MapView.zone2);
+        instance.myRef.child(id).setValue(place);
+
+        modelObject.put(place.getId(), place);
+        mapObject.put(place.getId(), builder.smartBuild(mMap, place));
+    }*/
 
 
     private void addItemInUserInventory(MapView type, String uid){
-
-       // MapView type = modelObject.get(itemId).getType();//отсюда берем item type
 
         ArrayList<InventoryObject> items = new FromMapItemGetter().open(type);
         if(items != null) {
 
             instance.myRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("inventory");
-
-
 
             for(InventoryObject item : items){
                 String tableItemId =
@@ -436,8 +393,6 @@ public class MapsActivity extends FragmentActivity implements
         }
 
     }
-
-
 
 /*
     @Override
@@ -458,7 +413,6 @@ public class MapsActivity extends FragmentActivity implements
         mMap.addMarker(new MarkerOptions().title("Home").snippet("Its your only frontier.").position(latLng));
         setCamera(mMap, latLng);
         //addLineTest();
-
 
 
         if(checkPermission()){
@@ -530,54 +484,20 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
-
-
     }*/
 
-
-
-    public View infoWindowBuilder(Place place){
-        MapView type = place.getType();
-
-        View v;
-
-        switch(type){
-            case enemy:{
-                v = getLayoutInflater().inflate(R.layout.window_fight, null);
-
-
-                // Getting reference to the TextView to set latitude
-                TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
-
-                // Getting reference to the TextView to set longitude
-                TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
-
-                // Setting the latitude
-                tvLat.setText("Latitude:");
-
-                // Setting the longitude
-                tvLng.setText("Longitude:");
-
-                break;
-            }
-            default:
-                return null;
-
-        }
-
-        return v;
-    }
 
     private Place getModel(String id){
 
        // return modelObject.get(id);
         LatLng l = myLocation();
-        return new Place(" ", " ", " name", "desc", l.latitude, l.longitude, MapView.enemy);
+        return new Place(" ", " ", " Name", "description", l.latitude, l.longitude, MapView.enemy);
     }
 
     private LatLng myLocation(){
         LatLng l = null;
         LocationManager m_locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         try {
             m_locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, mLocationListener);
             Location location = m_locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -587,46 +507,33 @@ public class MapsActivity extends FragmentActivity implements
                 instance.setMyPosition(l);
             }
 
-
         }catch(SecurityException e){
 
         }
+
         return l;
     }
+
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
             Log.i("listener", location.getLatitude() + "long:" + location.getLongitude());
-
         }
-
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-
         }
-
         @Override
         public void onProviderEnabled(String provider) {
-
         }
-
         @Override
         public void onProviderDisabled(String provider) {
-
         }
     };
-
-
 
     private void setCamera(GoogleMap googleMap, LatLng latLng){
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).bearing(0).tilt(0).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
-
-
-
-
-
 
     private boolean checkPermission() {
         Log.d("checkPermission", "checkPermission()");
@@ -674,6 +581,26 @@ public class MapsActivity extends FragmentActivity implements
             Toast.makeText(this, "Cant connect to play services", Toast.LENGTH_LONG).show();
         }
         return false;
+    }
+
+    @Override
+    public void onWindowShowStarted(@NonNull InfoWindow infoWindow) {
+//        Log.d("debug", "onWindowShowStarted: " + infoWindow);
+    }
+
+    @Override
+    public void onWindowShown(@NonNull InfoWindow infoWindow) {
+//        Log.d("debug", "onWindowShown: " + infoWindow);
+    }
+
+    @Override
+    public void onWindowHideStarted(@NonNull InfoWindow infoWindow) {
+//        Log.d("debug", "onWindowHideStarted: " + infoWindow);
+    }
+
+    @Override
+    public void onWindowHidden(@NonNull InfoWindow infoWindow) {
+//        Log.d("debug", "onWindowHidden: " + infoWindow);
     }
 
 }
