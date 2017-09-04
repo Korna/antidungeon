@@ -3,6 +3,7 @@ package kom.hikeside.Game.Mechanic;
 import android.graphics.Color;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -67,11 +68,25 @@ public class MapObjBuilder {//проблемное место - карта. к �
                 return build(map, po);
 
             case enemy:
-                mo = new MarkerOptions().title("Enemy:" + place.getName()).snippet(place.getDescription()).position(l).snippet(place.getType().toString());
+                mo = new MarkerOptions().title("Enemy:" + place.getName())
+                        .position(l)
+                        .snippet(place.getType().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                return build(map, mo);
+            case boss:
+                mo = new MarkerOptions().title("Boss:" + place.getName())
+                        .position(l)
+                        .snippet(place.getType().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 return build(map, mo);
             case bag:
-                mo = new MarkerOptions().title("Bag:" + place.getName()).snippet(place.getDescription()).position(l).snippet(place.getType().toString());
+                mo = new MarkerOptions().title("Bag:" + place.getName())
+                        //.snippet(place.getDescription())
+                        .position(l)
+                        .snippet(place.getType().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 return build(map, mo);
+
             default:
                 return null;
 

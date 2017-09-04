@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,9 +46,11 @@ import kom.hikeside.Atom.Place;
 import kom.hikeside.Custom.MarkerInfoWindows.FightFragment;
 import kom.hikeside.FBDBHandler.FBPlace;
 import kom.hikeside.Game.MapView;
+import kom.hikeside.Game.Mechanic.CollectionHandler;
 import kom.hikeside.Game.Mechanic.FromMapItemGetter;
 import kom.hikeside.Game.Mechanic.MapObjBuilder;
 import kom.hikeside.Game.Mechanic.MapObjInteracter;
+import kom.hikeside.Game.Mechanic.ObjectGenerator;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
@@ -109,14 +112,15 @@ public class MapsActivity extends FragmentActivity implements
                 mMap = googleMap;
 
                 loadMarkers();
-                final InfoWindow.MarkerSpecification markerSpec =
-                        new InfoWindow.MarkerSpecification(5, 5);//offset: X, Y
 
-             //   recyclerWindow = new InfoWindow(marker1, markerSpec, new RecyclerViewFragment());
-              //  formWindow = new InfoWindow(marker2, markerSpec, new FightFragment());
+                MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.retro);
+                googleMap.setMapStyle(style);
 
                 mMap.setOnMarkerClickListener(MapsActivity.this);
                 setCamera(mMap, myLocation());
+
+                generateMarkers();
+
 
             }
         });
@@ -136,7 +140,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
     Place selectedPlace = null;
-
+    InfoWindow infoWindow = null;//глобальная переменная тк нужно закрывать окно по требованию
     @Override
     public boolean onMarkerClick(Marker marker) {
         String id = marker.getId();
@@ -147,7 +151,7 @@ public class MapsActivity extends FragmentActivity implements
         final InfoWindow.MarkerSpecification markerSpec =
                 new InfoWindow.MarkerSpecification(5, 5);//offset: X, Y
 
-        InfoWindow infoWindow = null;
+
 
         FightFragment f = new FightFragment();
         switch (marker.getSnippet()) {
@@ -158,6 +162,9 @@ public class MapsActivity extends FragmentActivity implements
                 infoWindow = new InfoWindow(marker, markerSpec, f);
 
               //  infoWindow = formWindow;
+                break;
+            default:
+                infoWindow = null;
                 break;
         }
 
@@ -179,7 +186,7 @@ public class MapsActivity extends FragmentActivity implements
         fButtonInteract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> list = cHandler.nearby();
+                ArrayList<String> list = cHandler.nearby(myLocation());
 
                 if(selectedPlace!=null) {
                     Log.d("interact", "selected");
@@ -188,8 +195,13 @@ public class MapsActivity extends FragmentActivity implements
 
                     if(includesId(key, list)){
                         Log.d("includes:", key);
+
                         remoteDeleteMark(key);
                         cHandler.localDeleteMark(key);
+
+                        //отруб окна
+                        infoWindowManager.toggle(infoWindow, true);
+
                       }
 
                 }
@@ -197,13 +209,12 @@ public class MapsActivity extends FragmentActivity implements
         });
 
 
-
         FloatingActionButton fButtonAdd = (FloatingActionButton) findViewById(R.id.f_button_add);
         fButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = "Enemy";
-                String desc = "Desc";
+                String desc = "Desc" + System.currentTimeMillis();
                // addNewCrate(instance.user.getUid(), name, desc, myLocation() );
                 addNewMark(instance.user.getUid(), name, desc, myLocation() , MapView.enemy);
                 setCamera(mMap, myLocation());
@@ -214,7 +225,7 @@ public class MapsActivity extends FragmentActivity implements
         fButtonLoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> list = cHandler.nearby();
+                ArrayList<String> list = cHandler.nearby(myLocation());
 
 
                 if(selectedPlace!=null) {
@@ -222,7 +233,7 @@ public class MapsActivity extends FragmentActivity implements
 
                     String id = cHandler.keyViewMap.get(key).getId();
 
-                     MapView type = cHandler.idModelMap.get(id).getType();//отсюда берем item type
+                    MapView type = cHandler.idModelMap.get(id).getType();//отсюда берем item type
 
                     addItemInUserInventory(type, instance.user.getUid());
 
@@ -256,7 +267,7 @@ public class MapsActivity extends FragmentActivity implements
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     snap.getRef().removeValue();
-                    Log.w( "dataChange", "kinda removed from firebase");
+                    Log.w( "dataChange", "removed from firebase");
                 }
             }
 
@@ -268,43 +279,7 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-    public class CollectionHandler{    //TODO функция add complete MV, которая заносит по исходным данным все значения и манипулирует ими(контролирует? втф)
 
-        //global object key - local view object
-        public HashMap<String, Marker> keyViewMap = new HashMap<>();
-        //local object key - model global object
-        public HashMap<String, Place> idModelMap = new HashMap<>();
-
-        private MapObjInteracter interacter = new MapObjInteracter();
-
-        public void clear(){
-            keyViewMap.clear();
-            idModelMap.clear();
-        }
-
-        private ArrayList<String> nearby(){//получает глобальные ID мест
-            //interacter.prepareBDToSearch(modelObject);
-            interacter.prepareBDToSearch(idModelMap);
-            return interacter.inRadius(myLocation());
-        }
-
-        public void localDeleteMark(String key){//удаление по глобальному ключу
-            Marker m = keyViewMap.get(key);
-
-            if(m != null) {
-                String id = m.getId();
-                m.remove();//удаление маркера
-
-                keyViewMap.remove(key);//удаление из памяти
-                idModelMap.remove(id);//удаление из памяти
-
-            }else{
-                Log.e("localDeleteMark", "cant find by ID");
-            }
-
-        }
-
-    }
 
     CollectionHandler cHandler = new CollectionHandler();
     FBPlace db = new FBPlace();
@@ -341,6 +316,33 @@ public class MapsActivity extends FragmentActivity implements
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
+    }
+
+    private void generateMarkers(){
+        cHandler.clear();
+        mMap.clear();
+        ObjectGenerator og = new ObjectGenerator();
+        ArrayList<Place> list = og.initGenerate(myLocation(), 1, false);
+
+        for(Place place : list){
+
+            instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
+            String key = instance.myRef.push().getKey();
+            place.setId(key);
+
+            instance.myRef.child(key).setValue(place);
+
+
+
+            Marker marker = (Marker) builder.smartBuild(mMap, place);
+            String id = marker.getId();
+
+            cHandler.keyViewMap.put(place.getId(), marker);
+            cHandler.idModelMap.put(id, place);
+
+        }
+
+
     }
 
 
