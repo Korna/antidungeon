@@ -13,7 +13,7 @@
         android:text="Lvl " />
 
     <TextView
-        android:id="@+id/tv_lat"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Fight"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/tv_lat"
+        android:layout_toEndOf="@+id/tv_name"
         android:layout_marginStart="35dp" />
 
 </RelativeLayout>

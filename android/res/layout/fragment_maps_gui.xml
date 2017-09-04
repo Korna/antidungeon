@@ -8,21 +8,33 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-
     <com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout
         android:id="@+id/mapViewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"/>
-
 
     </com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout>
 
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/f_button_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_today"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="69dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/f_button"
@@ -66,4 +78,5 @@
         android:layout_toStartOf="@+id/f_button_add">
 
     </RelativeLayout>
+
 </RelativeLayout>

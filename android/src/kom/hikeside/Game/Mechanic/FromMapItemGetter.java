@@ -18,7 +18,7 @@ public class FromMapItemGetter {
         ArrayList<InventoryObject> items = new ArrayList<>();
 
         switch(type){
-            case zone2:
+            case bag:
                 items.add(new Bandage());
                 items.add(new Bandage());
                 items.add(new Plank());

@@ -1,4 +1,4 @@
-package kom.hikeside.Game.Mechanic;
+package kom.hikeside.Game.Mechanic.Map;
 
 import android.util.Log;
 

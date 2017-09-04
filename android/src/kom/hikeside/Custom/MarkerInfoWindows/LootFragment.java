@@ -5,12 +5,10 @@ package kom.hikeside.Custom.MarkerInfoWindows;
  */
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +36,9 @@ public class LootFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.window_loot, container, false);
 
-
+        textViewTitle = (TextView) view.findViewById(R.id.tv_name);
+        textViewInfo = (TextView) view.findViewById(R.id.tv_desc);
+        setInfo();
 
         return view;
     }
@@ -62,9 +62,7 @@ public class LootFragment extends Fragment {
         };
 
         view.findViewById(R.id.tv_button).setOnClickListener(onClickListener);
-        textViewTitle = (TextView) view.findViewById(R.id.tv_lat);
-        textViewInfo = (TextView) view.findViewById(R.id.tv_lng);
-        fragmentInfo("SampleTitle", "SampleText");
+
 
     }
 
@@ -101,11 +99,19 @@ public class LootFragment extends Fragment {
 
         alertDialog.show();
     }
+    String title;
+    String text;
 
-    public void fragmentInfo(String title, String text){
+    public void setInfo(){
 
         textViewTitle.setText(title);
         textViewInfo.setText(text);
 
     }
+    public void LoadWindowInfo(String title, String text){
+        this.title = title;
+        this.text = text;
+
+    }
+
 }

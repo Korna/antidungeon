@@ -3,6 +3,7 @@ package kom.hikeside.layoutCode;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
@@ -40,21 +40,22 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Custom.MarkerInfoWindows.FightFragment;
+import kom.hikeside.Custom.MarkerInfoWindows.LootFragment;
 import kom.hikeside.FBDBHandler.FBPlace;
 import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Mechanic.CollectionHandler;
 import kom.hikeside.Game.Mechanic.FromMapItemGetter;
-import kom.hikeside.Game.Mechanic.MapObjBuilder;
-import kom.hikeside.Game.Mechanic.MapObjInteracter;
-import kom.hikeside.Game.Mechanic.ObjectGenerator;
+import kom.hikeside.Game.Mechanic.Map.MapObjBuilder;
+import kom.hikeside.Game.Mechanic.Map.CoordinateGenerator;
+import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.BuildFragment;
+import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 
 public class MapsActivity extends FragmentActivity implements
        // OnMapReadyCallback,
@@ -82,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.fragment_blank);
+        setContentView(R.layout.fragment_maps_gui);
 
         context = this;
         if(googleServiceAvailable()){
@@ -100,8 +101,7 @@ public class MapsActivity extends FragmentActivity implements
         android.app.FragmentManager manager = getFragmentManager();
         manager.beginTransaction().replace(R.id.layout_map_build, buildFragment, buildFragment.getTag()).commit();
 
-        final MapInfoWindowFragment mapInfoWindowFragment =
-                (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        final MapInfoWindowFragment mapInfoWindowFragment = (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         infoWindowManager = mapInfoWindowFragment.infoWindowManager();
         infoWindowManager.setHideOnFling(true);
@@ -119,7 +119,10 @@ public class MapsActivity extends FragmentActivity implements
                 mMap.setOnMarkerClickListener(MapsActivity.this);
                 setCamera(mMap, myLocation());
 
-                generateMarkers();
+                if(checkPermission())
+                    mMap.setMyLocationEnabled(true);
+                else
+                    askPermission();
 
 
             }
@@ -154,14 +157,18 @@ public class MapsActivity extends FragmentActivity implements
 
 
         FightFragment f = new FightFragment();
+        LootFragment l = new LootFragment();
+
         switch (marker.getSnippet()) {
+            case "boss":
             case "enemy":
                 infoWindow = new InfoWindow(marker, markerSpec, f);
+                f.LoadWindowInfo(p.getName(), p.getDescription());//однако требуется понимать какой фрагмент именно загружать инфой
                 break;
             case "bag":
-                infoWindow = new InfoWindow(marker, markerSpec, f);
-
-              //  infoWindow = formWindow;
+            case "backpack":
+                infoWindow = new InfoWindow(marker, markerSpec, l);
+                l.LoadWindowInfo(p.getName(), p.getDescription());
                 break;
             default:
                 infoWindow = null;
@@ -171,7 +178,7 @@ public class MapsActivity extends FragmentActivity implements
         if (infoWindow != null) {
             selectedPlace = p;
             infoWindowManager.toggle(infoWindow, true);
-            f.LoadWindowInfo(p.getName(), p.getDescription());//однако требуется понимать какой фрагмент именно загружать инфой
+
 
         }
 
@@ -181,6 +188,17 @@ public class MapsActivity extends FragmentActivity implements
 
     private void initInterface(){
         final Context context = this;
+
+        FloatingActionButton fButtonProfile = (FloatingActionButton) findViewById(R.id.f_button_profile);
+        fButtonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GameProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         FloatingActionButton fButtonInteract = (FloatingActionButton) findViewById(R.id.f_button);
         fButtonInteract.setOnClickListener(new View.OnClickListener() {
@@ -217,6 +235,7 @@ public class MapsActivity extends FragmentActivity implements
                 String desc = "Desc" + System.currentTimeMillis();
                // addNewCrate(instance.user.getUid(), name, desc, myLocation() );
                 addNewMark(instance.user.getUid(), name, desc, myLocation() , MapView.enemy);
+                generateMarkers();
                 setCamera(mMap, myLocation());
             }
         });
@@ -321,8 +340,15 @@ public class MapsActivity extends FragmentActivity implements
     private void generateMarkers(){
         cHandler.clear();
         mMap.clear();
-        ObjectGenerator og = new ObjectGenerator();
-        ArrayList<Place> list = og.initGenerate(myLocation(), 1, false);
+        CoordinateGenerator og = new CoordinateGenerator();
+        ArrayList<LatLng> tempList = og.initGenerate(myLocation(), 1, false);//координаты
+
+        ArrayList<Place> list = new ArrayList<>();
+        for(LatLng latLng : tempList){
+            MapView type = Randomizer.getSimpleObject();
+            list.add(new Place("id", "uid", "generated " + type.name(), "description", latLng.latitude, latLng.longitude, type));
+        }
+
 
         for(Place place : list){
 

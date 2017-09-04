@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import kom.hikeside.AndroidLauncher;
 import kom.hikeside.R;
@@ -35,7 +34,9 @@ public class FightFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.window_fight, container, false);
 
-
+        textViewName = (TextView) view.findViewById(R.id.tv_name);
+        textViewLvl = (TextView) view.findViewById(R.id.tv_lng);
+        setInfo();
 
         return view;
     }
@@ -63,8 +64,7 @@ public class FightFragment extends Fragment {
 
         view.findViewById(R.id.tv_button).setOnClickListener(onClickListener);
 
-        textViewName = (TextView) view.findViewById(R.id.tv_lat);
-        textViewLvl = (TextView) view.findViewById(R.id.tv_lng);
+
 
 
     }
@@ -104,10 +104,19 @@ public class FightFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void LoadWindowInfo(String title, String text){
+    String title;
+    String text;
+
+    public void setInfo(){
 
         textViewName.setText(title);
         textViewLvl.setText(text);
 
     }
+    public void LoadWindowInfo(String title, String text){
+        this.title = title;
+        this.text = text;
+
+    }
+
 }

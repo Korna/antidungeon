@@ -5,18 +5,18 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_lat"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title" />
 
     <TextView
-        android:id="@+id/tv_lng"
+        android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Info"
-        android:layout_below="@+id/tv_lat"
-        android:layout_marginTop="15dp" />
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="15dp"
+        android:text="Info" />
 
     <Button
         android:id="@+id/tv_button"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
-        android:layout_toEndOf="@+id/tv_lat"
+        android:layout_toEndOf="@+id/tv_name"
         android:text="Loot" />
 
 </RelativeLayout>

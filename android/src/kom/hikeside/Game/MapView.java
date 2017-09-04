@@ -5,7 +5,7 @@ package kom.hikeside.Game;
  */
 
 public enum MapView {
-    zone_long, zone2, enemy, zone, backpack, bag, boss
+    enemy, zone, backpack, bag, boss, treasureChest
 
 }
 

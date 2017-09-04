@@ -25,7 +25,7 @@ import kom.hikeside.R;
 import kom.hikeside.Singleton;
 
 
-public class InventoryFragment extends Fragment {
+public class InventoryFragment extends Fragment {//сетка с инвентарем
 
     private ArrayList<ModelView> list;//дб в памяти
 

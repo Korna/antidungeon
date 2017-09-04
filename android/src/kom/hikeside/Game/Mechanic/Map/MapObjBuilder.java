@@ -1,4 +1,4 @@
-package kom.hikeside.Game.Mechanic;
+package kom.hikeside.Game.Mechanic.Map;
 
 import android.graphics.Color;
 
@@ -57,16 +57,17 @@ public class MapObjBuilder {//проблемное место - карта. к �
         LatLng l = new LatLng(place.getLatitude(), place.getLongtitude());
 
         switch (type) {
-            case zone:
-            case zone2:
+                /*
                 Crate crate = new Crate();
                 po = prepare(l, crate);
                 return build(map, po);
-            case zone_long:
+                */
+            case zone:
+                /*
                 Wall wall = new Wall();
                 po = prepare(l, wall);
                 return build(map, po);
-
+*/
             case enemy:
                 mo = new MarkerOptions().title("Enemy:" + place.getName())
                         .position(l)
@@ -79,6 +80,13 @@ public class MapObjBuilder {//проблемное место - карта. к �
                         .snippet(place.getType().toString())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 return build(map, mo);
+            case backpack:
+                mo = new MarkerOptions().title("Backpack:" + place.getName())
+                        //.snippet(place.getDescription())
+                        .position(l)
+                        .snippet(place.getType().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                return build(map, mo);
             case bag:
                 mo = new MarkerOptions().title("Bag:" + place.getName())
                         //.snippet(place.getDescription())
@@ -86,9 +94,12 @@ public class MapObjBuilder {//проблемное место - карта. к �
                         .snippet(place.getType().toString())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 return build(map, mo);
-
             default:
-                return null;
+                mo = new MarkerOptions().title("Object:" + place.getName())
+                        .position(l)
+                        .snippet(place.getType().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                return build(map, mo);
 
         }
 
