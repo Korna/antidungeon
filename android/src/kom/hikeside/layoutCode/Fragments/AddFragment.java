@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Game.MapView;
+import kom.hikeside.Game.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 
@@ -90,6 +91,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
                     if(latLng==null){
 
                         latLng = instance.myPosition;
+                        latLng = new LatLng(1.1,2.2);
                     }
 
 
@@ -119,12 +121,14 @@ public class AddFragment extends Fragment implements View.OnClickListener {
     Singleton instance = Singleton.getInstance();
 
     private void addNewRecord(String uid, String name, String description, double latitude, double longtitude){
+        Place place = new Place("id", uid, "Created enemy " + name, description, latitude, longtitude, MapView.enemy);
 
-        instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
-        String id = instance.myRef.push().getKey();
-        Place place = new Place(id, uid, name, description, latitude, longtitude, MapView.zone);
 
-        instance.myRef.child(id).setValue(place);
+        UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
+        FBHandler.addPlace(place);
+
+
+
     }
 
     private final LocationListener mLocationListener = new LocationListener() {

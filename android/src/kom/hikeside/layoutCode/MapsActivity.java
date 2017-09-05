@@ -47,11 +47,12 @@ import kom.hikeside.Custom.MarkerInfoWindows.LootFragment;
 import kom.hikeside.FBDBHandler.FBPlace;
 import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Mechanic.CollectionHandler;
-import kom.hikeside.Game.Mechanic.FromMapItemGetter;
+import kom.hikeside.Game.Mechanic.FromMapGetter;
 import kom.hikeside.Game.Mechanic.Map.MapObjBuilder;
 import kom.hikeside.Game.Mechanic.Map.CoordinateGenerator;
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
+import kom.hikeside.Game.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.BuildFragment;
@@ -146,27 +147,29 @@ public class MapsActivity extends FragmentActivity implements
     InfoWindow infoWindow = null;//глобальная переменная тк нужно закрывать окно по требованию
     @Override
     public boolean onMarkerClick(Marker marker) {
+        builder.setUp(marker);
+
         String id = marker.getId();
         Place p = cHandler.idModelMap.get(id);//здесь может выскочить null pointer
         if(p==null){
             Log.d("markerClick", "cant find place model for marker");
         }
         final InfoWindow.MarkerSpecification markerSpec =
-                new InfoWindow.MarkerSpecification(5, 5);//offset: X, Y
-
-
+                new InfoWindow.MarkerSpecification(1, 1);//offset: X, Y
 
         FightFragment f = new FightFragment();
         LootFragment l = new LootFragment();
 
-        switch (marker.getSnippet()) {
-            case "boss":
-            case "enemy":
+        MapView type = MapView.valueOf(marker.getSnippet());
+
+        switch (type) {
+            case boss:
+            case enemy:
                 infoWindow = new InfoWindow(marker, markerSpec, f);
                 f.LoadWindowInfo(p.getName(), p.getDescription());//однако требуется понимать какой фрагмент именно загружать инфой
                 break;
-            case "bag":
-            case "backpack":
+            case bag:
+            case backpack:
                 infoWindow = new InfoWindow(marker, markerSpec, l);
                 l.LoadWindowInfo(p.getName(), p.getDescription());
                 break;
@@ -214,7 +217,8 @@ public class MapsActivity extends FragmentActivity implements
                     if(includesId(key, list)){
                         Log.d("includes:", key);
 
-                        remoteDeleteMark(key);
+                        FBHandler.deletePlace(key);
+
                         cHandler.localDeleteMark(key);
 
                         //отруб окна
@@ -254,8 +258,8 @@ public class MapsActivity extends FragmentActivity implements
 
                     MapView type = cHandler.idModelMap.get(id).getType();//отсюда берем item type
 
-                    addItemInUserInventory(type, instance.user.getUid());
 
+                    FBHandler.addItemInUserInventory(new FromMapGetter().getItems(type));
 
                 }
 
@@ -276,27 +280,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
-    private void remoteDeleteMark(String key){
-        //запрос к удаленной бд на удаление
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query marksQuery = ref.child("marks").orderByChild("id").equalTo(key);
 
-        marksQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap: dataSnapshot.getChildren()) {
-                    snap.getRef().removeValue();
-                    Log.w( "dataChange", "removed from firebase");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e( "onCancelled", databaseError.toString());
-            }
-        });
-
-    }
 
 
 
@@ -314,10 +298,11 @@ public class MapsActivity extends FragmentActivity implements
 
                         cHandler.clear();
                         mMap.clear();
+
                         db.FBlist.clear();
 
                         db.receive(dataSnapshot);
-                        int i = 0;
+
                         for(Place place : db.FBlist){
 
                             Marker marker = (Marker) builder.smartBuild(mMap, place);
@@ -326,10 +311,8 @@ public class MapsActivity extends FragmentActivity implements
 
                             cHandler.idModelMap.put(id, place);
 
-                            ++i;
-                        }
 
-                        Log.w("added", " "+ i + " objects in modelDB, mapDb and mapView");
+                        }
 
                     }
                     @Override
@@ -338,25 +321,21 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void generateMarkers(){
-        cHandler.clear();
-        mMap.clear();
+        //cHandler.clear();
+        //mMap.clear();
         CoordinateGenerator og = new CoordinateGenerator();
         ArrayList<LatLng> tempList = og.initGenerate(myLocation(), 1, false);//координаты
 
         ArrayList<Place> list = new ArrayList<>();
         for(LatLng latLng : tempList){
             MapView type = Randomizer.getSimpleObject();
-            list.add(new Place("id", "uid", "generated " + type.name(), "description", latLng.latitude, latLng.longitude, type));
+            list.add(new Place("id", instance.user.getUid(), "generated " + type.name(), "description", latLng.latitude, latLng.longitude, type));
         }
 
 
         for(Place place : list){
 
-            instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
-            String key = instance.myRef.push().getKey();
-            place.setId(key);
-
-            instance.myRef.child(key).setValue(place);
+            FBHandler.addPlace(place);
 
 
 
@@ -372,13 +351,14 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
+    UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
 
     private void addNewMark(String uid, String name, String description, LatLng latLng, MapView type){
-        instance.myRef = FirebaseDatabase.getInstance().getReference("marks");
-        String key = instance.myRef.push().getKey();
 
-        Place place = new Place(key, uid, name, description, latLng.latitude, latLng.longitude, type);
-        instance.myRef.child(key).setValue(place);
+
+        Place place = new Place("key", uid, name, description, latLng.latitude, latLng.longitude, type);
+
+        FBHandler.addPlace(place);
 
         // modelObject.put(place.getId(), place);
         //  mapObject.put(place.getId(), builder.smartBuild(mMap, place));
@@ -403,24 +383,7 @@ public class MapsActivity extends FragmentActivity implements
     }*/
 
 
-    private void addItemInUserInventory(MapView type, String uid){
 
-        ArrayList<InventoryObject> items = new FromMapItemGetter().open(type);
-        if(items != null) {
-
-            instance.myRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("inventory");
-
-            for(InventoryObject item : items){
-                String tableItemId =
-                instance.myRef.push()
-                .getKey();//ключ остается заголовком объекта, но не полем объекта
-
-                instance.myRef.child(tableItemId).setValue(item);
-            }
-
-        }
-
-    }
 
 /*
     @Override

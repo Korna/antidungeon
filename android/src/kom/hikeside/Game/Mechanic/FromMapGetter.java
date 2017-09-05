@@ -11,18 +11,19 @@ import kom.hikeside.Game.Objects.Inventory.Plank;
  * Created by Koma on 16.08.2017.
  */
 
-public class FromMapItemGetter {
+public class FromMapGetter {//
 
 
-    public ArrayList<InventoryObject> open(MapView type){//
+    public ArrayList<InventoryObject> getItems(MapView type){//
         ArrayList<InventoryObject> items = new ArrayList<>();
 
         switch(type){
             case bag:
                 items.add(new Bandage());
-                items.add(new Bandage());
                 items.add(new Plank());
                 return items;
+            case treasureChest:
+                items.add(new Bandage());
             case backpack:
                 items.add(new Bandage());
                 return items;

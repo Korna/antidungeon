@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Game.Objects.MapViewPriority;
+import kom.hikeside.Game.Objects.ObjList;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -30,9 +31,10 @@ public class Randomizer {
     }
 
 
-    public static InventoryObject getSimpleItem(){
+    public static ObjList.inventory getSimpleItem(){
+        int randomIndex = random.nextInt(ObjList.inventory.values().length);
 
-        return new InventoryObject();
+        return ObjList.inventory.values() [randomIndex];
     }
 
 
