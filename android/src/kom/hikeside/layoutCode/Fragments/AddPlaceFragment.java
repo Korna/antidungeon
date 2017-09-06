@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.FirebaseDatabase;
 
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Game.MapView;
@@ -25,7 +24,7 @@ import kom.hikeside.Singleton;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class AddFragment extends Fragment implements View.OnClickListener {
+public class AddPlaceFragment extends Fragment implements View.OnClickListener {
 
     private final static int LOCATION_REFRESH_TIME = 2000;
     private final static int LOCATION_REFRESH_DISTANCE = 10;
@@ -33,10 +32,10 @@ public class AddFragment extends Fragment implements View.OnClickListener {
     EditText textName;
     EditText textDescription;
 
-    public AddFragment() {}
+    public AddPlaceFragment() {}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add, container, false);
+        View v = inflater.inflate(R.layout.fragment_add_place, container, false);
 
         loadLocation();
 
@@ -49,7 +48,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
         }
 
-        textName = (EditText) v.findViewById(R.id.editText_name);
+        textName = (EditText) v.findViewById(R.id.editText_character_name);
         textDescription = (EditText) v.findViewById(R.id.editText_description);
         Button buttonAdd = (Button) v.findViewById(R.id.button_add_mark);
         buttonAdd.setOnClickListener(this);

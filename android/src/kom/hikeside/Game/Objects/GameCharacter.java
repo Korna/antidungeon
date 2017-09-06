@@ -8,12 +8,14 @@ import java.io.Serializable;
 
 public class GameCharacter implements Serializable {
     private static final long serialVersionUID = -2163051469151804394L;
-
+    private String key;
     String name;
     int lvl;
 
     int experience;
     int skillPoints;
+    String inventoryKey;//или хранить объект Inventory?
+
 
     GameClass gameClass;
 
@@ -24,6 +26,18 @@ public class GameCharacter implements Serializable {
     int luck;
     int stamina;//резист у крону
     int will;//в каком числе ивентов в день может учавствовать?
+
+    public GameCharacter(){
+        //пустой конструктор для получения данных с FB
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public GameCharacter(String name, int lvl, GameClass gameClass, int strength, int agility, int intelligence, int luck, int stamina, int will) {
         this.name = name;

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/layout_select_stats"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="270dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
@@ -40,4 +40,17 @@
         android:text="add"
         android:layout_below="@+id/button_kn"
         android:layout_alignStart="@+id/button_kn" />
+
+    <EditText
+        android:id="@+id/editText_character_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/button_ar"
+        android:layout_below="@+id/button_ar"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Enter your character name here"
+        android:inputType="textPersonName"
+        android:text="DefaultName" />
+
 </RelativeLayout>

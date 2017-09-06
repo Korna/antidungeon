@@ -1,17 +1,15 @@
-package kom.warside;
+package kom.hikeside.libgdx;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class LibgdxGame extends ApplicationAdapter {
+public class Game extends ApplicationAdapter {
 
 
-	public static Content res;
+	public static ContentManager res;
 
 	private SpriteBatch batch;
 	private OrthographicCamera maincamera;
@@ -23,24 +21,30 @@ public class LibgdxGame extends ApplicationAdapter {
 	private final float SCALE = 2.0f;// раньше было 2f
 	private GameStateManagement gsm;
 
-	public static final int GAME_WIDTH = Gdx.graphics.getWidth();
+	public static int GAME_WIDTH;
 
-	public static final int GAME_HEIGHT = Gdx.graphics.getHeight();
+	public static int GAME_HEIGHT;
 
 	@Override
 	public void create () {
-		res = new Content();
+		res = new ContentManager();
 		loadAssets();
 
 		batch = new SpriteBatch();
 		maincamera = new OrthographicCamera();
+
+		GAME_WIDTH = Gdx.graphics.getWidth();
+		GAME_HEIGHT = Gdx.graphics.getHeight();
+
 		maincamera.setToOrtho(false, GAME_WIDTH/SCALE, GAME_HEIGHT/SCALE);
 
 		gsm = new GameStateManagement(this);
 	}
 
 	private void loadAssets(){
-		res.loadTexture("assets/badlogic.jpg", "splash");
+		res.loadTexture("badlogic.jpg", "splash");
+		res.loadBitmapFont("white16.fnt", "white_font");
+		res.loadTextureAtlas("ui.pack", "ui_buttons");
 	}
 
 	@Override

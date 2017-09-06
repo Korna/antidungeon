@@ -8,10 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.badlogic.gdx.Game;
 
 import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Game.Objects.GameClass;
+import kom.hikeside.Game.UserDataFBHandler;
 import kom.hikeside.R;
+import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
 
 /**
@@ -35,13 +41,18 @@ public class CharacterAddFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_character_add, container, false);
 
 
+        final EditText editText_name = (EditText) v.findViewById(R.id.editText_character_name);
 
         Button button_archer = (Button) v.findViewById(R.id.button_ar);
 
         button_archer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = new GameCharacter("NotChosen", 0, GameClass.archer, 5, 10, 7, 5, 7, 7);
+                character = new GameCharacter("NotChosen", 1, GameClass.archer, 5, 10, 7, 5, 7, 7);
+
+                View v = statsFragment.getView();
+                statsFragment.loadCharacterCommon(v, character);
+                statsFragment.loadCharacterStats(v, character);
             }
         });
 
@@ -49,7 +60,11 @@ public class CharacterAddFragment extends Fragment {
         button_knight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = new GameCharacter("NotChosen", 0, GameClass.knight, 10, 5, 10, 7, 5, 7);
+                character = new GameCharacter("NotChosen", 1, GameClass.knight, 10, 5, 10, 7, 5, 7);
+
+                View v = statsFragment.getView();
+                statsFragment.loadCharacterCommon(v, character);
+                statsFragment.loadCharacterStats(v, character);
             }
         });
 
@@ -57,10 +72,17 @@ public class CharacterAddFragment extends Fragment {
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = editText_name.getText().toString();
+                editText_name.setText("");
 
-                View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+
+                character.setName(name);
+
+
+                Singleton instance = Singleton.getInstance();
+
+                UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
+                FBHandler.addCharacter(character);
             }
         });
 
