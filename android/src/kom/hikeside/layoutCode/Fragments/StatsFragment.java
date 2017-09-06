@@ -37,7 +37,10 @@ public class StatsFragment extends Fragment {
         return v;
     }
 
-    private void loadCharacterStats(View v, GameCharacter character){
+
+
+
+    public void loadCharacterStats(View v, GameCharacter character){
         TextView textView_strength = (TextView) v.findViewById(R.id.textView_strength);
 
         TextView textView_agility = (TextView) v.findViewById(R.id.textView_agility);
@@ -64,7 +67,7 @@ public class StatsFragment extends Fragment {
 
     }
 
-    private void loadCharacterCommon(View v, GameCharacter character){
+    public void loadCharacterCommon(View v, GameCharacter character){
         TextView textView_name = (TextView) v.findViewById(R.id.textView_name);
 
         TextView textView_lvl = (TextView) v.findViewById(R.id.textView_lvl);

@@ -11,6 +11,10 @@ public class GameCharacter implements Serializable {
 
     String name;
     int lvl;
+
+    int experience;
+    int skillPoints;
+
     GameClass gameClass;
 
     int strength;

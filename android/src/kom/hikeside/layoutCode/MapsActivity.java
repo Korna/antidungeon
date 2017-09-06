@@ -67,12 +67,8 @@ public class MapsActivity extends FragmentActivity implements
 
 
     Singleton instance = Singleton.getInstance();
-    MapObjBuilder builder;
+    MapObjBuilder builder = new MapObjBuilder();
 
-    private void initMechanics(){
-
-        builder = new MapObjBuilder();
-    }
 
     private GoogleMap mMap;
     private Context context;
@@ -94,7 +90,6 @@ public class MapsActivity extends FragmentActivity implements
             Toast.makeText(this, "Services not available", Toast.LENGTH_SHORT).show();
         }
 
-        initMechanics();
         //занесение локации в синглтон
         myLocation();
 
@@ -135,11 +130,7 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-    private static final String RECYCLER_VIEW = MapView.enemy.toString();
-    private static final String FORM_VIEW = MapView.bag.toString();
 
-    private InfoWindow recyclerWindow;
-    private InfoWindow formWindow;
     private InfoWindowManager infoWindowManager;
 
 
@@ -190,7 +181,6 @@ public class MapsActivity extends FragmentActivity implements
 
 
     private void initInterface(){
-        final Context context = this;
 
         FloatingActionButton fButtonProfile = (FloatingActionButton) findViewById(R.id.f_button_profile);
         fButtonProfile.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +242,8 @@ public class MapsActivity extends FragmentActivity implements
 
 
                 if(selectedPlace!=null) {
+
+
                     String key = selectedPlace.getId();
 
                     String id = cHandler.keyViewMap.get(key).getId();
@@ -276,12 +268,6 @@ public class MapsActivity extends FragmentActivity implements
 
         return false;
     }
-
-
-
-
-
-
 
 
     CollectionHandler cHandler = new CollectionHandler();

@@ -23,7 +23,6 @@ import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Objects.Types.Crate;
 import kom.hikeside.Game.Objects.Types.Dots;
 import kom.hikeside.Game.Objects.Types.Wall;
-import kom.hikeside.Game.Point;
 
 /**
  * Created by Koma on 15.08.2017.
@@ -43,8 +42,8 @@ public class MapObjBuilder {//проблемное место - карта. к �
         PolylineOptions p = new PolylineOptions().geodesic(true);
 
         LatLng c;
-        for(Point obj : poly.pointList) {//latLng.latitude + obj.y, latLng.longitude + obj.x
-            c = new LatLng(latLng.latitude + obj.y * cfg, latLng.longitude + obj.x * cfg);
+        for(LatLng obj : poly.pointList) {//latLng.latitude + obj.y, latLng.longitude + obj.x
+            c = new LatLng(latLng.latitude + obj.longitude * cfg, latLng.longitude + obj.latitude * cfg);
             p.add(c);
         }
 

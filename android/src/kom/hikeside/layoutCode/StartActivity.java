@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import kom.hikeside.AndroidLauncher;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
+import kom.hikeside.layoutCode.Character.CharacterActivity;
 import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 
 
@@ -106,6 +107,16 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), GameProfileActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        Button character  = (Button) findViewById(R.id.button_character);
+        character.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CharacterActivity.class);
                 startActivity(intent);
 
             }

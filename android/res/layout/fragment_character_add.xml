@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kom.hikeside.layoutCode.Character.CharacterAddFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_select_stats"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_ar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="37dp"
+        android:text="archer" />
+
+    <Button
+        android:id="@+id/button_kn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_ar"
+        android:layout_centerHorizontal="true"
+        android:text="knight" />
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:text="add"
+        android:layout_below="@+id/button_kn"
+        android:layout_alignStart="@+id/button_kn" />
+</RelativeLayout>
