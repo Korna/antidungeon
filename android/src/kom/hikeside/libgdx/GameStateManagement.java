@@ -14,8 +14,7 @@ import java.util.Stack;
 public class GameStateManagement {
     private final Game app;
 
-
-    public World world = new World(new Vector2(0, 10), false);;
+    public World world = new World(new Vector2(0, -10), false);
 
 
 

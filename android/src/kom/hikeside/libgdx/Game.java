@@ -1,10 +1,20 @@
 package kom.hikeside.libgdx;
 
+import android.util.Log;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Game extends ApplicationAdapter {
 
@@ -27,25 +37,34 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		GAME_WIDTH = Gdx.graphics.getWidth();
+		GAME_HEIGHT = Gdx.graphics.getHeight();
+
 		res = new ContentManager();
 		loadAssets();
+
+		//загрузка интерфейса
+
 
 		batch = new SpriteBatch();
 		maincamera = new OrthographicCamera();
 
-		GAME_WIDTH = Gdx.graphics.getWidth();
-		GAME_HEIGHT = Gdx.graphics.getHeight();
 
 		maincamera.setToOrtho(false, GAME_WIDTH/SCALE, GAME_HEIGHT/SCALE);
 
 		gsm = new GameStateManagement(this);
+
 	}
 
 	private void loadAssets(){
 		res.loadTexture("badlogic.jpg", "splash");
 		res.loadBitmapFont("white16.fnt", "white_font");
-		res.loadTextureAtlas("ui.pack", "ui_buttons");
+		res.loadTextureAtlas("ui/ui.pack", "ui_buttons");
 	}
+
+
+
+
 
 	@Override
 	public void render () {

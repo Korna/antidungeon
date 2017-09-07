@@ -9,15 +9,15 @@ public class User {
 
     int money;
 
-    int level;
+    int rank;
 
     int dailyBonus;//счетчик обнуляется каждый день в 00 00
     //подсчитывает число взятых ивентов
 
-    public User(String uid, int money, int level, int dailyBonus) {
+    public User(String uid, int money, int rank, int dailyBonus) {
         this.uid = uid;
         this.money = money;
-        this.level = level;
+        this.rank = rank;
         this.dailyBonus = dailyBonus;
     }
 
