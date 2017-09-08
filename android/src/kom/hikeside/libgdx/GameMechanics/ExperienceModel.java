@@ -8,7 +8,7 @@ import kom.hikeside.libgdx.GameMechanics.EnemyModel;
  * Created by Koma on 07.09.2017.
  */
 
-public class ExperienceModel {
+public class ExperienceModel {//опыт начисляется после битвы и рахдается участникам
 
     int numberOfPlayers;
     ArrayList<EnemyModel> listOfEnemies;

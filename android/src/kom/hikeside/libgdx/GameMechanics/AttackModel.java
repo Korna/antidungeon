@@ -13,4 +13,10 @@ public class AttackModel {
 
     float chanceToHit;
 
+    public AttackModel(int lowestDamage, int highestDamage, boolean isPiercing, float chanceToHit) {
+        this.lowestDamage = lowestDamage;
+        this.highestDamage = highestDamage;
+        this.isPiercing = isPiercing;
+        this.chanceToHit = chanceToHit;
+    }
 }

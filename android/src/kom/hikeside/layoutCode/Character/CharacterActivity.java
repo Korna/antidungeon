@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import kom.hikeside.Game.UserDataFBHandler;
 import kom.hikeside.R;
-import kom.hikeside.Singleton;
-import kom.hikeside.layoutCode.Profile.ProfileQuestsFragment;
 
 public class CharacterActivity extends AppCompatActivity {
 

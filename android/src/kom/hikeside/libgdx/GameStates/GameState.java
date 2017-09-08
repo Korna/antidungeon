@@ -1,7 +1,10 @@
-package kom.hikeside.libgdx;
+package kom.hikeside.libgdx.GameStates;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import kom.hikeside.libgdx.Game;
+import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 /**
  * Created by Koma on 17.01.2017.

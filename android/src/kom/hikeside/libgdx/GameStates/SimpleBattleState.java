@@ -1,4 +1,6 @@
-package kom.hikeside.libgdx;
+package kom.hikeside.libgdx.GameStates;
+
+import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,6 +20,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.libgdx.BundleToLib;
+import kom.hikeside.libgdx.Game;
+import kom.hikeside.libgdx.Entities.GameObjectView;
+import kom.hikeside.libgdx.GameObjects.Player;
+import kom.hikeside.libgdx.Managers.GameStateManagement;
+
 import static kom.warside.LibgdxGame.GAME_HEIGHT;
 import static kom.warside.LibgdxGame.GAME_WIDTH;
 
@@ -26,7 +36,7 @@ import static kom.warside.LibgdxGame.GAME_WIDTH;
  */
 public class SimpleBattleState extends GameState {
 
-    float acc = 0f;
+
     private float time = 3f;
     //private Texture tex_splash;
     private Stage stage;
@@ -34,13 +44,16 @@ public class SimpleBattleState extends GameState {
     private World world;
     private Box2DDebugRenderer b2dr;
 
-    PlayerView object;
-    PlayerView enemy;
+    //GameObjectView player;
+    Player player;
+
+    GameObjectView enemy;
 
     public SimpleBattleState(GameStateManagement gsm){
         super(gsm);
-       // tex_splash = Game.res.getTexture("splash");
+        BundleToLib bundle = BundleToLib.getInstance();
 
+        bundle.gameCharacters.add(new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         buildTable();
@@ -49,18 +62,29 @@ public class SimpleBattleState extends GameState {
         b2dr = new Box2DDebugRenderer();
         batch = new SpriteBatch();
 
-        object = createPlayer(createPlayerBody(GAME_WIDTH  / (8 * 2f), GAME_HEIGHT /  (3 * 2f)));
+        // TODO: view должен создаваться по gameCharacter
+        GameObjectView playerView = createPlayer(createPlayerBody(GAME_WIDTH  / (8 * 2f), GAME_HEIGHT /  (3 * 2f)));
         enemy = createPlayer(createPlayerBody(GAME_WIDTH  / (1.5f * 2f), GAME_HEIGHT /  (2 * 2f)));
+        player = new Player(playerView, bundle.gameCharacters.get(0));
+
+
     }
+
+    float acc = 0f;
+    private boolean timer(float delta){
+        acc += delta;
+        if(acc >= time){
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void update(float delta) {
-        acc += delta;
-        if(acc >= time){
-            //gsm.setState(GameStateManagement.State.SPLASH);
-        }
 
-        object.update(delta);
+
+        player.playerView.update(delta);
         enemy.update(delta);
 
         stage.act(delta);
@@ -132,12 +156,16 @@ public class SimpleBattleState extends GameState {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
+                if(player.turn) {
+                    super.clicked(event, x, y);
 
-                makeAction(text);
-                object.attack();
+                    makeAction(text);
+                    enemyAction();
 
-                notifyPlayers();
+                    notifyPlayers();
+                }else{
+                    Log.d("onLick", "wait for other player to attack!");
+                }
 
             }
         });
@@ -148,9 +176,12 @@ public class SimpleBattleState extends GameState {
     private void makeAction(String action){
         switch(action){
             case "Attack":
-
+                player.playerView.attack();
                 break;
         }
+    }
+    private void enemyAction(){
+
     }
 
     private void notifyPlayers(){
@@ -172,7 +203,7 @@ public class SimpleBattleState extends GameState {
         if(true)
             b2dr.render(world, maincamera.combined);
 
-        object.render(batch);
+        player.playerView.render(batch);
         enemy.render(batch);
 
         stage.draw();
@@ -201,8 +232,8 @@ public class SimpleBattleState extends GameState {
         return body;
     }
 
-    private PlayerView createPlayer(Body body){
-        PlayerView s = new PlayerView(body);
+    private GameObjectView createPlayer(Body body){
+        GameObjectView s = new GameObjectView(body);
         return s;
     }
 

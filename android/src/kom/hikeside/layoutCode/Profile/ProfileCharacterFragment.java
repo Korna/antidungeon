@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kom.hikeside.Game.Objects.GameCharacter;
-import kom.hikeside.Game.Objects.GameClass;
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
 import kom.hikeside.R;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
 

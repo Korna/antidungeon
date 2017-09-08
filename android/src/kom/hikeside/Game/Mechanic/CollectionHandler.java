@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import kom.hikeside.Atom.Place;
-import kom.hikeside.Game.Mechanic.Map.MapObjInteracter;
+import kom.hikeside.Game.Map.MapObjInteracter;
 
 /**
  * Created by Koma on 02.09.2017.

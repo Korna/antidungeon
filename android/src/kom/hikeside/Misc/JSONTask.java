@@ -1,4 +1,4 @@
-package kom.hikeside;
+package kom.hikeside.Misc;
 
 import android.os.AsyncTask;
 import android.util.Log;

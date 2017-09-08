@@ -9,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.badlogic.gdx.Game;
-
-import kom.hikeside.Game.Objects.GameCharacter;
-import kom.hikeside.Game.Objects.GameClass;
-import kom.hikeside.Game.UserDataFBHandler;
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;

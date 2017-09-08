@@ -48,4 +48,12 @@
         android:layout_alignBottom="@+id/button_character_forward"
         android:layout_centerHorizontal="true"
         android:text="Delete" />
+
+    <Button
+        android:id="@+id/button_character_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_character_delete"
+        android:layout_alignEnd="@+id/button_character_delete"
+        android:text="Set" />
 </RelativeLayout>

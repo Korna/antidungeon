@@ -1,6 +1,8 @@
-package kom.hikeside.Game.Objects;
+package kom.hikeside.Game.Objects.GameClasses;
 
 import java.io.Serializable;
+
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
 
 /**
  * Created by Koma on 05.09.2017.
@@ -18,6 +20,11 @@ public class GameCharacter implements Serializable {
 
 
     GameClass gameClass;
+
+    int maxHp;
+    int maxMp;
+    int maxStamina;
+
 
     int strength;
     int agility;

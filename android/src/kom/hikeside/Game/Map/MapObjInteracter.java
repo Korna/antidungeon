@@ -1,13 +1,11 @@
-package kom.hikeside.Game.Mechanic.Map;
+package kom.hikeside.Game.Map;
 
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 import kom.hikeside.Atom.Place;
 

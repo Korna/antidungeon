@@ -1,4 +1,4 @@
-package kom.hikeside.libgdx;
+package kom.hikeside.libgdx.Managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;

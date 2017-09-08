@@ -1,18 +1,20 @@
-package kom.hikeside.libgdx;
+package kom.hikeside.libgdx.Entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 
+import kom.hikeside.libgdx.Game;
+
 /**
  * Created by Koma on 19.01.2017.
  */
-public class PlayerView extends Sprite {
+public class GameObjectView extends Sprite {
 
     float x;
     float y;
 
-    public PlayerView(Body body) {
+    public GameObjectView(Body body) {
         super(body);
         x = body.getPosition().x;
         y = body.getPosition().y;
@@ -34,6 +36,13 @@ public class PlayerView extends Sprite {
         getBody().setLinearVelocity(-1000, getBody().getLinearVelocity().y);
 
     }
+
+    public void getHit(){
+
+
+    }
+
+
 
 }
 

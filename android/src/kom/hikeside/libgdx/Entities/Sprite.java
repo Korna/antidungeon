@@ -1,4 +1,4 @@
-package kom.hikeside.libgdx;
+package kom.hikeside.libgdx.Entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

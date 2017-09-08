@@ -13,8 +13,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import kom.hikeside.AndroidLauncher;
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.R;
+import kom.hikeside.libgdx.BundleToLib;
 
 /**
  * Created by Koma on 29.08.2017.
@@ -86,7 +90,9 @@ public class FightFragment extends Fragment {
         alertDialog.setPositiveButton("ОК",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
-
+                        GameCharacter character;
+                        BundleToLib bundle = BundleToLib.getInstance();
+                     //   bundle.initialization(false, new ArrayList<GameCharacter>().add(character), );
                         Intent intent = new Intent(getActivity(), AndroidLauncher.class);
                         startActivity(intent);
 

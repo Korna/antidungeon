@@ -10,9 +10,9 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-import kom.hikeside.Game.Objects.GameCharacter;
-import kom.hikeside.Game.Objects.GameClass;
-import kom.hikeside.Game.UserDataFBHandler;
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
@@ -50,26 +50,29 @@ public class CharacterManageFragment extends Fragment {
         buttonForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(list.size() > i + 1)
+                if(list.size() > i + 1){
                     ++i;
 
-                character = list.get(i);
-                View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                    character = list.get(i);
+                    View v = statsFragment.getView();
+                    statsFragment.loadCharacterCommon(v, character);
+                    statsFragment.loadCharacterStats(v, character);
+                }
+
             }
         });
         Button buttonBack = (Button) v.findViewById(R.id.button_character_back);
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i >= 1 && list.size() != 0)
+                if(i >= 1 && list.size() != 0){
                     --i;
+                    character = list.get(i);
+                    View v = statsFragment.getView();
+                    statsFragment.loadCharacterCommon(v, character);
+                    statsFragment.loadCharacterStats(v, character);
+                }
 
-                character = list.get(i);
-                View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
             }
         });
 
@@ -91,6 +94,20 @@ public class CharacterManageFragment extends Fragment {
                 statsFragment.loadCharacterStats(v, character);
             }
         });
+
+        Button buttonSet = (Button) v.findViewById(R.id.button_character_set);
+        buttonSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key = list.get(i).getKey();
+              //  FBHandler.setCurrentCharacter(key);
+                Singleton instance = Singleton.getInstance();
+                instance.userData.setCurrentCharacter(key);
+                FBHandler.updateUserData(instance.userData);
+
+            }
+        });
+
 
         if(list.size() != 0)
             character = list.get(0);

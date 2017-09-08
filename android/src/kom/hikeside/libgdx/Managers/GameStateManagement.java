@@ -1,4 +1,4 @@
-package kom.hikeside.libgdx;
+package kom.hikeside.libgdx.Managers;
 
 /**
  * Created by Koma on 09.01.2017.
@@ -10,11 +10,15 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Stack;
 
+import kom.hikeside.libgdx.Game;
+import kom.hikeside.libgdx.GameStates.GameState;
+import kom.hikeside.libgdx.GameStates.SimpleBattleState;
+
 
 public class GameStateManagement {
     private final Game app;
 
-    public World world = new World(new Vector2(0, -10), false);
+    public World world = new World(new Vector2(0, 0), false);
 
 
 

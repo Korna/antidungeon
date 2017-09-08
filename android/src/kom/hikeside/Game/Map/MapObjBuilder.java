@@ -1,9 +1,7 @@
-package kom.hikeside.Game.Mechanic.Map;
+package kom.hikeside.Game.Map;
 
 import android.graphics.Color;
-import android.util.Log;
 
-import com.appolica.interactiveinfowindow.InfoWindow;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
@@ -17,12 +15,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import kom.hikeside.Atom.Place;
-import kom.hikeside.Custom.MarkerInfoWindows.FightFragment;
-import kom.hikeside.Custom.MarkerInfoWindows.LootFragment;
 import kom.hikeside.Game.MapView;
-import kom.hikeside.Game.Objects.Types.Crate;
 import kom.hikeside.Game.Objects.Types.Dots;
-import kom.hikeside.Game.Objects.Types.Wall;
 
 /**
  * Created by Koma on 15.08.2017.
