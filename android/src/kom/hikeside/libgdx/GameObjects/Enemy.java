@@ -8,19 +8,19 @@ import kom.hikeside.libgdx.GameMechanics.EnemyModel;
  * Created by Koma on 08.09.2017.
  */
 
-public class Enemy {
-    public boolean turn = true;
-    EnemyModel enemyModel;
-    GameObjectView gameObjectView;
+public class Enemy extends GameObject{
 
-    int currentHp;
-    int currentMp;
-    int currentStamina;
+    public EnemyModel enemyModel;
 
-    AttackModel attackModel;
 
-    public Enemy(EnemyModel enemyModel, GameObjectView gameObjectView) {
+
+
+    public Enemy(EnemyModel enemyModel, GameObjectView gameObjectView, AttackModel attackModel) {
         this.enemyModel = enemyModel;
-        this.gameObjectView = gameObjectView;
+        this.view = gameObjectView;
+        setCurrentHp(enemyModel.getMaxHp());
+        this.attackModel = attackModel;
     }
+
+
 }

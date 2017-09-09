@@ -26,7 +26,7 @@ public class BundleToLib {
     public BundleToLib(){
         Singleton instance = Singleton.getInstance();
         UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
-        gameCharacters.add(instance.currentGameCharacter);
+        //TODO deal with it gameCharacters.add(instance.currentGameCharacter);
 
 
     }

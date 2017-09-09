@@ -25,7 +25,11 @@ import kom.hikeside.Game.Objects.GameClasses.GameClass;
 import kom.hikeside.libgdx.BundleToLib;
 import kom.hikeside.libgdx.Game;
 import kom.hikeside.libgdx.Entities.GameObjectView;
+import kom.hikeside.libgdx.GameMechanics.AttackModel;
+import kom.hikeside.libgdx.GameMechanics.EnemyModel;
+import kom.hikeside.libgdx.GameObjects.Enemy;
 import kom.hikeside.libgdx.GameObjects.Player;
+import kom.hikeside.libgdx.HPHUD;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 import static kom.warside.LibgdxGame.GAME_HEIGHT;
@@ -47,13 +51,17 @@ public class SimpleBattleState extends GameState {
     //GameObjectView player;
     Player player;
 
-    GameObjectView enemy;
+    Enemy enemy;
+
+    HPHUD hpplayerhud;
+    HPHUD hpenemyhud;
 
     public SimpleBattleState(GameStateManagement gsm){
         super(gsm);
         BundleToLib bundle = BundleToLib.getInstance();
 
         bundle.gameCharacters.add(new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0));
+        bundle.enemyModels.add(new EnemyModel(100,1,100, "EnemyName", "Description", null));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         buildTable();
@@ -64,10 +72,14 @@ public class SimpleBattleState extends GameState {
 
         // TODO: view должен создаваться по gameCharacter
         GameObjectView playerView = createPlayer(createPlayerBody(GAME_WIDTH  / (8 * 2f), GAME_HEIGHT /  (3 * 2f)));
-        enemy = createPlayer(createPlayerBody(GAME_WIDTH  / (1.5f * 2f), GAME_HEIGHT /  (2 * 2f)));
-        player = new Player(playerView, bundle.gameCharacters.get(0));
+        GameObjectView enemyView = createPlayer(createPlayerBody(GAME_WIDTH  / (1.5f * 2f), GAME_HEIGHT /  (2 * 2f)));
+
+        player = new Player(playerView, bundle.gameCharacters.get(0), new AttackModel(10,15, false, 0.8f));
+        enemy = new Enemy(bundle.enemyModels.get(0), enemyView, new AttackModel(5,10, false, 0.5f));
 
 
+        hpplayerhud = new HPHUD(player);
+        hpenemyhud = new HPHUD(enemy);
     }
 
     float acc = 0f;
@@ -84,8 +96,8 @@ public class SimpleBattleState extends GameState {
     public void update(float delta) {
 
 
-        player.playerView.update(delta);
-        enemy.update(delta);
+        player.view.update(delta);
+        enemy.view.update(delta);
 
         stage.act(delta);
 
@@ -116,7 +128,7 @@ public class SimpleBattleState extends GameState {
         Skin skin = new Skin(mainMenuAtlas);
 
         Table table = new Table(skin);
-        table.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        table.setBounds(0, 0, GAME_WIDTH/2, GAME_HEIGHT/2);
 
 
         // creating buttons
@@ -130,8 +142,11 @@ public class SimpleBattleState extends GameState {
 
 
 
+        table.add(addAttackButton());
+        table.row().pad(100);
+        table.add(addRestButton());
 
-        table.add(addButton());
+
 
 
         stage.addActor(table);
@@ -142,7 +157,7 @@ public class SimpleBattleState extends GameState {
     final int BUTTON_WIDTH = GAME_WIDTH/10;
 
 
-    private TextButton addButton(){
+    private TextButton addAttackButton(){
 
         final String text = "Attack";
 
@@ -160,7 +175,39 @@ public class SimpleBattleState extends GameState {
                     super.clicked(event, x, y);
 
                     makeAction(text);
-                    enemyAction();
+                    turn();
+
+
+                    notifyPlayers();
+                }else{
+                    Log.d("onLick", "wait for other player to attack!");
+                }
+
+            }
+        });
+
+        return buttonPlay;
+    }
+
+    private TextButton addRestButton(){
+        final String text = "Rest";
+
+        TextButton buttonPlay = new TextButton(text, textButtonStyle);
+        buttonPlay.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        //buttonPlay.setHeight(BUTTON_HEIGHT);
+        //buttonPlay.setWidth(BUTTON_WIDTH);
+
+        buttonPlay.setTransform(true);
+        buttonPlay.setScale(6.0f);
+        buttonPlay.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(player.turn) {
+                    super.clicked(event, x, y);
+
+                    makeAction(text);
+                    turn();
+
 
                     notifyPlayers();
                 }else{
@@ -174,14 +221,35 @@ public class SimpleBattleState extends GameState {
     }
 
     private void makeAction(String action){
+        int NATURAL_HP_AMOUNT = 10;
+        int NATURAL_MP_AMOUNT = 5;
+
         switch(action){
             case "Attack":
-                player.playerView.attack();
+                enemy.setCurrentHp(enemy.getCurrentHp() - player.getAttackValue());
+                break;
+            case "Defence":
+
+                break;
+            case "Rest":
+                if(player.getCurrentHp()  + NATURAL_HP_AMOUNT > player.getMaxHp())
+                    player.setCurrentHp(player.getMaxHp());
+                else
+                    player.setCurrentHp(player.getCurrentHp() + NATURAL_HP_AMOUNT);
+
                 break;
         }
     }
-    private void enemyAction(){
 
+    private void turn(){
+        enemyAction();
+
+        if(player.getCurrentHp() <= 0)
+            Log.w("you", "are dead");
+
+    }
+    private void enemyAction(){
+        player.setCurrentHp(player.getCurrentHp() - enemy.getAttackValue());
     }
 
     private void notifyPlayers(){
@@ -190,7 +258,7 @@ public class SimpleBattleState extends GameState {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
+        Gdx.gl.glClearColor(0.81f, 0.933f,  0.933f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -203,10 +271,12 @@ public class SimpleBattleState extends GameState {
         if(true)
             b2dr.render(world, maincamera.combined);
 
-        player.playerView.render(batch);
-        enemy.render(batch);
+        player.view.render(batch);
+        enemy.view.render(batch);
 
         stage.draw();
+        hpplayerhud.render(batch, player.view.getPosition().x - player.view.getWidth() / 3, player.view.getPosition().y + player.view.getHeight() / 1.5f);
+        hpenemyhud.render(batch, enemy.view.getPosition().x - enemy.view.getWidth() / 3, enemy.view.getPosition().y + enemy.view.getHeight() / 1.5f);
 
     }
 

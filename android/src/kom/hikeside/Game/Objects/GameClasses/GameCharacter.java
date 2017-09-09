@@ -21,14 +21,14 @@ public class GameCharacter implements Serializable {
 
     GameClass gameClass;
 
-    int maxHp;
-    int maxMp;
-    int maxStamina;
+    int maxHp = 100;
+    int maxMp = 50;
+    int maxStamina = 50;
 
 
-    int strength;
-    int agility;
-    int intelligence;
+    int strength;//
+    int agility;//больше ивентов в день можно посещать
+    int intelligence;//больше интеллект = больше опыта
 
     int luck;
     int stamina;//резист у крону
@@ -128,5 +128,30 @@ public class GameCharacter implements Serializable {
 
     public void setGameClass(GameClass gameClass) {
         this.gameClass = gameClass;
+    }
+
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public int getMaxMp() {
+        return maxMp;
+    }
+
+    public void setMaxMp(int maxMp) {
+        this.maxMp = maxMp;
+    }
+
+    public int getMaxStamina() {
+        return maxStamina;
+    }
+
+    public void setMaxStamina(int maxStamina) {
+        this.maxStamina = maxStamina;
     }
 }

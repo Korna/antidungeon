@@ -8,42 +8,26 @@ import kom.hikeside.libgdx.GameMechanics.AttackModel;
  * Created by Koma on 08.09.2017.
  */
 
-public class Player {
-    public boolean turn = true;
-    public GameObjectView playerView;
+public class Player extends GameObject{
+
+
     public GameCharacter gameCharacter;
 
-    int currentHp;
-    int currentMp;
-    int currentStamina;
 
-    AttackModel attackModel;
-    public Player(GameObjectView playerView, GameCharacter gameCharacter){
-        this.playerView = playerView;
+
+
+    public Player(GameObjectView playerView, GameCharacter gameCharacter, AttackModel attackModel){
+        this.view = playerView;
         this.gameCharacter = gameCharacter;
+        this.attackModel = attackModel;
+        setCurrentHp(gameCharacter.getMaxHp());
+        setCurrentMp(gameCharacter.getMaxMp());
+        setCurrentStamina(gameCharacter.getMaxStamina());
+
+        setMaxHp(gameCharacter.getMaxHp());
+        setMaxMp(gameCharacter.getMaxMp());
+        setMaxStamina(gameCharacter.getMaxStamina());
     }
 
-    public int getCurrentHp() {
-        return currentHp;
-    }
 
-    public void setCurrentHp(int currentHp) {
-        this.currentHp = currentHp;
-    }
-
-    public int getCurrentMp() {
-        return currentMp;
-    }
-
-    public void setCurrentMp(int currentMp) {
-        this.currentMp = currentMp;
-    }
-
-    public int getCurrentStamina() {
-        return currentStamina;
-    }
-
-    public void setCurrentStamina(int currentStamina) {
-        this.currentStamina = currentStamina;
-    }
 }

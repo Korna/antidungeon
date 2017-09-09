@@ -3,6 +3,7 @@ package kom.hikeside.layoutCode.Character;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,14 +81,19 @@ public class CharacterManageFragment extends Fragment {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String key = list.get(i).getKey();
-                FBHandler.deleteCharacter(key);
-                list.remove(i);
+                if(list.size() != 0){
+                    String key = list.get(i).getKey();
+                    FBHandler.deleteCharacter(key);
+                    FBHandler.updateUserDataCharacterStatus("Not Selected");
+                    list.remove(i);
+                    Log.d("click", "character deleted");
+                }
 
-                if(i>0)
+
+                if(i>0 && list.size() != 0)
                     character = list.get(i-1);
                 else
-                    character = new GameCharacter("No characters", 0, GameClass.priest, 0,0,0,0,0,0);
+                    character = new GameCharacter("No characters left after deletiong", 0, GameClass.priest, 0,0,0,0,0,0);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -99,11 +105,15 @@ public class CharacterManageFragment extends Fragment {
         buttonSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String key = list.get(i).getKey();
-              //  FBHandler.setCurrentCharacter(key);
-                Singleton instance = Singleton.getInstance();
-                instance.userData.setCurrentCharacter(key);
-                FBHandler.updateUserData(instance.userData);
+                if(list.size() != 0){
+                    String key = list.get(i).getKey();
+                    //  FBHandler.setCurrentCharacter(key);
+                    Singleton instance = Singleton.getInstance();
+                    instance.userData.setCurrentCharacter(key);
+                    FBHandler.updateUserDataCharacterStatus(key);
+                 //   FBHandler.updateUserData(instance.userData);
+
+                }
 
             }
         });

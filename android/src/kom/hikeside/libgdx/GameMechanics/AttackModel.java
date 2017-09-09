@@ -5,13 +5,13 @@ package kom.hikeside.libgdx.GameMechanics;
  */
 
 public class AttackModel {
-    int lowestDamage;
+    public int lowestDamage;
 
-    int highestDamage;
+    public int highestDamage;
 
     boolean isPiercing;
 
-    float chanceToHit;
+    public float chanceToHit;
 
     public AttackModel(int lowestDamage, int highestDamage, boolean isPiercing, float chanceToHit) {
         this.lowestDamage = lowestDamage;

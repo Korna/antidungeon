@@ -6,6 +6,7 @@ import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Game.Objects.MapViewPriority;
 import kom.hikeside.Game.Objects.ObjList;
+import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -35,6 +36,14 @@ public class Randomizer {
         int randomIndex = random.nextInt(ObjList.inventory.values().length);
 
         return ObjList.inventory.values() [randomIndex];
+    }
+
+    public static int getAttackValue(AttackModel model){
+        float chance = random.nextFloat();
+        if(chance < model.chanceToHit)
+            return random.nextInt(model.highestDamage - model.lowestDamage) + model.lowestDamage;
+        else
+            return 0;
     }
 
 

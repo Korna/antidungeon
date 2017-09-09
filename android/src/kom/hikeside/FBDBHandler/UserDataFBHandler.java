@@ -147,7 +147,7 @@ public class UserDataFBHandler {
                             String key = snap.getKey();
                             object.setKey(key);
                             list.add(object);
-                            Log.v("received&added:", key + " " + object.toString());
+                            Log.v("received:", object.getName() + " " + key);
                         }
 
                     }
@@ -172,9 +172,13 @@ public class UserDataFBHandler {
 
                         // TODO !fix this shit
                         // TODO fix this shit
-                        Singleton instance = Singleton.getInstance();
-                        instance.currentGameCharacter = getGameCharacter(object.getCurrentCharacter());
-
+                        if(object != null) {
+                            Singleton instance = Singleton.getInstance();
+                            instance.currentGameCharacter = getGameCharacter(object.getCurrentCharacter());
+                        }
+                        else{
+                            Log.e("onDataChange", "character not set");
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
@@ -195,9 +199,14 @@ public class UserDataFBHandler {
     public UserData updateUserData(UserData userData){//возвращает дефолтно созданный аккаунт юзера
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
 
-        ref.child(uid).child("userData").setValue(userData);
+       // ref.child(uid).child("userData").setValue(userData);
 
         return userData;
+    }
+
+    public void updateUserDataCharacterStatus(String status) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+            ref.child(uid).child("userData").child("currentCharacter").setValue(status);
     }
 
     private GameCharacter gameCharacter = null;
@@ -213,10 +222,13 @@ public class UserDataFBHandler {
                         gameCharacter = dataSnapshot.getValue(GameCharacter.class);
                         try {
                             gameCharacter.setKey(key);
+                            Log.d("found gameChar", gameCharacter.getName() + " " + gameCharacter.getKey());
                         }catch(Exception e){
                             Log.e("gameCharNotFound", e.toString());
+                            updateUserDataCharacterStatus("NoCharacter");
                         }
-                        Log.d("found gameChar", gameCharacter.getName() + " " + gameCharacter.getKey());
+
+
 
                     }
                     @Override
