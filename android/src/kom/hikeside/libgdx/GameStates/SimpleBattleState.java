@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -39,7 +41,7 @@ import static kom.warside.LibgdxGame.GAME_WIDTH;
 /**
  * Created by Koma on 17.01.2017.
  */
-public class SimpleBattleState extends GameState {
+public class SimpleBattleState extends GameState {//обычная одиночная битва. соло, пвп, пве с разным количеством атакующих со всех сторон
 
 
     private float time = 3f;
@@ -49,15 +51,19 @@ public class SimpleBattleState extends GameState {
     private World world;
     private Box2DDebugRenderer b2dr;
 
-    //TexturedBody player;
+
     Player player;
+    TexturedBody playerSelection;
 
     Enemy enemy;
+    TexturedBody enemySelection;
 
     HPHUD hpplayerhud;
     HPHUD hpenemyhud;
     Texture texture_ground;
     Texture texture_background;
+
+
     public SimpleBattleState(GameStateManagement gsm){
         super(gsm);
         stage = new Stage();
@@ -66,7 +72,6 @@ public class SimpleBattleState extends GameState {
         world = gsm.world;
         b2dr = new Box2DDebugRenderer();
         batch = new SpriteBatch();
-
 
 
         BundleToLib bundle = BundleToLib.getInstance();
@@ -94,7 +99,7 @@ public class SimpleBattleState extends GameState {
 
         TexturedBody playerView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
 
-
+        playerSelection = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), "selection_green");
 
 
 
@@ -111,6 +116,9 @@ public class SimpleBattleState extends GameState {
         bundle.enemyModels.add(LibraryObjects.getEnemyModel("model_1"));
 
         TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), monsterId);
+
+        enemySelection = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), "selection_red");
+
         enemy.setGameObjectView(enemyView);
 
         hpenemyhud = new HPHUD(enemy);
@@ -127,16 +135,43 @@ public class SimpleBattleState extends GameState {
     }
 
 
+    boolean enemySelected = false;
     @Override
     public void update(float delta) {
-
+        isGotTouch();
 
         player.view.update(delta);
         enemy.view.update(delta);
 
+        enemySelection.update(delta);
+        playerSelection.update(delta);
+
         stage.act(delta);
 
         doWorldStep(delta);
+    }
+
+    private boolean isGotTouch(){
+        boolean gotTouch = false;
+        if(Gdx.input.justTouched()){
+            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0f);
+            maincamera.unproject(mousePos); // mousePos is now in world coordinates
+            Vector2 enemyPot = enemy.view.getBody().getPosition();
+
+
+            float enemyX = enemy.view.getWidth();
+            float enemyY = enemy.view.getWidth();
+
+            if(enemyPot.x - enemyX/2 < mousePos.x && enemyPot.x + enemyX/2 > mousePos.x)
+                if(enemyPot.y - enemyY/2 < mousePos.y && enemyPot.y + enemyY/2 > mousePos.y){
+                    Log.d("Hit", mousePos.x + " y:" +  mousePos.y);
+                    gotTouch = true;
+                    enemySelected = !enemySelected;
+                }
+
+
+        }
+        return gotTouch;
     }
 
 
@@ -180,7 +215,7 @@ public class SimpleBattleState extends GameState {
         table.add(addAttackButton());
         table.row().pad(100);
         table.add(addRestButton());
-        table.row().pad(100);
+        table.row().pad(50);
         table.add(addDefenceButton());
 
 
@@ -227,7 +262,7 @@ public class SimpleBattleState extends GameState {
     }
 
     private TextButton addRestButton(){
-        final String text = "Rest";
+        final String text = "Heal";
 
         TextButton buttonPlay = new TextButton(text, textButtonStyle);
         buttonPlay.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -299,11 +334,18 @@ public class SimpleBattleState extends GameState {
             case "Defence":
                 player.setBlocking(true);
                 break;
-            case "Rest":
+            case "Heal":
                 if(player.getCurrentHp()  + NATURAL_HP_AMOUNT > player.getMaxHp())
                     player.setCurrentHp(player.getMaxHp());
                 else
                     player.setCurrentHp(player.getCurrentHp() + NATURAL_HP_AMOUNT);
+                break;
+            case "Rest":
+                break;
+            case "Stun":
+
+                break;
+            case "Warcry":
 
                 break;
         }
@@ -312,6 +354,7 @@ public class SimpleBattleState extends GameState {
     private void turn(){
         enemyAction();
         player.setBlocking(false);
+
         if(player.getCurrentHp() <= 0)
             Log.w("you", "are dead");
 
@@ -320,8 +363,28 @@ public class SimpleBattleState extends GameState {
         if(player.isBlocking()) {
             if (enemy.getAttackValue() != 0)
                 player.setCurrentHp(player.getCurrentHp() - enemy.getAttackValue());
-        }else
+        }else{
             player.setCurrentHp(player.getCurrentHp() - enemy.getAttackValue());
+
+            //stun
+            int j = 1;
+            for(int i = 1; i <= 20; ++i){
+                if (enemy.getAttackValue() != 0)
+                    ++j;
+            }
+            boolean makeStun = false;
+            if(j>=20)
+                makeStun = true;
+            if(makeStun){
+                Log.d("player", "is stunned");
+                player.setStunned(true);
+                enemyAction();
+            }else
+                player.setStunned(false);
+
+        }
+
+
 
     }
 
@@ -339,18 +402,33 @@ public class SimpleBattleState extends GameState {
         batch.begin();
         batch.draw(texture_ground, 0, 0, (32*4)*5, (32*3)*5);
         batch.draw(texture_background, 0, (32*3)*5, (32*4)*5, (32*3)*5);
-      //  batch.draw(tex_splash, GAME_WIDTH / 4 - tex_splash.getWidth() / 2, GAME_HEIGHT / 4 - tex_splash.getHeight() / 2);
         batch.end();
 
         if(true)
             b2dr.render(world, maincamera.combined);
 
-        player.view.render(batch);
-        enemy.view.render(batch);
+        if(player.getCurrentHp() > 0){
+            stage.draw();//TODO полное удаление stage, а не удаление отрисовки
+            player.view.render(batch);
+            hpplayerhud.render(batch, player.view.getPosition().x - player.view.getWidth() / 3, player.view.getPosition().y + player.view.getHeight() / 1.5f);
+        }
 
-        stage.draw();
-        hpplayerhud.render(batch, player.view.getPosition().x - player.view.getWidth() / 3, player.view.getPosition().y + player.view.getHeight() / 1.5f);
-        hpenemyhud.render(batch, enemy.view.getPosition().x - enemy.view.getWidth() / 3, enemy.view.getPosition().y + enemy.view.getHeight() / 1.5f);
+        if(enemy.getCurrentHp() > 0){
+            enemy.view.render(batch);
+            hpenemyhud.render(batch, enemy.view.getPosition().x - enemy.view.getWidth() / 3, enemy.view.getPosition().y + enemy.view.getHeight() / 1.5f);
+        }
+
+
+        if(enemySelected)
+            enemySelection.render(batch);
+
+        if(false)
+            playerSelection.render(batch);
+
+
+
+
+
 
     }
 

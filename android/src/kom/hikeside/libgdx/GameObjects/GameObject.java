@@ -12,6 +12,9 @@ public class GameObject {
     public boolean turn = true;
 
     boolean blocking = false;
+    boolean stunned = false;
+    boolean bleeding = false;
+
     int currentHp;
     int currentMp;
     int currentStamina;
@@ -88,4 +91,11 @@ public class GameObject {
         this.blocking = blocking;
     }
 
+    public boolean isStunned() {
+        return stunned;
+    }
+
+    public void setStunned(boolean stunned) {
+        this.stunned = stunned;
+    }
 }

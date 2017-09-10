@@ -1,8 +1,12 @@
 package kom.hikeside.libgdx.GameObjects;
 
+import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
+
+import static kom.hikeside.Game.Objects.GameClasses.GameClass.archer;
 
 /**
  * Created by Koma on 08.09.2017.
@@ -27,6 +31,30 @@ public class Player extends GameObject{
         setMaxMp(gameCharacter.getMaxMp());
         setMaxStamina(gameCharacter.getMaxStamina());
     }
+
+    @Override
+    public int getAttackValue(){
+        int value = Randomizer.getAttackValue(attackModel);
+        int add = 0;
+
+        switch(gameCharacter.getGameClass()){
+            case archer:
+                add = gameCharacter.getAgility();
+                break;
+            case warrior:
+            case knight:
+                add = gameCharacter.getStrength();
+                break;
+            case mage:
+            case priest:
+                add = gameCharacter.getIntelligence();
+                break;
+        }
+
+
+        return value + add;
+    }
+
 
 
 }

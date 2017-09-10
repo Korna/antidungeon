@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import kom.hikeside.libgdx.GameObjects.GameObject;
-import kom.hikeside.libgdx.GameObjects.Killable;
 
 /**
  * Created by Koma on 09.09.2017.

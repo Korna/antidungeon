@@ -62,28 +62,28 @@ public class LibraryObjects {
 
         switch(name){
             case "model_1":
-                enemy = new EnemyModel(150, 1, 50, "Golem", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(150, 2, 50, "Golem", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_2":
                 enemy = new EnemyModel(40, 1, 0, "Wolf", "Random wolf from forest", getAbilityModel("ability_1"));
                 break;
             case "model_3":
-                enemy = new EnemyModel(70, 1, 25, "Goblin", "Random goblin from internet", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(70, 2, 25, "Goblin", "Random goblin from internet", getAbilityModel("ability_1"));
                 break;
             case "model_4":
-                enemy = new EnemyModel(120, 1, 50, "Lizard", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(120, 3, 50, "Lizard", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_5":
-                enemy = new EnemyModel(300, 1, 50, "Demon", "666", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(300, 5, 50, "Demon", "666", getAbilityModel("ability_1"));
                 break;
             case "model_6":
-                enemy = new EnemyModel(100, 1, 50, "Giant Bee", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(100, 2, 50, "Giant Bee", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_7":
-                enemy = new EnemyModel(150, 1, 50, "Giant Viper", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(150, 3, 50, "Giant Viper", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_8":
-                enemy = new EnemyModel(200, 1, 50, "Fucking Crab", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(200, 4, 50, "Fucking Crab", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
         }
         return enemy;
