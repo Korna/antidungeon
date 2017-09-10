@@ -9,8 +9,15 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "0.1"
+        versionName "0.2"
         multiDexEnabled false
+        vectorDrawables.useSupportLibrary = true
+    }
+
+
+    dexOptions{
+        //incremental true
+        maxProcessCount 8
     }
 
     buildTypes {
@@ -19,7 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android-optimize.txt'
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    project.ext { appName = 'Connector' }
+                    project.ext { appName = 'AppSide' }
                     def formattedDate = new Date().format('yyyyMMdd')
                     def newName = output.outputFile.name
                     newName = newName.replace("app-", "$project.ext.appName-")
@@ -30,11 +37,13 @@ android {
             }
         }
         debug {
+            ext.enableCrashlytics = false
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android-optimize.txt'
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    project.ext { appName = 'Connector' }
+                    project.ext { appName = 'AppSide' }
                     def formattedDate = new Date().format('yyyyMMdd')
                     def newName = output.outputFile.name
                     newName = newName.replace("app-", "$project.ext.appName-")
@@ -66,6 +75,10 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
 
+    repositories {
+        jcenter()
+    }
+
     dependencies {
         compile 'com.google.firebase:firebase-auth:11.0.4'
         compile 'com.google.firebase:firebase-core:11.0.4'
@@ -79,10 +92,19 @@ android {
 
         compile 'com.android.support:multidex:1.0.1'
 
+        compile 'com.appolica:interactive-info-window:v1.0.6'
     }
     apply plugin: 'com.google.gms.google-services'
-    dexOptions {
+/*
+    defaultConfig {
+        jackOptions {
+            enabled true
+        }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }*/
 }
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
@@ -181,4 +203,10 @@ idea {
             }
         }
     }
+}
+dependencies {
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-vector-drawable:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

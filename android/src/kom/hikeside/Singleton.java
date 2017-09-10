@@ -5,14 +5,27 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import kom.hikeside.Atom.UserData;
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+
 /**
  * Created by Koma on 14.08.2017.
  */
 
 public class Singleton {
-    public String example = "Hello from source";
+    private static volatile Singleton instance = new Singleton();
+
+    Singleton(){
+
+    }
+    public static Singleton getInstance(){
+        return instance;
+    }
+
+    public UserData userData = new UserData();
+    public GameCharacter currentGameCharacter = null;
+
     public LatLng myPosition;
-    public FirebaseAuth auth;
     public FirebaseUser user;
     public DatabaseReference myRef;
 
@@ -21,10 +34,6 @@ public class Singleton {
             myPosition = pos;
     }
 
-    private static volatile Singleton instance = new Singleton();
 
-    public static Singleton getInstance(){
-        return instance;
-    }
 
 }

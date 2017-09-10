@@ -5,8 +5,7 @@ package kom.hikeside.Game;
  */
 
 public enum MapView {
-
-    wall, crate, turret, wire, plank, tower, solar_panel, backpack
+    enemy, zone, backpack, bag, boss, treasureChest
 
 }
 

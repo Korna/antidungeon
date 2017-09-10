@@ -16,7 +16,7 @@ import kom.hikeside.Atom.Place;
 import kom.hikeside.Custom.MarkAdapter;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
-import kom.hikeside.layoutCode.Fragments.AddFragment;
+import kom.hikeside.layoutCode.Fragments.AddPlaceFragment;
 
 public class ManagerActivity extends AppCompatActivity {
 
@@ -42,7 +42,7 @@ public class ManagerActivity extends AppCompatActivity {
 
 
 
-        AddFragment addFragment = new AddFragment();
+        AddPlaceFragment addFragment = new AddPlaceFragment();
         android.app.FragmentManager manager = getFragmentManager();
         manager.beginTransaction().replace(R.id.manager_layout_add, addFragment, addFragment.getTag()).commit();
 

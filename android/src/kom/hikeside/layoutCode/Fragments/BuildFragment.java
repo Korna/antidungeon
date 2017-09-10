@@ -19,7 +19,7 @@ import kom.hikeside.Custom.OnRecyclerViewItemClickListener;
 import kom.hikeside.R;
 
 
-public class BuildFragment extends Fragment {
+public class BuildFragment extends Fragment {//recyclerView фрагмент с горизонтальной прокруткой
 
 
     public BuildFragment() {

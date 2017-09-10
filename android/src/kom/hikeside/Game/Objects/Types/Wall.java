@@ -1,6 +1,7 @@
 package kom.hikeside.Game.Objects.Types;
 
-import kom.hikeside.Game.Point;
+import com.google.android.gms.maps.model.LatLng;
+
 
 /**
  * Created by Koma on 15.08.2017.
@@ -15,11 +16,11 @@ public class Wall extends Dots {
         health = 100;
         defence = 5;
 
-        pointList.add(new Point(-3, 0));
-        pointList.add(new Point(+3, 0));
-        pointList.add(new Point(+3, 1));
-        pointList.add(new Point(-3, 1));
-        pointList.add(new Point(-3, 0));//замыкание
+        pointList.add(new LatLng(-3, 0));
+        pointList.add(new LatLng(+3, 0));
+        pointList.add(new LatLng(+3, 1));
+        pointList.add(new LatLng(-3, 1));
+        pointList.add(new LatLng(-3, 0));//замыкание
 
     }
 

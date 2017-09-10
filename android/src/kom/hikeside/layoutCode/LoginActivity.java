@@ -15,11 +15,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
-import kom.hikeside.Atom.User;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.libgdx.BundleToLib;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -30,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText textEmail;
     private EditText textPass;
+
+
+    UserDataFBHandler FBHandler;
 
     Singleton instance = Singleton.getInstance();
     @Override
@@ -53,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
+        FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
+
         textEmail = (EditText) findViewById(R.id.editText_email);
         textPass = (EditText) findViewById(R.id.editText_pass);
 
@@ -66,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 textEmail.setText("");
                 textPass.setText("");
                 createAccount(email, pass);
-                createDBReference(instance.user.getUid());
+
             }
         });
 
@@ -80,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                 textEmail.setText("");
                 textPass.setText("");
                 signUp(email, pass);
+                instance.userData = FBHandler.getUserData();
+
+
 
             }
         });
@@ -94,7 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Регистрация провалена", Toast.LENGTH_SHORT).show();
                         }else{
+                            instance.userData = FBHandler.createNewUserData();
                             Toast.makeText(LoginActivity.this, "Регистрация прошла успешно", Toast.LENGTH_SHORT).show();
+                            //TODO offerToUpdateAccountData();
                         }
 
                     }
@@ -102,15 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void createDBReference(String uid){
 
-        String id = instance.myRef.push().getKey();
-        User user = new User(id, 100, 1);
-
-        instance.myRef = FirebaseDatabase.getInstance().getReference("users");
-
-        instance.myRef.child(id).setValue(user);
-    }
 
     private void signUp(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
@@ -122,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Заход провалена", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "Заход прошла успешно", Toast.LENGTH_SHORT).show();
+
                         }
 
                     }

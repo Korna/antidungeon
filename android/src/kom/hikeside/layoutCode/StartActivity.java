@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import kom.hikeside.AndroidLauncher;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
+import kom.hikeside.layoutCode.Character.CharacterActivity;
+import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 
 
 public class StartActivity extends AppCompatActivity {
@@ -55,8 +57,13 @@ public class StartActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
 
-        Button butt2 = (Button) findViewById(R.id.button2);
-        butt2.setOnClickListener(new View.OnClickListener() {
+        loadInterface();
+    }
+
+    private void loadInterface(){
+
+        Button buttonLogin = (Button) findViewById(R.id.button2);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -65,8 +72,8 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        Button butt3 = (Button) findViewById(R.id.button3);
-        butt3.setOnClickListener(new View.OnClickListener() {
+        Button manager = (Button) findViewById(R.id.button3);
+        manager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ManagerActivity.class);
@@ -75,21 +82,41 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        Button butt4 = (Button) findViewById(R.id.button_profile);
-        butt4.setOnClickListener(new View.OnClickListener() {
+        Button markers = (Button) findViewById(R.id.button_markers);
+        markers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MarkersActivity.class);
                 startActivity(intent);
 
             }
         });
 
-        Button butt5 = (Button) findViewById(R.id.button_game);
-        butt5.setOnClickListener(new View.OnClickListener() {
+        Button game = (Button) findViewById(R.id.button_game);
+        game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AndroidLauncher.class);
+                startActivity(intent);
+
+            }
+        });
+
+        Button profile  = (Button) findViewById(R.id.button_profile);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GameProfileActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        Button character  = (Button) findViewById(R.id.button_character);
+        character.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CharacterActivity.class);
                 startActivity(intent);
 
             }
@@ -105,6 +132,7 @@ public class StartActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override
