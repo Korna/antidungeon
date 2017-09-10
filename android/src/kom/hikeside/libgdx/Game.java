@@ -62,8 +62,15 @@ public class Game extends ApplicationAdapter {
 		res.loadTexture("heroes/hero_" + i + ".png", "archer");
 
 
-		res.loadTexture("battle_backgrounds/grass.png", "grass");
+		res.loadTexture("battle_backgrounds/grass.png", "grass_1");
+		res.loadTexture("battle_backgrounds/grass_2.png", "grass_2");
+		res.loadTexture("battle_backgrounds/forest.png", "forest");
+		res.loadTexture("battle_backgrounds/dungeon.png", "dungeon");
+		res.loadTexture("battle_backgrounds/castle.png", "castle");
 		res.loadTexture("battle_backgrounds/wall.png", "wall");
+
+		res.loadTexture("battle_backgrounds/village_1_up.png", "village_1_up");
+		res.loadTexture("battle_backgrounds/village_1_down.png", "village_1_down");
 
 		res.loadTexture("battle_backgrounds/orange_brick.png", "orange_brick");
 		res.loadTexture("battle_backgrounds/brown_stone.png", "brown_stone");

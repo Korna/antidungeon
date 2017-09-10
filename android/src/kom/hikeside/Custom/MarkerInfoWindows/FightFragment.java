@@ -79,11 +79,6 @@ public class FightFragment extends Fragment {
         alertDialog.setTitle("Битва");
         alertDialog.setMessage("Вы уверены?");
 
-        final EditText input = new EditText(getActivity());
-        final String strInput = input.getText().toString();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
         //alertDialog.setIcon(R.drawable.ic_vpn_key_black_24dp);
 
 
@@ -92,7 +87,9 @@ public class FightFragment extends Fragment {
                     public void onClick(DialogInterface dialog,int which) {
                         GameCharacter character;
                         BundleToLib bundle = BundleToLib.getInstance();
-                        //bundle.initialization(false, new ArrayList<GameCharacter>().add(character), );
+                        bundle.enemyNames.clear();
+                        bundle.enemyNames.add(title);
+
                         Intent intent = new Intent(getActivity(), AndroidLauncher.class);
                         startActivity(intent);
 

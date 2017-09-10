@@ -7,5 +7,5 @@ package kom.hikeside.libgdx.GameStates;
 public class SoloDungeonBattleState {//несколько мобов друг за другом следуют после побождения со сменой локации
 
 
-    
+
 }

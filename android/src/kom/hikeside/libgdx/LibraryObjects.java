@@ -2,6 +2,8 @@ package kom.hikeside.libgdx;
 
 import com.badlogic.gdx.physics.box2d.World;
 
+import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameClasses.GameClass;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AbilityModel;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
@@ -23,6 +25,29 @@ public class LibraryObjects {
     }
     public LibraryObjects(){
 
+    }
+
+    public static GameCharacter getGameCharacter(GameClass gameClass){
+        GameCharacter gameCharacter = null;
+        switch(gameClass){
+            case archer:
+                gameCharacter = new GameCharacter("Archer", 1, gameClass, 5, 10, 5, 7, 7, 5);
+                break;
+            case warrior:
+                gameCharacter = new GameCharacter("Warrior", 1, gameClass, 10, 5, 5, 5, 5, 10);
+                break;
+            case knight:
+                gameCharacter = new GameCharacter("Knight", 1, gameClass, 10, 5, 5, 5, 7, 7);
+                break;
+            case mage:
+                gameCharacter = new GameCharacter("Mage", 1, gameClass, 5, 5, 10, 5, 5, 10);
+                break;
+            case priest:
+                gameCharacter = new GameCharacter("Priest", 1, gameClass, 5, 5, 10, 5, 7, 7);
+                break;
+        }
+
+        return gameCharacter;
     }
 
     public static Enemy getEnemy(String name){

@@ -311,7 +311,12 @@ public class MapsActivity extends FragmentActivity implements
         ArrayList<Place> list = new ArrayList<>();
         for(LatLng latLng : tempList){
             MapView type = Randomizer.getSimpleObject();
-            list.add(new Place("id", instance.user.getUid(), "generated " + type.name(), "description", latLng.latitude, latLng.longitude, type));
+            String name = "generated " + type.name();
+            if(type == MapView.enemy)
+                name = Randomizer.simpleMonster();
+            if(type == MapView.boss)
+                name = Randomizer.simpleBoss();
+            list.add(new Place("id", instance.user.getUid(), name, "description", latLng.latitude, latLng.longitude, type));
         }
 
 

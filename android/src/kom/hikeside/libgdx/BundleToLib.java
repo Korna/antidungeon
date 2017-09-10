@@ -19,9 +19,11 @@ public class BundleToLib {
     }
 
     private boolean isCoop = false;
+    private boolean isDuel = false;
 
     public ArrayList<GameCharacter> gameCharacters = new ArrayList<>();
-    public ArrayList<EnemyModel> enemyModels = new ArrayList<>();
+    //public ArrayList<EnemyModel> enemyModels = new ArrayList<>();
+    public ArrayList<String> enemyNames = new ArrayList<>();
 
     public BundleToLib(){
         Singleton instance = Singleton.getInstance();
@@ -34,7 +36,7 @@ public class BundleToLib {
     public void initialization(boolean isCoop, ArrayList<GameCharacter> gameCharacters, ArrayList<EnemyModel> enemyModels) {
         this.isCoop = isCoop;
         this.gameCharacters = gameCharacters;
-        this.enemyModels = enemyModels;
+      //  this.enemyModels = enemyModels;
     }
 
 

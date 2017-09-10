@@ -1,5 +1,6 @@
 package kom.hikeside.libgdx.GameStates;
 
+import android.text.style.LineBackgroundSpan;
 import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
@@ -92,7 +93,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         try {
             gameCharacter = bundle.gameCharacters.get(0);
         }catch(Exception e){
-            gameCharacter = new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0);
+            gameCharacter = LibraryObjects.getGameCharacter(GameClass.priest);
             Log.e("erroe", e.toString());
         }
 
@@ -109,11 +110,17 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
     private void loadEnemies(BundleToLib bundle, BodyBuilder bodyBuilder){
 
-        String monsterId = Randomizer.simpleMonster();
+        String monsterId;
+        try {
+            monsterId = bundle.enemyNames.get(0);
+            bundle.enemyNames.clear();
+            Log.w("loaded name is", monsterId);
+        }catch(Exception e){
+            monsterId = Randomizer.simpleMonster();
+            Log.e("erroe", e.toString());
+        }
 
         enemy = LibraryObjects.getEnemy(monsterId);
-
-        bundle.enemyModels.add(LibraryObjects.getEnemyModel("model_1"));
 
         TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), monsterId);
 
