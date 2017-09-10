@@ -14,12 +14,12 @@ public class GameObjectView extends Sprite {
     float x;
     float y;
 
-    public GameObjectView(Body body) {
+    public GameObjectView(Body body, String texture) {
         super(body);
         x = body.getPosition().x;
         y = body.getPosition().y;
         Texture tex;
-        tex = Game.res.getTexture("splash");
+        tex = Game.res.getTexture(texture);
         TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
 
         setAnimation(sprites, 1 / 12f);

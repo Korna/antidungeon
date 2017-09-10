@@ -10,7 +10,6 @@ import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 public class Player extends GameObject{
 
-
     public GameCharacter gameCharacter;
 
 

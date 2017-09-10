@@ -19,6 +19,7 @@ public class Enemy extends GameObject{
         this.enemyModel = enemyModel;
         this.view = gameObjectView;
         setCurrentHp(enemyModel.getMaxHp());
+        setMaxHp(enemyModel.getMaxHp());
         this.attackModel = attackModel;
     }
 

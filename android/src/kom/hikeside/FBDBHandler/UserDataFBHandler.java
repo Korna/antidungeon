@@ -17,6 +17,7 @@ import kom.hikeside.Atom.UserData;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Singleton;
+import kom.hikeside.libgdx.BundleToLib;
 
 /**
  * Created by Koma on 05.09.2017.
@@ -223,6 +224,8 @@ public class UserDataFBHandler {
                         try {
                             gameCharacter.setKey(key);
                             Log.d("found gameChar", gameCharacter.getName() + " " + gameCharacter.getKey());
+                            BundleToLib bundle = BundleToLib.getInstance();
+                            bundle.gameCharacters.add(gameCharacter);
                         }catch(Exception e){
                             Log.e("gameCharNotFound", e.toString());
                             updateUserDataCharacterStatus("NoCharacter");

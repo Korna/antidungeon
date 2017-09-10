@@ -1,0 +1,82 @@
+
+ui.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+board
+  rotate: false
+  xy: 0, 18
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.delete.down
+  rotate: false
+  xy: 0, 9
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.delete.up
+  rotate: false
+  xy: 9, 18
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.left
+  rotate: false
+  xy: 0, 0
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.minus
+  rotate: false
+  xy: 9, 9
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.normal.down
+  rotate: false
+  xy: 18, 18
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.normal.up
+  rotate: false
+  xy: 9, 0
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.ok.down
+  rotate: false
+  xy: 18, 9
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.ok.up
+  rotate: false
+  xy: 27, 18
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.plus
+  rotate: false
+  xy: 18, 0
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+button.right
+  rotate: false
+  xy: 27, 9
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1

@@ -46,5 +46,20 @@ public class Randomizer {
             return 0;
     }
 
+    public static String[] battleFieldTexture(){
+        int randomNumber = random.nextInt(3) + 1;
+        if(randomNumber == 1)
+            return new String[]{"grass", "wall"};
+        if(randomNumber == 2)
+            return new String[]{"brown_stone", "orange_brick"};
+        else
+            return new String[]{"orange_brick", "brown_stone"};
+    }
+
+    public static String simpleMonster(){
+        int randomNumber = random.nextInt(7) + 1;
+        return "monster_" + randomNumber;
+    }
+
 
 }

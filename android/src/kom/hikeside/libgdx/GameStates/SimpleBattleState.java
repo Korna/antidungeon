@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.Game.Objects.GameClasses.GameClass;
 import kom.hikeside.libgdx.BundleToLib;
@@ -55,13 +57,14 @@ public class SimpleBattleState extends GameState {
 
     HPHUD hpplayerhud;
     HPHUD hpenemyhud;
-
+    Texture texture_ground;
+    Texture texture_background;
     public SimpleBattleState(GameStateManagement gsm){
         super(gsm);
         BundleToLib bundle = BundleToLib.getInstance();
 
-        bundle.gameCharacters.add(new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0));
-        bundle.enemyModels.add(new EnemyModel(100,1,100, "EnemyName", "Description", null));
+        bundle.enemyModels.add(new EnemyModel(90,1,90, "EnemyName", "Description", null));
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         buildTable();
@@ -70,16 +73,28 @@ public class SimpleBattleState extends GameState {
         b2dr = new Box2DDebugRenderer();
         batch = new SpriteBatch();
 
-        // TODO: view должен создаваться по gameCharacter
-        GameObjectView playerView = createPlayer(createPlayerBody(GAME_WIDTH  / (8 * 2f), GAME_HEIGHT /  (3 * 2f)));
-        GameObjectView enemyView = createPlayer(createPlayerBody(GAME_WIDTH  / (1.5f * 2f), GAME_HEIGHT /  (2 * 2f)));
 
-        player = new Player(playerView, bundle.gameCharacters.get(0), new AttackModel(10,15, false, 0.8f));
+        GameCharacter gameCharacter;
+        try {
+            gameCharacter = bundle.gameCharacters.get(0);
+        }catch(Exception e){
+            gameCharacter = new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0);
+            Log.e("erroe", e.toString());
+        }
+        GameObjectView playerView = createTextured(createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
+        GameObjectView enemyView = createTextured(createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), Randomizer.simpleMonster());
+
+        player = new Player(playerView, gameCharacter, new AttackModel(10,15, false, 0.8f));
         enemy = new Enemy(bundle.enemyModels.get(0), enemyView, new AttackModel(5,10, false, 0.5f));
 
 
         hpplayerhud = new HPHUD(player);
         hpenemyhud = new HPHUD(enemy);
+
+        String[] textureNames = Randomizer.battleFieldTexture();
+        texture_ground = Game.res.getTexture(textureNames[0]);
+        texture_background = Game.res.getTexture(textureNames[1]);
+
     }
 
     float acc = 0f;
@@ -128,7 +143,7 @@ public class SimpleBattleState extends GameState {
         Skin skin = new Skin(mainMenuAtlas);
 
         Table table = new Table(skin);
-        table.setBounds(0, 0, GAME_WIDTH/2, GAME_HEIGHT/2);
+        table.setBounds(0, 0, (GAME_WIDTH/2)/4, (GAME_HEIGHT/2)/4);
 
 
         // creating buttons
@@ -145,6 +160,8 @@ public class SimpleBattleState extends GameState {
         table.add(addAttackButton());
         table.row().pad(100);
         table.add(addRestButton());
+        table.row().pad(100);
+        table.add(addDefenceButton());
 
 
 
@@ -220,6 +237,37 @@ public class SimpleBattleState extends GameState {
         return buttonPlay;
     }
 
+    private TextButton addDefenceButton(){
+        final String text = "Defence";
+
+        TextButton buttonPlay = new TextButton(text, textButtonStyle);
+        buttonPlay.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        //buttonPlay.setHeight(BUTTON_HEIGHT);
+        //buttonPlay.setWidth(BUTTON_WIDTH);
+
+        buttonPlay.setTransform(true);
+        buttonPlay.setScale(6.0f);
+        buttonPlay.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(player.turn) {
+                    super.clicked(event, x, y);
+
+                    makeAction(text);
+                    turn();
+
+
+                    notifyPlayers();
+                }else{
+                    Log.d("onLick", "wait for other player to attack!");
+                }
+
+            }
+        });
+
+        return buttonPlay;
+    }
+
     private void makeAction(String action){
         int NATURAL_HP_AMOUNT = 10;
         int NATURAL_MP_AMOUNT = 5;
@@ -229,7 +277,7 @@ public class SimpleBattleState extends GameState {
                 enemy.setCurrentHp(enemy.getCurrentHp() - player.getAttackValue());
                 break;
             case "Defence":
-
+                player.setBlocking(true);
                 break;
             case "Rest":
                 if(player.getCurrentHp()  + NATURAL_HP_AMOUNT > player.getMaxHp())
@@ -243,13 +291,18 @@ public class SimpleBattleState extends GameState {
 
     private void turn(){
         enemyAction();
-
+        player.setBlocking(false);
         if(player.getCurrentHp() <= 0)
             Log.w("you", "are dead");
 
     }
     private void enemyAction(){
-        player.setCurrentHp(player.getCurrentHp() - enemy.getAttackValue());
+        if(player.isBlocking()) {
+            if (enemy.getAttackValue() != 0)
+                player.setCurrentHp(player.getCurrentHp() - enemy.getAttackValue());
+        }else
+            player.setCurrentHp(player.getCurrentHp() - enemy.getAttackValue());
+
     }
 
     private void notifyPlayers(){
@@ -264,7 +317,8 @@ public class SimpleBattleState extends GameState {
 
         batch.setProjectionMatrix(maincamera.combined);
         batch.begin();
-
+        batch.draw(texture_ground, 0, 0, (32*4)*5, (32*3)*5);
+        batch.draw(texture_background, 0, (32*3)*5, (32*4)*5, (32*3)*5);
       //  batch.draw(tex_splash, GAME_WIDTH / 4 - tex_splash.getWidth() / 2, GAME_HEIGHT / 4 - tex_splash.getHeight() / 2);
         batch.end();
 
@@ -302,10 +356,12 @@ public class SimpleBattleState extends GameState {
         return body;
     }
 
-    private GameObjectView createPlayer(Body body){
-        GameObjectView s = new GameObjectView(body);
+    private GameObjectView createTextured(Body body, String texture){
+        GameObjectView s = new GameObjectView(body, texture);
         return s;
     }
+
+
 
     @Override
     public void dispose() {

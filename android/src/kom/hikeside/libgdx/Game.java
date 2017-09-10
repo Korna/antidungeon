@@ -51,8 +51,25 @@ public class Game extends ApplicationAdapter {
 
 	private void loadAssets(){
 		res.loadTexture("badlogic.jpg", "splash");
+		for(int i = 1; i <=7; ++i)
+			res.loadTexture("monsters/monster_" + i + ".png", "monster_" + i);
+		int i = 1;
+		res.loadTexture("heroes/hero_" + i + ".png", "knight");
+		++i;
+		res.loadTexture("heroes/hero_" + i + ".png", "priest");
+		++i;
+		res.loadTexture("heroes/hero_" + i + ".png", "archer");
+		++i;
+
+		res.loadTexture("grass.png", "grass");
+		res.loadTexture("wall.png", "wall");
+
+		res.loadTexture("orange_brick.png", "orange_brick");
+		res.loadTexture("brown_stone.png", "brown_stone");
+
 		res.loadBitmapFont("white16.fnt", "white_font");
 		res.loadTextureAtlas("ui/ui.pack", "ui_buttons");
+
 	}
 
 

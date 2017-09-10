@@ -10,6 +10,8 @@ import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 public class GameObject {
     public boolean turn = true;
+
+    boolean blocking = false;
     int currentHp;
     int currentMp;
     int currentStamina;
@@ -76,4 +78,13 @@ public class GameObject {
     public int getAttackValue(){
         return Randomizer.getAttackValue(attackModel);
     }
+
+    public boolean isBlocking() {
+        return blocking;
+    }
+
+    public void setBlocking(boolean blocking) {
+        this.blocking = blocking;
+    }
+
 }

@@ -92,7 +92,7 @@ public class FightFragment extends Fragment {
                     public void onClick(DialogInterface dialog,int which) {
                         GameCharacter character;
                         BundleToLib bundle = BundleToLib.getInstance();
-                     //   bundle.initialization(false, new ArrayList<GameCharacter>().add(character), );
+                        //bundle.initialization(false, new ArrayList<GameCharacter>().add(character), );
                         Intent intent = new Intent(getActivity(), AndroidLauncher.class);
                         startActivity(intent);
 

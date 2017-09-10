@@ -109,8 +109,8 @@ public class CharacterManageFragment extends Fragment {
                     String key = list.get(i).getKey();
                     //  FBHandler.setCurrentCharacter(key);
                     Singleton instance = Singleton.getInstance();
-                    instance.userData.setCurrentCharacter(key);
                     FBHandler.updateUserDataCharacterStatus(key);
+                    instance.userData.setCurrentCharacter(key);
                  //   FBHandler.updateUserData(instance.userData);
 
                 }

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.libgdx.BundleToLib;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
