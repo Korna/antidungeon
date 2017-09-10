@@ -28,6 +28,7 @@ import kom.hikeside.libgdx.BundleToLib;
 import kom.hikeside.libgdx.Game;
 import kom.hikeside.libgdx.Entities.GameObjectView;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
+import kom.hikeside.libgdx.GameMechanics.BodyBuilder;
 import kom.hikeside.libgdx.GameMechanics.EnemyModel;
 import kom.hikeside.libgdx.GameObjects.Enemy;
 import kom.hikeside.libgdx.GameObjects.Player;
@@ -81,8 +82,10 @@ public class SimpleBattleState extends GameState {
             gameCharacter = new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0);
             Log.e("erroe", e.toString());
         }
-        GameObjectView playerView = createTextured(createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
-        GameObjectView enemyView = createTextured(createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), Randomizer.simpleMonster());
+        BodyBuilder bodyBuilder = new BodyBuilder(GAME_WIDTH/2, GAME_HEIGHT/2, world);
+
+        GameObjectView playerView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
+        GameObjectView enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), Randomizer.simpleMonster());
 
         player = new Player(playerView, gameCharacter, new AttackModel(10,15, false, 0.8f));
         enemy = new Enemy(bundle.enemyModels.get(0), enemyView, new AttackModel(5,10, false, 0.5f));
@@ -334,27 +337,7 @@ public class SimpleBattleState extends GameState {
 
     }
 
-    private Body createPlayerBody(float x, float y) {
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
 
-        bdef.type = BodyDef.BodyType.DynamicBody;
-
-        bdef.position.set(x, y);
-
-        CircleShape cshape = new CircleShape();
-        cshape.setRadius(GAME_WIDTH/40);
-
-        fdef.shape = cshape;
-        fdef.isSensor = true;
-    //    fdef.filter.categoryBits = BIT_ENEMY;
-      //  fdef.filter.maskBits = BIT_PLAYER | BIT_BULLET | BIT_BORDER;
-        fdef.isSensor = true;
-
-        Body body = this.world.createBody(bdef);
-        body.createFixture(fdef).setUserData(" ");
-        return body;
-    }
 
     private GameObjectView createTextured(Body body, String texture){
         GameObjectView s = new GameObjectView(body, texture);

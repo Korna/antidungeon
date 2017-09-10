@@ -13,6 +13,12 @@ public class Enemy extends GameObject{
     public EnemyModel enemyModel;
 
 
+    public Enemy(EnemyModel enemyModel, String basicTesture, AttackModel attackModel) {
+        this.enemyModel = enemyModel;
+        setCurrentHp(enemyModel.getMaxHp());
+        setMaxHp(enemyModel.getMaxHp());
+        this.attackModel = attackModel;
+    }
 
 
     public Enemy(EnemyModel enemyModel, GameObjectView gameObjectView, AttackModel attackModel) {

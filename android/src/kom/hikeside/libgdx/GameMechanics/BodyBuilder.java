@@ -69,6 +69,28 @@ public class BodyBuilder {
         return body;
     }
 
+    public  Body createPlayerBody(float x, float y) {
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+
+        bdef.type = BodyDef.BodyType.DynamicBody;
+
+        bdef.position.set(x, y);
+
+        CircleShape cshape = new CircleShape();
+        cshape.setRadius(GAME_WIDTH/40);
+
+        fdef.shape = cshape;
+        fdef.isSensor = true;
+        //    fdef.filter.categoryBits = BIT_ENEMY;
+        //  fdef.filter.maskBits = BIT_PLAYER | BIT_BULLET | BIT_BORDER;
+        fdef.isSensor = true;
+
+        Body body = this.world.createBody(bdef);
+        body.createFixture(fdef).setUserData(" ");
+        return body;
+    }
+
 
 
 

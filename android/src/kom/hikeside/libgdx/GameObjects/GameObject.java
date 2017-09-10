@@ -23,6 +23,7 @@ public class GameObject {
     AttackModel attackModel;//basic attack
 
     public GameObjectView view;
+    public String basicTexture;
 
 
 

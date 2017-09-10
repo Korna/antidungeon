@@ -57,7 +57,7 @@ public class Randomizer {
     }
 
     public static String simpleMonster(){
-        int randomNumber = random.nextInt(7) + 1;
+        int randomNumber = random.nextInt(8) + 1;
         return "monster_" + randomNumber;
     }
 
