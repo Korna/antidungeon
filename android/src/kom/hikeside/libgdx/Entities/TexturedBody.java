@@ -9,17 +9,16 @@ import kom.hikeside.libgdx.Game;
 /**
  * Created by Koma on 19.01.2017.
  */
-public class GameObjectView extends Sprite {
+public class TexturedBody extends Sprite {
 
     float x;
     float y;
 
-    public GameObjectView(Body body, String texture) {
+    public TexturedBody(Body body, Texture tex) {
         super(body);
         x = body.getPosition().x;
         y = body.getPosition().y;
-        Texture tex;
-        tex = Game.res.getTexture(texture);
+
         TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
 
         setAnimation(sprites, 1 / 12f);

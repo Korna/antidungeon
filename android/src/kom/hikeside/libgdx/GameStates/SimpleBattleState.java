@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,14 +22,15 @@ import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.Game.Objects.GameClasses.GameClass;
 import kom.hikeside.libgdx.BundleToLib;
+import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.Game;
-import kom.hikeside.libgdx.Entities.GameObjectView;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 import kom.hikeside.libgdx.GameMechanics.BodyBuilder;
 import kom.hikeside.libgdx.GameMechanics.EnemyModel;
 import kom.hikeside.libgdx.GameObjects.Enemy;
 import kom.hikeside.libgdx.GameObjects.Player;
 import kom.hikeside.libgdx.HPHUD;
+import kom.hikeside.libgdx.LibraryObjects;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 import static kom.warside.LibgdxGame.GAME_HEIGHT;
@@ -51,7 +49,7 @@ public class SimpleBattleState extends GameState {
     private World world;
     private Box2DDebugRenderer b2dr;
 
-    //GameObjectView player;
+    //TexturedBody player;
     Player player;
 
     Enemy enemy;
@@ -62,19 +60,29 @@ public class SimpleBattleState extends GameState {
     Texture texture_background;
     public SimpleBattleState(GameStateManagement gsm){
         super(gsm);
-        BundleToLib bundle = BundleToLib.getInstance();
-
-        bundle.enemyModels.add(new EnemyModel(90,1,90, "EnemyName", "Description", null));
-
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         buildTable();
-
         world = gsm.world;
         b2dr = new Box2DDebugRenderer();
         batch = new SpriteBatch();
 
 
+
+        BundleToLib bundle = BundleToLib.getInstance();
+        BodyBuilder bodyBuilder = new BodyBuilder(GAME_WIDTH/2, GAME_HEIGHT/2, world);
+
+        loadCharacter(bundle, bodyBuilder);
+        loadEnemies(bundle, bodyBuilder);
+
+
+        String[] textureNames = Randomizer.battleFieldTexture();
+        texture_ground = Game.res.getTexture(textureNames[0]);
+        texture_background = Game.res.getTexture(textureNames[1]);
+
+    }
+
+    private void loadCharacter(BundleToLib bundle, BodyBuilder bodyBuilder){
         GameCharacter gameCharacter;
         try {
             gameCharacter = bundle.gameCharacters.get(0);
@@ -82,23 +90,32 @@ public class SimpleBattleState extends GameState {
             gameCharacter = new GameCharacter("Default mate char", 1, GameClass.priest, 0,0,0,0,0,0);
             Log.e("erroe", e.toString());
         }
-        BodyBuilder bodyBuilder = new BodyBuilder(GAME_WIDTH/2, GAME_HEIGHT/2, world);
 
-        GameObjectView playerView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
-        GameObjectView enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), Randomizer.simpleMonster());
+
+        TexturedBody playerView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
+
+
+
+
 
         player = new Player(playerView, gameCharacter, new AttackModel(10,15, false, 0.8f));
-        enemy = new Enemy(bundle.enemyModels.get(0), enemyView, new AttackModel(5,10, false, 0.5f));
-
-
         hpplayerhud = new HPHUD(player);
-        hpenemyhud = new HPHUD(enemy);
-
-        String[] textureNames = Randomizer.battleFieldTexture();
-        texture_ground = Game.res.getTexture(textureNames[0]);
-        texture_background = Game.res.getTexture(textureNames[1]);
-
     }
+
+    private void loadEnemies(BundleToLib bundle, BodyBuilder bodyBuilder){
+
+        String monsterId = Randomizer.simpleMonster();
+
+        enemy = LibraryObjects.getEnemy(monsterId);
+
+        bundle.enemyModels.add(LibraryObjects.getEnemyModel("model_1"));
+
+        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), monsterId);
+        enemy.setGameObjectView(enemyView);
+
+        hpenemyhud = new HPHUD(enemy);
+    }
+
 
     float acc = 0f;
     private boolean timer(float delta){
@@ -339,8 +356,9 @@ public class SimpleBattleState extends GameState {
 
 
 
-    private GameObjectView createTextured(Body body, String texture){
-        GameObjectView s = new GameObjectView(body, texture);
+    private TexturedBody createTextured(Body body, String texture){
+        Texture tex = Game.res.getTexture(texture);
+        TexturedBody s = new TexturedBody(body, tex);
         return s;
     }
 

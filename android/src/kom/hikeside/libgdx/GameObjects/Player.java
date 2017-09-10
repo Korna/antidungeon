@@ -1,7 +1,7 @@
 package kom.hikeside.libgdx.GameObjects;
 
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.libgdx.Entities.GameObjectView;
+import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 /**
@@ -15,7 +15,7 @@ public class Player extends GameObject{
 
 
 
-    public Player(GameObjectView playerView, GameCharacter gameCharacter, AttackModel attackModel){
+    public Player(TexturedBody playerView, GameCharacter gameCharacter, AttackModel attackModel){
         this.view = playerView;
         this.gameCharacter = gameCharacter;
         this.attackModel = attackModel;

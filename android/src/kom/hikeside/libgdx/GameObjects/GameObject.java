@@ -1,7 +1,7 @@
 package kom.hikeside.libgdx.GameObjects;
 
 import kom.hikeside.Game.Mechanic.Randomizer;
-import kom.hikeside.libgdx.Entities.GameObjectView;
+import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 /**
@@ -22,7 +22,7 @@ public class GameObject {
 
     AttackModel attackModel;//basic attack
 
-    public GameObjectView view;
+    public TexturedBody view;
     public String basicTexture;
 
 
