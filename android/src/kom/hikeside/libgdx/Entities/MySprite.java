@@ -10,7 +10,7 @@ import static kom.hikeside.libgdx.Game.GAME_WIDTH;
 /**
  * Created by Koma on 17.01.2017.
  */
-public class Sprite {
+public class MySprite {
 
     protected Body body;
     protected Animation animation;
@@ -18,7 +18,7 @@ public class Sprite {
     protected float height;
     protected float scale;
 
-    public Sprite(Body body){
+    public MySprite(Body body){
         this.body = body;
         animation = new Animation();
 

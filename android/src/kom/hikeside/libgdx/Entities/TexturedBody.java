@@ -4,12 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 
-import kom.hikeside.libgdx.Game;
-
 /**
  * Created by Koma on 19.01.2017.
  */
-public class TexturedBody extends Sprite {
+public class TexturedBody extends MySprite {
 
     float x;
     float y;

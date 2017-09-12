@@ -264,33 +264,39 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
         switch(action){
             case OBJECT_ATTACK:
+
                 from.ActionMove();
+                if (from.getAttackValue() != 0)
+                    if(to.isBlocking()) {
+                        if (from.getAttackValue() != 0){
+                            to.setCurrentHp(to.getCurrentHp() - from.getAttackValue());
+                            statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));
+                        }
 
-                if(to.isBlocking()) {
-                    if (from.getAttackValue() != 0)
+                    }else{
                         to.setCurrentHp(to.getCurrentHp() - from.getAttackValue());
-                }else{
-                    to.setCurrentHp(to.getCurrentHp() - from.getAttackValue());
+                        statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));
+                        //stun
+                        int j = 1;
+                        for(int i = 1; i <= 20; ++i){
+                            if (from.getAttackValue() != 0)
+                                ++j;
+                        }
+                        boolean makeStun = false;
+                        if(j>=20)
+                            makeStun = true;
 
-                    //stun
-                    int j = 1;
-                    for(int i = 1; i <= 20; ++i){
-                        if (from.getAttackValue() != 0)
-                            ++j;
+                        if(makeStun){
+                            Log.d("player", "is stunned");
+                            to.setStunned(makeStun);
+                            //TODO добавить шанс 2 атаки
+                        }else
+                            to.setStunned(makeStun);
+
                     }
-                    boolean makeStun = false;
-                    if(j>=20)
-                        makeStun = true;
+                else
+                    statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_miss")));
 
-                    if(makeStun){
-                        Log.d("player", "is stunned");
-                        to.setStunned(makeStun);
-                        //TODO добавить шанс 2 атаки
-                    }else
-                        to.setStunned(makeStun);
-
-                }
-                statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));
                 break;
             case OBJECT_DEFENCE:
                 from.setBlocking(true);
@@ -316,8 +322,6 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
     private void turn(){
 
-
-
         if(enemy.getCurrentHp() > 0){
 
             makeAction(Randomizer.action(), enemy, player);
@@ -332,8 +336,8 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
             Log.w("you", "are dead");
         }
 
-
-
+        player.setBlocking(false);
+        enemy.setBlocking(false);
     }
 
 
@@ -374,7 +378,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
                 status.render(batch);
             else{
                // status.dispose();
-                statusArrayList.remove(i);
+                statusArrayList.remove(status);
             }
 
         }
@@ -431,6 +435,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         texture_ground.dispose();
         b2dr.dispose();
         world.dispose();
+        stage.dispose();
     }
 
 

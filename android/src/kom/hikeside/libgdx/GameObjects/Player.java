@@ -56,8 +56,10 @@ public class Player extends GameObject{
                 break;
         }
 
-
-        return value + add;
+        if(value != 0)
+            return value + add;
+        else
+            return 0;
     }
     @Override
     public void ActionMove(){

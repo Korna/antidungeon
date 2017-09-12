@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import kom.hikeside.libgdx.Managers.ContentManager;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
+import static kom.hikeside.Constants.AMOUNT_MONSTERS;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
 import static kom.hikeside.Constants.OBJECT_HEAL;
@@ -53,7 +54,7 @@ public class Game extends ApplicationAdapter {
 
 	private void loadAssets(){
 
-		for(int i = 1; i <=12; ++i)
+		for(int i = 1; i <= AMOUNT_MONSTERS; ++i)
 			res.loadTexture("monsters/monster_" + i + ".png", "monster_" + i);
 
 		int i = 1;
@@ -87,7 +88,8 @@ public class Game extends ApplicationAdapter {
 
 		res.loadTexture("status/attack.png", "status_" + OBJECT_ATTACK);
 		res.loadTexture("status/heal.png", "status_" + OBJECT_HEAL);
-		res.loadTexture("status/s_defence.png", "status_" + OBJECT_DEFENCE);
+		res.loadTexture("status/defence.png", "status_" + OBJECT_DEFENCE);
+		res.loadTexture("status/miss.png", "status_miss");
 
 		res.loadBitmapFont("white16.fnt", "white_font");
 		res.loadTextureAtlas("ui/ui.pack", "ui_buttons");

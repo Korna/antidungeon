@@ -11,6 +11,7 @@ import kom.hikeside.Game.Objects.ObjList;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 import static com.badlogic.gdx.math.MathUtils.random;
+import static kom.hikeside.Constants.AMOUNT_MONSTERS;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
 import static kom.hikeside.Constants.OBJECT_HEAL;
@@ -76,7 +77,7 @@ public class Randomizer {
     }
 
     public static String simpleMonster(){
-        int randomNumber = random.nextInt(12) + 1;
+        int randomNumber = random.nextInt(AMOUNT_MONSTERS) + 1;
         return "monster_" + randomNumber;
     }
 
