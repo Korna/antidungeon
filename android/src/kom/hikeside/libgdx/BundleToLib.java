@@ -1,5 +1,7 @@
 package kom.hikeside.libgdx;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
@@ -18,8 +20,14 @@ public class BundleToLib {
         return instance;
     }
 
+    //input
     private boolean isCoop = false;
     private boolean isDuel = false;
+
+    //output
+    private boolean playerIsDead = false;
+    private boolean enemyIsDead = false;
+
 
     public ArrayList<GameCharacter> gameCharacters = new ArrayList<>();
     //public ArrayList<EnemyModel> enemyModels = new ArrayList<>();

@@ -1,5 +1,7 @@
 package kom.hikeside.libgdx.GameObjects;
 
+import java.util.concurrent.TimeUnit;
+
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 import kom.hikeside.libgdx.GameMechanics.EnemyModel;
@@ -35,6 +37,33 @@ public class Enemy extends GameObject{
         setCurrentHp(enemyModel.getMaxHp());
         setMaxHp(enemyModel.getMaxHp());
         this.attackModel = attackModel;
+    }
+
+    @Override
+    public void ActionMove(){
+        final float speed = -100;
+        final int delay = 300;
+        new Thread()
+        {
+            public void run() {
+                view.getBody().setLinearVelocity(speed, 0);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(delay);
+                }catch(InterruptedException e){
+
+                }
+                view.getBody().setLinearVelocity(-speed, 0);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(delay);
+                }catch(InterruptedException e){
+
+                }
+                view.getBody().setLinearVelocity(0,0);
+                this.interrupt();
+            }
+        }.start();
+
+
     }
 
 

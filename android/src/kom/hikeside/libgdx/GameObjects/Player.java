@@ -1,5 +1,9 @@
 package kom.hikeside.libgdx.GameObjects;
 
+import com.badlogic.gdx.graphics.Texture;
+
+import java.util.concurrent.TimeUnit;
+
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.Game.Objects.GameClasses.GameClass;
@@ -32,6 +36,7 @@ public class Player extends GameObject{
         setMaxStamina(gameCharacter.getMaxStamina());
     }
 
+
     @Override
     public int getAttackValue(){
         int value = Randomizer.getAttackValue(attackModel);
@@ -54,7 +59,32 @@ public class Player extends GameObject{
 
         return value + add;
     }
+    @Override
+    public void ActionMove(){
+        final float speed = 100;
+        final int delay = 300;
+        new Thread()
+        {
+            public void run() {
+                view.getBody().setLinearVelocity(speed, 0);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(delay);
+                }catch(InterruptedException e){
 
+                }
+                view.getBody().setLinearVelocity(-speed, 0);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(delay);
+                }catch(InterruptedException e){
+
+                }
+                view.getBody().setLinearVelocity(0,0);
+                this.interrupt();
+            }
+        }.start();
+
+
+    }
 
 
 }

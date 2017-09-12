@@ -1,5 +1,10 @@
 package kom.hikeside.libgdx.GameObjects;
 
+import android.util.Log;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
@@ -8,7 +13,7 @@ import kom.hikeside.libgdx.GameMechanics.AttackModel;
  * Created by Koma on 09.09.2017.
  */
 
-public class GameObject {
+public abstract class GameObject {
     public boolean turn = true;
 
     boolean blocking = false;
@@ -26,9 +31,25 @@ public class GameObject {
     AttackModel attackModel;//basic attack
 
     public TexturedBody view;
+    Texture selection;
+    boolean selectedByTouch = false;
+
     public String basicTexture;
 
 
+    public void render(SpriteBatch batch){
+        view.render(batch);
+
+        if(this.selectedByTouch){
+            batch.begin();
+            batch.draw(selection, view.getBody().getPosition().x - view.getWidth() / 2, view.getBody().getPosition().y - view.getHeight() / 2, view.getWidth(), view.getHeight());
+            batch.end();
+        }
+
+    }
+    public void action(Runnable action){
+
+    }
 
 
     public int getCurrentHp() {
@@ -98,4 +119,17 @@ public class GameObject {
     public void setStunned(boolean stunned) {
         this.stunned = stunned;
     }
+
+    public void setSelectionTexture(Texture selection){
+        this.selection = selection;
+    }
+
+    public boolean selectedByTouch() {
+        return selectedByTouch;
+    }
+
+    public void setSelectedByTouch(boolean selectedByTouch) {
+        this.selectedByTouch = selectedByTouch;
+    }
+    public abstract void ActionMove();
 }

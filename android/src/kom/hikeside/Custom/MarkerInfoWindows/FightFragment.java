@@ -9,11 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import kom.hikeside.AndroidLauncher;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
@@ -108,17 +104,17 @@ public class FightFragment extends Fragment {
     }
 
     String title;
-    String text;
+    String lvlText;
 
     public void setInfo(){
 
         textViewName.setText(title);
-        textViewLvl.setText(text);
+        textViewLvl.setText(lvlText);
 
     }
     public void LoadWindowInfo(String title, String text){
         this.title = title;
-        this.text = text;
+        this.lvlText = text;
 
     }
 

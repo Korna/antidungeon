@@ -16,6 +16,7 @@ import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
+import kom.hikeside.libgdx.LibraryObjects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +46,7 @@ public class CharacterAddFragment extends Fragment {
         button_archer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = new GameCharacter("NotChosen", 1, GameClass.archer, 5, 10, 7, 5, 7, 7);
+                character = LibraryObjects.getGameCharacter(GameClass.archer);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -57,7 +58,40 @@ public class CharacterAddFragment extends Fragment {
         button_knight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = new GameCharacter("NotChosen", 1, GameClass.knight, 10, 5, 10, 7, 5, 7);
+                character = LibraryObjects.getGameCharacter(GameClass.knight);
+
+                View v = statsFragment.getView();
+                statsFragment.loadCharacterCommon(v, character);
+                statsFragment.loadCharacterStats(v, character);
+            }
+        });
+        Button button_warrior = (Button) v.findViewById(R.id.button_warrior);
+        button_warrior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                character = LibraryObjects.getGameCharacter(GameClass.warrior);
+
+                View v = statsFragment.getView();
+                statsFragment.loadCharacterCommon(v, character);
+                statsFragment.loadCharacterStats(v, character);
+            }
+        });
+        Button button_priest = (Button) v.findViewById(R.id.button_priest);
+        button_priest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                character = LibraryObjects.getGameCharacter(GameClass.priest);
+
+                View v = statsFragment.getView();
+                statsFragment.loadCharacterCommon(v, character);
+                statsFragment.loadCharacterStats(v, character);
+            }
+        });
+        Button button_mage = (Button) v.findViewById(R.id.button_mage);
+        button_mage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                character = LibraryObjects.getGameCharacter(GameClass.mage);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -72,12 +106,9 @@ public class CharacterAddFragment extends Fragment {
                 String name = editText_name.getText().toString();
                 editText_name.setText("");
 
-
                 character.setName(name);
 
-
                 Singleton instance = Singleton.getInstance();
-
                 UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
                 FBHandler.addCharacter(character);
             }

@@ -78,6 +78,18 @@ public class LibraryObjects {
             case "monster_8":
                 enemy = new Enemy(getEnemyModel("model_8"), "monster_8", getAttackModel("attackModel_5"));
                 break;
+            case "monster_9":
+                enemy = new Enemy(getEnemyModel("model_9"), "monster_9", getAttackModel("attackModel_3"));
+                break;
+            case "monster_10":
+                enemy = new Enemy(getEnemyModel("model_10"), "monster_10", getAttackModel("attackModel_2"));
+                break;
+            case "monster_11":
+                enemy = new Enemy(getEnemyModel("model_11"), "monster_11", getAttackModel("attackModel_1"));
+                break;
+            case "monster_12":
+                enemy = new Enemy(getEnemyModel("model_12"), "monster_12", getAttackModel("attackModel_2"));
+                break;
         }
         return enemy;
     }
@@ -87,7 +99,7 @@ public class LibraryObjects {
 
         switch(name){
             case "model_1":
-                enemy = new EnemyModel(150, 2, 50, "Golem", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(125, 2, 50, "Golem", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_2":
                 enemy = new EnemyModel(40, 1, 0, "Wolf", "Random wolf from forest", getAbilityModel("ability_1"));
@@ -109,6 +121,18 @@ public class LibraryObjects {
                 break;
             case "model_8":
                 enemy = new EnemyModel(200, 4, 50, "Fucking Crab", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                break;
+            case "model_9":
+                enemy = new EnemyModel(150, 4, 50, "Griffon", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                break;
+            case "model_10":
+                enemy = new EnemyModel(200, 4, 50, "Necromancer", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                break;
+            case "model_11":
+                enemy = new EnemyModel(70, 2, 50, "Elephant", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                break;
+            case "model_12":
+                enemy = new EnemyModel(100, 2, 50, "Mad Knight", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
         }
         return enemy;
@@ -147,10 +171,10 @@ public class LibraryObjects {
                 attackModel = new AttackModel(10, 15, false, 0.5f);
                 break;
             case "attackModel_2"://точные но слабые удары
-                attackModel = new AttackModel(5, 15, false, 0.9f);
+                attackModel = new AttackModel(5, 15, false, 0.8f);
                 break;
             case "attackModel_3"://точные но слабые пробивные удары
-                attackModel = new AttackModel(5, 15, true, 0.9f);
+                attackModel = new AttackModel(10, 20, true, 0.9f);
                 break;
             case "attackModel_4"://сильные и редкие удары
                 attackModel = new AttackModel(20, 40, false, 0.3f);

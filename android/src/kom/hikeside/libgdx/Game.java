@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import kom.hikeside.libgdx.Managers.ContentManager;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
+import static kom.hikeside.Constants.OBJECT_ATTACK;
+import static kom.hikeside.Constants.OBJECT_DEFENCE;
+import static kom.hikeside.Constants.OBJECT_HEAL;
+
 public class Game extends ApplicationAdapter {
-
-
 	public static ContentManager res;
 
 	private SpriteBatch batch;
@@ -51,7 +53,7 @@ public class Game extends ApplicationAdapter {
 
 	private void loadAssets(){
 
-		for(int i = 1; i <=8; ++i)
+		for(int i = 1; i <=12; ++i)
 			res.loadTexture("monsters/monster_" + i + ".png", "monster_" + i);
 
 		int i = 1;
@@ -60,10 +62,15 @@ public class Game extends ApplicationAdapter {
 		res.loadTexture("heroes/hero_" + i + ".png", "priest");
 		++i;
 		res.loadTexture("heroes/hero_" + i + ".png", "archer");
+		++i;
+		res.loadTexture("heroes/hero_" + i + ".png", "warrior");
+		++i;
+		res.loadTexture("heroes/hero_" + i + ".png", "mage");
 
 
 		res.loadTexture("battle_backgrounds/grass.png", "grass_1");
 		res.loadTexture("battle_backgrounds/grass_2.png", "grass_2");
+
 		res.loadTexture("battle_backgrounds/forest.png", "forest");
 		res.loadTexture("battle_backgrounds/dungeon.png", "dungeon");
 		res.loadTexture("battle_backgrounds/castle.png", "castle");
@@ -77,6 +84,10 @@ public class Game extends ApplicationAdapter {
 
 		res.loadTexture("selection_red.png", "selection_red");
 		res.loadTexture("selection_green.png", "selection_green");
+
+		res.loadTexture("status/attack.png", "status_" + OBJECT_ATTACK);
+		res.loadTexture("status/heal.png", "status_" + OBJECT_HEAL);
+		res.loadTexture("status/s_defence.png", "status_" + OBJECT_DEFENCE);
 
 		res.loadBitmapFont("white16.fnt", "white_font");
 		res.loadTextureAtlas("ui/ui.pack", "ui_buttons");

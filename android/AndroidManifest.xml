@@ -6,6 +6,7 @@
         package="com.google.android.gms.location.sample.basiclocationsample">
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     </manifest>
+    <uses-permission android:name="android.support.multidex.MultiDexApplication"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -17,8 +18,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission
         android:name="kom.hikeside.permission.MAPS_RECEIVE"
@@ -100,7 +99,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".layoutCode.ManagerActivity" />
         <activity android:name=".layoutCode.MarkersActivity" />
-        <activity android:name=".AndroidLauncher" />
         <activity
             android:name=".layoutCode.Profile.GameProfileActivity"
             android:label="@string/title_activity_game_profile" />
@@ -108,6 +106,9 @@
             android:name=".layoutCode.Character.CharacterActivity"
             android:label="@string/title_activity_character"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".AndroidLauncher"
+            android:theme="@style/Theme.AppCompat.Light" />
     </application>
 
 </manifest>

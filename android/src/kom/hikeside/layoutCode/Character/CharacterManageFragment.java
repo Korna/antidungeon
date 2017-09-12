@@ -17,6 +17,7 @@ import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
+import kom.hikeside.libgdx.BundleToLib;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,8 +111,13 @@ public class CharacterManageFragment extends Fragment {
                     //  FBHandler.setCurrentCharacter(key);
                     Singleton instance = Singleton.getInstance();
                     FBHandler.updateUserDataCharacterStatus(key);
-                    instance.userData.setCurrentCharacter(key);
-                 //   FBHandler.updateUserData(instance.userData);
+                    try {
+                        instance.userData.setCurrentCharacter(key);
+                    }catch(NullPointerException e){
+                        Log.e("setCharacter", e.toString());
+                        instance.userData = FBHandler.getUserData();
+
+                    }
 
                 }
 

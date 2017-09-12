@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 
 import kom.hikeside.AndroidLauncher;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Character.CharacterActivity;
@@ -37,9 +38,10 @@ public class StartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
-
         mAuth = FirebaseAuth.getInstance();
+        accountDataLoader();
+
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -58,6 +60,10 @@ public class StartActivity extends AppCompatActivity {
 
 
         loadInterface();
+    }
+    private void accountDataLoader(){
+        UserDataFBHandler FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
+        instance.userData = FBHandler.getUserData();
     }
 
     private void loadInterface(){
