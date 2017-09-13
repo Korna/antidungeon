@@ -26,6 +26,19 @@ public class Enemy extends GameObject{
         this.attackModel = attackModel;
         this.basicTexture = basicTexture;
     }
+
+    public Enemy(EnemyModel enemyModel, String basicTexture,
+
+                 AttackModel attackModel, float scale// TODO переместить в enemyModel
+                 //создать класс attackView
+    ) {
+        this.enemyModel = enemyModel;
+        setCurrentHp(enemyModel.getMaxHp());
+        setMaxHp(enemyModel.getMaxHp());
+        this.attackModel = attackModel;
+        this.basicTexture = basicTexture;
+    }
+
     public void setGameObjectView(TexturedBody gameObjectView){
         this.view = gameObjectView;
     }

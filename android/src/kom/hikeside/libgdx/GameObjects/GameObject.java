@@ -37,6 +37,7 @@ public abstract class GameObject {
     public String basicTexture;
 
 
+
     public void render(SpriteBatch batch){
         view.render(batch);
 

@@ -28,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.Game.Objects.GameClasses.GameClass;
@@ -45,6 +46,7 @@ import kom.hikeside.libgdx.HPHUD;
 import kom.hikeside.libgdx.LibraryObjects;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
+import static com.badlogic.gdx.math.MathUtils.random;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
 import static kom.hikeside.Constants.OBJECT_HEAL;
@@ -66,12 +68,13 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     private Box2DDebugRenderer b2dr;
 
 
-    Player player;
-    TexturedBody playerSelection;
+    private ArrayList<Player> playerArrayList = new ArrayList<>();
+    private ArrayList<Enemy> enemyArrayList = new ArrayList<>();
 
-    Enemy enemy;
-    TexturedBody enemySelection;
-    ArrayList<TexturedBody> texturedBodyArrayList = new ArrayList<>();
+   // Player player;
+
+
+   // Enemy enemy;
 
     HPHUD hpplayerhud;
     HPHUD hpenemyhud;
@@ -93,9 +96,17 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         BundleToLib bundle = BundleToLib.getInstance();
         BodyBuilder bodyBuilder = new BodyBuilder(GAME_WIDTH/2, GAME_HEIGHT/2, world);
 
-        loadCharacter(bundle, bodyBuilder);
-        loadEnemies(bundle, bodyBuilder);
+        Player player = loadCharacter(bundle, bodyBuilder);
+        hpplayerhud = new HPHUD(player);
+        playerArrayList.add(player);
 
+        Enemy enemy = loadEnemies(bundle, bodyBuilder);
+        hpenemyhud = new HPHUD(enemy);
+        enemyArrayList.add(enemy);
+
+        for(int i = 0; i < random.nextInt(3); ++i){
+            enemyArrayList.add(loadEnemies(bundle, bodyBuilder));
+        }
 
 
         String[] textureNames = Randomizer.battleFieldTexture();
@@ -106,7 +117,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
     }
 
-    private void loadCharacter(BundleToLib bundle, BodyBuilder bodyBuilder){
+    private Player loadCharacter(BundleToLib bundle, BodyBuilder bodyBuilder){
         GameCharacter gameCharacter;
         try {
             gameCharacter = bundle.gameCharacters.get(0);
@@ -116,18 +127,17 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         }
 
 
-        TexturedBody playerView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name());
-
-        playerSelection = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), "selection_green");
+        TexturedBody playerView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (8 * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), gameCharacter.getGameClass().name(), 5);
 
 
 
-        player = new Player(playerView, gameCharacter, new AttackModel(10,15, false, 0.8f));
+        Player player = new Player(playerView, gameCharacter, new AttackModel(10,15, false, 0.8f));
+
         player.setSelectionTexture(Game.res.getTexture("selection_green"));
-        hpplayerhud = new HPHUD(player);
+        return player;
     }
 
-    private void loadEnemies(BundleToLib bundle, BodyBuilder bodyBuilder){
+    private Enemy loadEnemies(BundleToLib bundle, BodyBuilder bodyBuilder){
 
         String monsterId;
         try {
@@ -136,23 +146,34 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
             Log.w("loaded name is", monsterId);
         }catch(Exception e){
             monsterId = Randomizer.simpleMonster();
-            Log.e("erroe", e.toString());
+            Log.e("error", e.toString());
         }
 
-        enemy = LibraryObjects.getEnemy(monsterId);
+        Enemy enemy = LibraryObjects.getEnemy(monsterId);
+        float textureScale = 5;
 
-        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), monsterId);
+        if(LibraryObjects.isBoss(monsterId))
+            textureScale = 7;
 
-        enemySelection = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, GAME_HEIGHT /  (2 * 2f)), "selection_red");
+        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, nextCoordinate(enemyArrayList.size())), monsterId, textureScale);
+
 
         enemy.setGameObjectView(enemyView);
         enemy.setSelectionTexture(Game.res.getTexture("selection_red"));
 
-        hpenemyhud = new HPHUD(enemy);
+        return enemy;
+    }
+
+    private float nextCoordinate(int amount){
+        float positionChange = amount * -150;
+
+        float position = GAME_HEIGHT /  (2 * 2f);
+        return position + positionChange;
+
     }
 
 
-    float acc = 0f;
+    private float acc = 0f;
     private boolean timer(float delta){
         acc += delta;
         if(acc >= time){
@@ -166,16 +187,19 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     @Override
     public void update(float delta) {
 
-        if(isGotTouch(player))
-            player.setSelectedByTouch(!player.selectedByTouch());
-        if(isGotTouch(enemy))
-            enemy.setSelectedByTouch(!enemy.selectedByTouch());
 
-        player.view.update(delta);
-        enemy.view.update(delta);
+        for(Player player : playerArrayList)
+            if(isGotTouch(player))
+                player.setSelectedByTouch(!player.selectedByTouch());
 
-        enemySelection.update(delta);
-        playerSelection.update(delta);
+        for(Enemy enemy : enemyArrayList)
+            if(isGotTouch(enemy))
+                enemy.setSelectedByTouch(!enemy.selectedByTouch());
+
+      /*  player.view.update(delta);
+        enemy.view.update(delta);*//**апдейт body */
+
+
 
         stage.act(delta);
 
@@ -266,32 +290,39 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
             case OBJECT_ATTACK:
 
                 from.ActionMove();
-                if (from.getAttackValue() != 0)
+                int value = from.getAttackValue();
+                if (value != 0)
                     if(to.isBlocking()) {
-                        if (from.getAttackValue() != 0){
-                            to.setCurrentHp(to.getCurrentHp() - from.getAttackValue());
+                        value = from.getAttackValue();
+                        if (value != 0){
+                            to.setCurrentHp(to.getCurrentHp() - value);
                             statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));
-                        }
+                        }else
+                            statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_miss")));
 
                     }else{
-                        to.setCurrentHp(to.getCurrentHp() - from.getAttackValue());
-                        statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));
+                        to.setCurrentHp(to.getCurrentHp() - value);
                         //stun
+                        boolean makeStun = false;
                         int j = 1;
+
                         for(int i = 1; i <= 20; ++i){
                             if (from.getAttackValue() != 0)
                                 ++j;
                         }
-                        boolean makeStun = false;
                         if(j>=20)
                             makeStun = true;
 
                         if(makeStun){
                             Log.d("player", "is stunned");
-                            to.setStunned(makeStun);
+                            to.setStunned(true);
                             //TODO добавить шанс 2 атаки
-                        }else
-                            to.setStunned(makeStun);
+                            statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));//stunned 'to'
+                        }else{
+                            to.setStunned(false);
+                            statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_ATTACK)));
+                        }
+
 
                     }
                 else
@@ -321,23 +352,28 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     }
 
     private void turn(){
+        for(Enemy enemy : enemyArrayList)
+            if(enemy.getCurrentHp() > 0){
 
-        if(enemy.getCurrentHp() > 0){
+                makeAction(Randomizer.action(), enemy, playerArrayList.get(0));//TODO здесь бьют только по первому персу
+            } else{
+                boolean enemyIsDead = true;
 
-            makeAction(Randomizer.action(), enemy, player);
-        } else{
-            boolean enemyIsDead = true;
-          //  Gdx.app.exit();
-        }
+            }
+        for(Player player : playerArrayList)
+            if(player.getCurrentHp() <= 0){
+                boolean playerIsDead = true;
+                Gdx.app.exit();
+                Log.w("you", "are dead");
+            }
 
-        if(player.getCurrentHp() <= 0){
-            boolean playerIsDead = true;
-            Gdx.app.exit();
-            Log.w("you", "are dead");
-        }
 
-        player.setBlocking(false);
-        enemy.setBlocking(false);
+
+            //clearing status effects
+        for(Player player : playerArrayList)
+            player.setBlocking(false);
+        for(Enemy enemy : enemyArrayList)
+            enemy.setBlocking(false);
     }
 
 
@@ -360,16 +396,19 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         if(true)
             b2dr.render(world, maincamera.combined);
 
-        if(player.getCurrentHp() > 0){
-            stage.draw();//TODO полное удаление stage, а не удаление отрисовки
-            player.render(batch);
-            hpplayerhud.render(batch, player.view.getPosition().x - player.view.getWidth() / 3, player.view.getPosition().y + player.view.getHeight() / 1.5f);
-        }
+        stage.draw();//TODO полное удаление stage, а не удаление отрисовки
 
-        if(enemy.getCurrentHp() > 0){
-            enemy.render(batch);
-            hpenemyhud.render(batch, enemy.view.getPosition().x - enemy.view.getWidth() / 3, enemy.view.getPosition().y + enemy.view.getHeight() / 1.5f);
-        }
+        for(Player player : playerArrayList)
+            if(player.getCurrentHp() > 0){
+                player.render(batch);
+                hpplayerhud.render(batch, player.view.getPosition().x - player.view.getWidth() / 3, player.view.getPosition().y + player.view.getHeight() / 1.5f);
+            }
+
+        for(Enemy enemy : enemyArrayList)
+            if(enemy.getCurrentHp() > 0){
+                enemy.render(batch);
+                hpenemyhud.render(batch, enemy.view.getPosition().x - enemy.view.getWidth() / 3, enemy.view.getPosition().y + enemy.view.getHeight() / 1.5f);
+            }
 
 
         for(int i = 0; i < statusArrayList.size(); ++i){
@@ -387,9 +426,9 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
     }
 
-    private TexturedBody createTextured(Body body, String texture){
+    private TexturedBody createTextured(Body body, String texture, float scale){
         Texture tex = Game.res.getTexture(texture);
-        TexturedBody s = new TexturedBody(body, tex);
+        TexturedBody s = new TexturedBody(body, tex, scale);
         return s;
     }
 
@@ -409,10 +448,10 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(player.turn) {
+                if(playerArrayList.get(0).turn) {//TODO определенный игрок ходит
                     super.clicked(event, x, y);
 
-                    makeAction(text, player, enemy);
+                    makeAction(text, playerArrayList.get(0), enemyArrayList.get(0));//TODO изменить цель
                     turn();
 
 

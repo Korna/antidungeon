@@ -20,7 +20,16 @@ public class TexturedBody extends MySprite {
         TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
 
         setAnimation(sprites, 1 / 12f);
+    }
 
+    public TexturedBody(Body body, Texture tex, float scale) {
+        super(body, scale);
+        x = body.getPosition().x;
+        y = body.getPosition().y;
+
+        TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
+
+        setAnimation(sprites, 1 / 12f);
     }
 
     public void attack(){

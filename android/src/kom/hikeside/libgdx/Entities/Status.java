@@ -10,28 +10,32 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 
 public class Status {
-    float x = 0;
-    float y = 0;
-    Texture texture;
-    int time = 110;
-    boolean showing = true;
+    private float x = 0;
+    private float y = 0;
+
+    private float width;
+    private float height;
+    private Texture texture;
+    private final int TIME_SHOW_STATUS = 110;
+    private boolean showing = true;
 
     public Status(Body body, Texture texture){
-        x = body.getPosition().x;
-        y = body.getPosition().y;
+        x = body.getPosition().x - texture.getWidth() / 2;
+        y = body.getPosition().y + 48;
+
+        width = texture.getWidth();
+        height = texture.getHeight();
+
         this.texture = texture;
     }
     float delta = 0;
+
     public void render(Batch batch){
 
-        if(delta <= time) {
-            delta += 2;
-            y += 2;
+        if(renderTimeListener()) {
             batch.begin();
-            batch.draw(texture, x - texture.getWidth()/2, y + 48, texture.getWidth(), texture.getHeight());
+            batch.draw(texture, x, y, width, height);
             batch.end();
-        }else{
-            showing = false;
         }
 
 
@@ -52,12 +56,21 @@ public class Status {
 
          */
     }
+    public boolean renderTimeListener(){
+        if(delta <= TIME_SHOW_STATUS                                                                 ) {
+            delta += 2;
+            y += 2;
+            return true;
+        }else
+            showing = false;
+
+        return false;
+
+    }
 
     public boolean isShowing() {
         return showing;
     }
 
-    public void dispose(){
-        this.texture.dispose();
-    }
+
 }

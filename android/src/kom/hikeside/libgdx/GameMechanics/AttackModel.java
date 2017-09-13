@@ -9,14 +9,14 @@ public class AttackModel {
 
     public int highestDamage;
 
-    boolean isPiercing;
+    boolean ignoreArmor;
 
     public float chanceToHit;
 
-    public AttackModel(int lowestDamage, int highestDamage, boolean isPiercing, float chanceToHit) {
+    public AttackModel(int lowestDamage, int highestDamage, boolean ignoreArmor, float chanceToHit) {
         this.lowestDamage = lowestDamage;
         this.highestDamage = highestDamage;
-        this.isPiercing = isPiercing;
+        this.ignoreArmor = ignoreArmor;
         this.chanceToHit = chanceToHit;
     }
 }

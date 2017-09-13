@@ -22,9 +22,16 @@ public class MySprite {
         this.body = body;
         animation = new Animation();
 
-        this.scale = GAME_WIDTH/(GAME_WIDTH*0.4f);
-        this.scale *= 2f;
+        this.scale = 5;
+
     }
+    public MySprite(Body body, float scale){
+        this.body = body;
+        animation = new Animation();
+
+        this.scale = scale;
+    }
+
     public void initSprite(Body body){
         this.body = body;
         animation = new Animation();

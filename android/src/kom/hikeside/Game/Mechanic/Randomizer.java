@@ -12,6 +12,7 @@ import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static kom.hikeside.Constants.AMOUNT_MONSTERS;
+import static kom.hikeside.Constants.BOSSES_NUMBERS;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
 import static kom.hikeside.Constants.OBJECT_HEAL;
@@ -82,7 +83,7 @@ public class Randomizer {
     }
 
     public static String simpleBoss(){
-        int[] bosses = {5, 7, 8, 10};
+        int[] bosses = BOSSES_NUMBERS;
         int size = bosses.length;
         int index = random.nextInt(size);
         return "monster_" + bosses[index];

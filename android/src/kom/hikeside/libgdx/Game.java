@@ -33,8 +33,8 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		GAME_WIDTH = Gdx.graphics.getWidth();
-		GAME_HEIGHT = Gdx.graphics.getHeight();
+		GAME_WIDTH = (int)(Gdx.graphics.getWidth() / SCALE);
+		GAME_HEIGHT = (int)(Gdx.graphics.getHeight() / SCALE);
 
 		res = new ContentManager();
 		loadAssets();
@@ -46,7 +46,7 @@ public class Game extends ApplicationAdapter {
 		maincamera = new OrthographicCamera();
 
 
-		maincamera.setToOrtho(false, GAME_WIDTH/SCALE, GAME_HEIGHT/SCALE);
+		maincamera.setToOrtho(false, GAME_WIDTH, GAME_HEIGHT);
 
 		gsm = new GameStateManagement(this);
 

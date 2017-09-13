@@ -11,6 +11,8 @@ import kom.hikeside.libgdx.GameMechanics.BodyBuilder;
 import kom.hikeside.libgdx.GameMechanics.EnemyModel;
 import kom.hikeside.libgdx.GameObjects.Enemy;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+import static kom.hikeside.Constants.BOSSES_NUMBERS;
 import static kom.warside.LibgdxGame.GAME_HEIGHT;
 import static kom.warside.LibgdxGame.GAME_WIDTH;
 /**
@@ -192,11 +194,20 @@ public class LibraryObjects {
                 enemy = new EnemyModel(50, 1, 150, "Walking Flesh", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_22":
-                enemy = new EnemyModel(200, 2, 50, "Ghost", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(200, 2, 50, "Elvish Ghost", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
         }
         return enemy;
 
+    }
+    public static boolean isBoss(String monster){
+        int[] bosses = BOSSES_NUMBERS;
+
+        int size = bosses.length;
+        for(int i = 0; i < size; ++i)
+            if(monster.equals("monster_" + bosses[i]))
+                return true;
+        return false;
     }
 
     public static AbilityModel getAbilityModel(String name){
@@ -251,5 +262,6 @@ public class LibraryObjects {
         }
         return attackModel;
     }
+
 
 }
