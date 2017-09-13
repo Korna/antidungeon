@@ -3,7 +3,7 @@ package kom.hikeside.Game.Mechanic;
 import java.util.ArrayList;
 
 import kom.hikeside.Game.MapView;
-import kom.hikeside.Game.Objects.Inventory.Bandage;
+import kom.hikeside.Game.Objects.Inventory.PotionHeal;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Game.Objects.Inventory.Plank;
 
@@ -19,13 +19,13 @@ public class FromMapGetter {//
 
         switch(type){
             case bag:
-                items.add(new Bandage());
+                items.add(new PotionHeal());
                 items.add(new Plank());
                 return items;
             case treasureChest:
-                items.add(new Bandage());
+                items.add(new PotionHeal());
             case backpack:
-                items.add(new Bandage());
+                items.add(new PotionHeal());
                 return items;
             default:
                 return null;

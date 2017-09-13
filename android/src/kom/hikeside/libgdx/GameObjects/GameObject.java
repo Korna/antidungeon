@@ -2,7 +2,10 @@ package kom.hikeside.libgdx.GameObjects;
 
 import android.util.Log;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import kom.hikeside.Game.Mechanic.Randomizer;
@@ -15,6 +18,8 @@ import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 public abstract class GameObject {
     public boolean turn = true;
+
+    boolean dead = false;
 
     boolean blocking = false;
     boolean stunned = false;
@@ -33,10 +38,18 @@ public abstract class GameObject {
     public TexturedBody view;
     Texture selection;
     boolean selectedByTouch = false;
-
     public String basicTexture;
 
 
+
+    //HUD
+    final boolean drawHud = true;
+    private BitmapFont font;
+
+    public GameObject(){
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
+    }
 
     public void render(SpriteBatch batch){
         view.render(batch);
@@ -44,6 +57,22 @@ public abstract class GameObject {
         if(this.selectedByTouch){
             batch.begin();
             batch.draw(selection, view.getBody().getPosition().x - view.getWidth() / 2, view.getBody().getPosition().y - view.getHeight() / 2, view.getWidth(), view.getHeight());
+
+
+            batch.end();
+        }
+
+        if(this.drawHud){
+
+            batch.begin();
+            float x = this.view.getPosition().x - this.view.getWidth() / 3;
+            float y = this.view.getPosition().y + this.view.getHeight() / 1.5f;
+
+            font.draw(batch, "HP" + String.valueOf(this.getCurrentHp()) + " / " + String.valueOf(this.getMaxHp() ),
+                    x, y);
+
+            font.draw(batch, String.valueOf("MP" + this.getCurrentMp()),  x  + Gdx.graphics.getWidth()/10,
+                    y);
             batch.end();
         }
 
@@ -132,5 +161,27 @@ public abstract class GameObject {
     public void setSelectedByTouch(boolean selectedByTouch) {
         this.selectedByTouch = selectedByTouch;
     }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    private void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public boolean hasHp(){//checks health value
+        if(getCurrentHp() > 0){
+            setDead(false);
+            return true;
+        }
+        else{
+            setDead(true);
+            return false;
+        }
+
+    }
+
+
     public abstract void ActionMove();
 }

@@ -10,7 +10,7 @@ import kom.hikeside.libgdx.GameObjects.GameObject;
 /**
  * Created by Koma on 09.09.2017.
  */
-
+@Deprecated
 public class HPHUD {
 
 
