@@ -14,9 +14,9 @@ public class InventoryObject {
 
     public InventoryObject(){}
 
-    public InventoryObject(String name, int weight, int levelRequered, ObjList.inventory type) {
+    public InventoryObject(String name, int levelRequered, ObjList.inventory type) {
         this.name = name;
-        this.weight = weight;
+        //this.weight = weight;
         this.levelRequered = levelRequered;
         this.type = type;
     }

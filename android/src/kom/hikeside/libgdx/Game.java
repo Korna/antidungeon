@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import kom.hikeside.libgdx.Managers.ContentManager;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
+import static kom.hikeside.Constants.AMOUNT_BODIES;
 import static kom.hikeside.Constants.AMOUNT_MONSTERS;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
@@ -85,7 +86,8 @@ public class Game extends ApplicationAdapter {
 
 		res.loadTexture("selection_red.png", "selection_red");
 		res.loadTexture("selection_green.png", "selection_green");
-
+		for(int j = 1; j <= AMOUNT_BODIES; ++j)
+			res.loadTexture("dead_body_" + j + ".png", "dead_body_" + j);
 		res.loadTexture("status/attack.png", "status_" + OBJECT_ATTACK);
 		res.loadTexture("status/heal.png", "status_" + OBJECT_HEAL);
 		res.loadTexture("status/defence.png", "status_" + OBJECT_DEFENCE);

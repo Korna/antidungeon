@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.libgdx.Entities.TexturedBody;
+import kom.hikeside.libgdx.Game;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 /**
@@ -62,17 +63,17 @@ public abstract class GameObject {
             batch.end();
         }
 
-        if(this.drawHud){
+        if(this.drawHud && !this.dead){
 
             batch.begin();
-            float x = this.view.getPosition().x - this.view.getWidth() / 3;
+            float x = this.view.getPosition().x - this.view.getWidth() / 3 - 20;
             float y = this.view.getPosition().y + this.view.getHeight() / 1.5f;
-
-            font.draw(batch, "HP" + String.valueOf(this.getCurrentHp()) + " / " + String.valueOf(this.getMaxHp() ),
-                    x, y);
-
-            font.draw(batch, String.valueOf("MP" + this.getCurrentMp()),  x  + Gdx.graphics.getWidth()/10,
-                    y);
+            font.setColor(Color.RED);
+            font.draw(batch, "HP" + String.valueOf(this.getCurrentHp()) + " / " + String.valueOf(this.getMaxHp() ), x, y);
+            font.setColor(Color.SKY);
+            font.draw(batch, "MP" + String.valueOf(this.getCurrentMp()),  x  + Gdx.graphics.getWidth()/12, y);
+            font.setColor(Color.YELLOW);
+            font.draw(batch, "ST" + String.valueOf(this.getCurrentStamina()),  x  + Gdx.graphics.getWidth()/8, y);
             batch.end();
         }
 
@@ -166,7 +167,7 @@ public abstract class GameObject {
         return dead;
     }
 
-    private void setDead(boolean dead) {
+    public void setDead(boolean dead) {
         this.dead = dead;
     }
 
@@ -182,6 +183,16 @@ public abstract class GameObject {
 
     }
 
+    public void wasteStaminaForAttack(){
+        this.setCurrentStamina(getCurrentStamina() - attackModel.getStaminaCost());
+    }
+    public void wasteStaminaForDefence(){
+        this.setCurrentStamina(getCurrentStamina() - 15);
+    }
 
     public abstract void ActionMove();
+
+    public void setDeadTexture(Texture deadTexture){
+        view.changeTexture(deadTexture);
+    }
 }

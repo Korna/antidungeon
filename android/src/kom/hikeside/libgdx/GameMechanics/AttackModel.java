@@ -13,10 +13,18 @@ public class AttackModel {
 
     public float chanceToHit;
 
+    private int staminaCost = 5;
+    private int mpCost;
+
     public AttackModel(int lowestDamage, int highestDamage, boolean ignoreArmor, float chanceToHit) {
         this.lowestDamage = lowestDamage;
         this.highestDamage = highestDamage;
         this.ignoreArmor = ignoreArmor;
         this.chanceToHit = chanceToHit;
+        staminaCost = 10;
+    }
+
+    public int getStaminaCost() {
+        return staminaCost;
     }
 }

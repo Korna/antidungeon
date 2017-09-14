@@ -9,6 +9,7 @@ public class Constants {
     public static final String OBJECT_HEAL = "Heal";
     public static final String OBJECT_DEFENCE = "Defence";
     public static final int AMOUNT_MONSTERS = 22;
+    public static final int AMOUNT_BODIES = 6;
 
     public static final int[] BOSSES_NUMBERS = {5, 7, 8, 10,17, 20, 22};
 

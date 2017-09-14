@@ -23,9 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.concurrent.TimeUnit;
 
-import kom.hikeside.Game.MapView;
+
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
 import kom.hikeside.Game.Objects.GameClasses.GameClass;
@@ -35,15 +34,14 @@ import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.Game;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 import kom.hikeside.libgdx.GameMechanics.BodyBuilder;
-import kom.hikeside.libgdx.GameMechanics.EnemyModel;
 import kom.hikeside.libgdx.GameObjects.Enemy;
 import kom.hikeside.libgdx.GameObjects.GameObject;
 import kom.hikeside.libgdx.GameObjects.Player;
-import kom.hikeside.libgdx.HPHUD;
 import kom.hikeside.libgdx.LibraryObjects;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 import static com.badlogic.gdx.math.MathUtils.random;
+import static kom.hikeside.Constants.AMOUNT_BODIES;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
 import static kom.hikeside.Constants.OBJECT_HEAL;
@@ -118,15 +116,15 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
             Log.e("erroe", e.toString());
         }
         //просчет позиции героя, если он один
-        float position = nextCoordinate(0);
+        float position = coordinateManager(0);
         int enemies = enemyArrayList.size();
         if(playerArrayList.size() + 1 == 1) {//добавляем единицу т.к только будет добавлены чары
             if (enemies == 2)
-                position = nextCoordinate(1) - (nextCoordinate(1) - nextCoordinate(0)) / 2;
+                position = coordinateManager(1) - (coordinateManager(1) - coordinateManager(0)) / 2;
             if (enemies == 3)
-                position = nextCoordinate(1);
+                position = coordinateManager(1);
         }else
-            position = nextCoordinate(playerArrayList.size() - 1);
+            position = coordinateManager(playerArrayList.size() - 1);
 
 
 
@@ -158,7 +156,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         if(LibraryObjects.isBoss(monsterId))
             textureScale = 6.5f;
 
-        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, nextCoordinate(enemyArrayList.size())), monsterId, textureScale);
+        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, coordinateManager(enemyArrayList.size())), monsterId, textureScale);
 
 
         enemy.setGameObjectView(enemyView);
@@ -167,7 +165,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         return enemy;
     }
 
-    private float nextCoordinate(int amount){
+    private float coordinateManager(int amount){
         float positionChange = amount * -150;
 
         float position = GAME_HEIGHT /  (2 * 2f);
@@ -192,11 +190,11 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
 
         for(Player player : playerArrayList)
-            if(isGotTouch(player))
+            if(isGotTouch(player) && player.hasHp())//TODO здесь условие сменить тогда, когда понадобится возможность что то делать с трупами
                 player.setSelectedByTouch(!player.selectedByTouch());
 
         for(Enemy enemy : enemyArrayList)
-            if(isGotTouch(enemy)){
+            if(isGotTouch(enemy) && enemy.hasHp()){//TODO здесь условие сменить тогда, когда понадобится возможность что то делать с трупами(воскрешать, уничтожать итд)
                 Log.d("touched", " enemy");
                 enemy.setSelectedByTouch(!enemy.selectedByTouch());
 
@@ -233,17 +231,16 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
                 if(enemyPot.y - enemyY/2 < mousePos.y && enemyPot.y + enemyY/2 > mousePos.y){
                     Log.d("Hit", mousePos.x + " y:" +  mousePos.y);
                     gotTouch = true;
-
                 }
-
-
         }
+
         return gotTouch;
     }
 
 
     public static final float STEP = 1 / 60f;
     private float accumulator = 0;
+
     private void doWorldStep(final float deltaTime){
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
@@ -260,14 +257,15 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     private void makeAction(final String action, @NonNull GameObject from, @NonNull GameObject to){
         if(from == null || to == null)
             return;
-        float NATURAL_HP_AMOUNT = 0.1f;
-        int NATURAL_MP_AMOUNT = 5;
+
+        final float NATURAL_HP_AMOUNT = 0.1f;
+
        // from = player;
       //  to = enemy;
 
         switch(action){
             case OBJECT_ATTACK:
-
+                from.wasteStaminaForAttack();
                 from.ActionMove();
                 int value = from.getAttackValue();
                 if (value != 0)
@@ -307,8 +305,19 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
                 else
                     statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_miss")));
 
+
+                if(!to.hasHp()){//делаем врага мертвым
+                    to.setDead(true);
+                    to.setDeadTexture(Game.res.getTexture("dead_body_" + (random.nextInt(AMOUNT_BODIES)+1)));
+                    to.setSelectedByTouch(false);
+
+                }
+
+
+
                 break;
             case OBJECT_DEFENCE:
+                from.wasteStaminaForDefence();
                 from.setBlocking(true);
                 statusArrayList.add(new Status(from.view.getBody(), Game.res.getTexture("status_" + OBJECT_DEFENCE)));
                 break;
@@ -331,10 +340,11 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     }
 
     private void turn(){
+
         for(Enemy enemy : enemyArrayList)
             if(enemy.hasHp())
-                makeAction(Randomizer.action(), enemy, playerArrayList.get(0));//TODO здесь бьют только по первому персу
-            
+                makeAction(Randomizer.action(), enemy, playerArrayList.get(random.nextInt(playerArrayList.size())));//TODO сделать другую систему определения
+
 
         for(Player player : playerArrayList)
             if(!player.hasHp()){
@@ -378,9 +388,9 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
             }
 
         for(Enemy enemy : enemyArrayList)
-            if(enemy.hasHp()){
+          // if(enemy.hasHp()){
                 enemy.render(batch);
-            }
+           // }
 
 
         for(int i = 0; i < statusArrayList.size(); ++i){

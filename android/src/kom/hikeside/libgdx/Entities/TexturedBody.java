@@ -32,20 +32,10 @@ public class TexturedBody extends MySprite {
         setAnimation(sprites, 1 / 12f);
     }
 
-    public void attack(){
+    public void changeTexture(Texture tex){
+        TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
 
-        getBody().setLinearVelocity(1000, getBody().getLinearVelocity().y);
-
-    }
-
-    public void returnAfterAttack(){
-        getBody().setLinearVelocity(-1000, getBody().getLinearVelocity().y);
-
-    }
-
-    public void getHit(){
-
-
+        setAnimation(sprites, 1 / 12f);
     }
 
 

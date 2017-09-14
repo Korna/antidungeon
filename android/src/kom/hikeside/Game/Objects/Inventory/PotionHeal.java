@@ -9,7 +9,7 @@ import kom.hikeside.Game.Objects.ObjList;
 public class PotionHeal extends InventoryObject {
 
     public PotionHeal(){
-        super(PotionHeal.class.getSimpleName(), 10, 1, ObjList.inventory.bandage);
+        super(PotionHeal.class.getSimpleName(), 1, ObjList.inventory.bandage);
     }
 
 }
