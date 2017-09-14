@@ -1,13 +1,19 @@
 package kom.hikeside.layoutCode;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +21,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
@@ -40,6 +50,30 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        ImageView imageView = null;
+
+        InputStream in_s = getClass().getClassLoader().getResourceAsStream("ui.png");
+
+
+
+        Uri imageUris = Uri.fromFile(new File("//android_asset/uis.png"));
+       // String ss = imageUris.getEncodedPath();
+       // Log.w("lle:", ss);
+
+        Uri imageUri = Uri.fromFile(new File("file:///android_asset//ui.png"));
+        String s = imageUri.getEncodedPath();
+        Log.w("lle:", s);
+
+        try {
+            Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+        }catch(IOException e){
+            Log.e("lel", e.toString());
+        }
+
+        //String hm = Environment.getDataDirectory();
+        // imageView.setImageBitmap(bm);
+
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -56,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
-        FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
+
 
         textEmail = (EditText) findViewById(R.id.editText_email);
         textPass = (EditText) findViewById(R.id.editText_pass);
@@ -71,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 textEmail.setText("");
                 textPass.setText("");
                 createAccount(email, pass);
+                FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
 
             }
         });
@@ -85,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 textEmail.setText("");
                 textPass.setText("");
                 signUp(email, pass);
+                FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
                 instance.userData = FBHandler.getUserData();
 
 

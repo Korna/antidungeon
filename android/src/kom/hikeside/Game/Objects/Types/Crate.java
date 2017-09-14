@@ -18,7 +18,7 @@ public class Crate extends Dots {
     public Crate(){
         content = new ArrayList<>();
         for(int i = 0; i < 1; ++i){
-            content.add(new InventoryObject("Item", 100, 1, ObjList.inventory.food));//типа рандомный
+            content.add(new InventoryObject("Item", 1, ObjList.inventory.food));//типа рандомный
 
         }
         pointList.add(new LatLng(-1, 0));

@@ -72,11 +72,7 @@ public class LootFragment extends Fragment {
         alertDialog.setTitle("Loot");
         alertDialog.setMessage("Взять мешок?");
 
-        final EditText input = new EditText(getActivity());
-        final String strInput = input.getText().toString();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
+
         //alertDialog.setIcon(R.drawable.ic_vpn_key_black_24dp);
 
 

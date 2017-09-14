@@ -10,7 +10,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "0.2"
-        multiDexEnabled false
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -22,6 +22,7 @@ android {
 
     buildTypes {
         release {
+
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android-optimize.txt'
             applicationVariants.all { variant ->

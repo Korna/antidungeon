@@ -1,11 +1,14 @@
 package kom.hikeside.Custom;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -43,6 +46,7 @@ public class InventoryAdapter extends ArrayAdapter<ModelView> {
 
         textViewName.setText(item.getName() + "");
         textViewAmount.setText(item.getAmount() + "");
+
 
         return row;
     }

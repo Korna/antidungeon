@@ -41,5 +41,7 @@ public class EnemyModel {
         this.maxHp = maxHp;
     }
 
-
+    public int getLvl() {
+        return lvl;
+    }
 }

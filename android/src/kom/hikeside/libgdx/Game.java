@@ -9,9 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import kom.hikeside.libgdx.Managers.ContentManager;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
+import static kom.hikeside.Constants.AMOUNT_BODIES;
+import static kom.hikeside.Constants.AMOUNT_MONSTERS;
+import static kom.hikeside.Constants.OBJECT_ATTACK;
+import static kom.hikeside.Constants.OBJECT_DEFENCE;
+import static kom.hikeside.Constants.OBJECT_HEAL;
+
 public class Game extends ApplicationAdapter {
-
-
 	public static ContentManager res;
 
 	private SpriteBatch batch;
@@ -30,8 +34,8 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		GAME_WIDTH = Gdx.graphics.getWidth();
-		GAME_HEIGHT = Gdx.graphics.getHeight();
+		GAME_WIDTH = (int)(Gdx.graphics.getWidth() / SCALE);
+		GAME_HEIGHT = (int)(Gdx.graphics.getHeight() / SCALE);
 
 		res = new ContentManager();
 		loadAssets();
@@ -43,16 +47,17 @@ public class Game extends ApplicationAdapter {
 		maincamera = new OrthographicCamera();
 
 
-		maincamera.setToOrtho(false, GAME_WIDTH/SCALE, GAME_HEIGHT/SCALE);
+		maincamera.setToOrtho(false, GAME_WIDTH, GAME_HEIGHT);
 
 		gsm = new GameStateManagement(this);
 
 	}
 
 	private void loadAssets(){
-		res.loadTexture("badlogic.jpg", "splash");
-		for(int i = 1; i <=7; ++i)
+
+		for(int i = 1; i <= AMOUNT_MONSTERS; ++i)
 			res.loadTexture("monsters/monster_" + i + ".png", "monster_" + i);
+
 		int i = 1;
 		res.loadTexture("heroes/hero_" + i + ".png", "knight");
 		++i;
@@ -60,12 +65,33 @@ public class Game extends ApplicationAdapter {
 		++i;
 		res.loadTexture("heroes/hero_" + i + ".png", "archer");
 		++i;
+		res.loadTexture("heroes/hero_" + i + ".png", "warrior");
+		++i;
+		res.loadTexture("heroes/hero_" + i + ".png", "mage");
 
-		res.loadTexture("grass.png", "grass");
-		res.loadTexture("wall.png", "wall");
 
-		res.loadTexture("orange_brick.png", "orange_brick");
-		res.loadTexture("brown_stone.png", "brown_stone");
+		res.loadTexture("battle_backgrounds/grass.png", "grass_1");
+		res.loadTexture("battle_backgrounds/grass_2.png", "grass_2");
+
+		res.loadTexture("battle_backgrounds/forest.png", "forest");
+		res.loadTexture("battle_backgrounds/dungeon.png", "dungeon");
+		res.loadTexture("battle_backgrounds/castle.png", "castle");
+		res.loadTexture("battle_backgrounds/wall.png", "wall");
+
+		res.loadTexture("battle_backgrounds/village_1_up.png", "village_1_up");
+		res.loadTexture("battle_backgrounds/village_1_down.png", "village_1_down");
+
+		res.loadTexture("battle_backgrounds/orange_brick.png", "orange_brick");
+		res.loadTexture("battle_backgrounds/brown_stone.png", "brown_stone");
+
+		res.loadTexture("selection_red.png", "selection_red");
+		res.loadTexture("selection_green.png", "selection_green");
+		for(int j = 1; j <= AMOUNT_BODIES; ++j)
+			res.loadTexture("dead_body_" + j + ".png", "dead_body_" + j);
+		res.loadTexture("status/attack.png", "status_" + OBJECT_ATTACK);
+		res.loadTexture("status/heal.png", "status_" + OBJECT_HEAL);
+		res.loadTexture("status/defence.png", "status_" + OBJECT_DEFENCE);
+		res.loadTexture("status/miss.png", "status_miss");
 
 		res.loadBitmapFont("white16.fnt", "white_font");
 		res.loadTextureAtlas("ui/ui.pack", "ui_buttons");

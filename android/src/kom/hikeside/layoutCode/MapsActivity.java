@@ -54,6 +54,7 @@ import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.BuildFragment;
 import kom.hikeside.layoutCode.Profile.GameProfileActivity;
+import kom.hikeside.libgdx.LibraryObjects;
 
 public class MapsActivity extends FragmentActivity implements
        // OnMapReadyCallback,
@@ -158,7 +159,13 @@ public class MapsActivity extends FragmentActivity implements
             case bag:
             case backpack:
                 infoWindow = new InfoWindow(marker, markerSpec, l);
-                l.LoadWindowInfo(p.getName(), p.getDescription());
+                String lvlText;
+                try {
+                    lvlText = LibraryObjects.getEnemyModel(p.getName()).getLvl() + "";
+                }catch(Exception e){
+                    lvlText = "Unk";
+                }
+                l.LoadWindowInfo(p.getName(), lvlText);
                 break;
             default:
                 infoWindow = null;
@@ -311,7 +318,12 @@ public class MapsActivity extends FragmentActivity implements
         ArrayList<Place> list = new ArrayList<>();
         for(LatLng latLng : tempList){
             MapView type = Randomizer.getSimpleObject();
-            list.add(new Place("id", instance.user.getUid(), "generated " + type.name(), "description", latLng.latitude, latLng.longitude, type));
+            String name = "generated " + type.name();
+            if(type == MapView.enemy)
+                name = Randomizer.simpleMonster();
+            if(type == MapView.boss)
+                name = Randomizer.simpleBoss();
+            list.add(new Place("id", instance.user.getUid(), name, "description", latLng.latitude, latLng.longitude, type));
         }
 
 
@@ -504,7 +516,14 @@ public class MapsActivity extends FragmentActivity implements
     };
 
     private void setCamera(GoogleMap googleMap, LatLng latLng){
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).bearing(0).tilt(0).build();
+        CameraPosition cameraPosition;
+        try {
+            cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).bearing(0).tilt(0).build();
+        }catch(NullPointerException e){
+            Log.e("Error", e.toString());
+            latLng = new LatLng(0, 0);
+            cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).bearing(0).tilt(0).build();
+        }
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
