@@ -1,8 +1,8 @@
-package kom.hikeside.Game.Objects.GameClasses;
+package kom.hikeside.Game.Objects;
 
 import java.io.Serializable;
 
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Content.GameClass;
 
 /**
  * Created by Koma on 05.09.2017.

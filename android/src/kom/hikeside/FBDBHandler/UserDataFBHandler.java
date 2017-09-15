@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Atom.UserData;
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Singleton;
 import kom.hikeside.libgdx.BundleToLib;

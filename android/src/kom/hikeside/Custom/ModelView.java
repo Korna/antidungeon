@@ -13,9 +13,11 @@ public class ModelView {//View&model object
     String picture;
 
     public ModelView(String itemModelId, String name, int amount) {
+
         this.itemModelId = itemModelId;
         this.name = name;
         this.amount = amount;
+
     }
 
 

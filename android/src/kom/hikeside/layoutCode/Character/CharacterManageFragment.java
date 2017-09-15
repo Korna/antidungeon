@@ -11,13 +11,12 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Game.Objects.GameCharacter;
+import kom.hikeside.Content.GameClass;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
-import kom.hikeside.libgdx.BundleToLib;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +24,7 @@ import kom.hikeside.libgdx.BundleToLib;
 public class CharacterManageFragment extends Fragment {
 
 
-    GameCharacter character = new GameCharacter(" ", 0, GameClass.priest, 0,0,0,0,0,0);
+    GameCharacter character = new GameCharacter(" ", 0, GameClass.Priest, 0,0,0,0,0,0);
     Bundle args = new Bundle();
     StatsFragment statsFragment = new StatsFragment();
 
@@ -94,7 +93,7 @@ public class CharacterManageFragment extends Fragment {
                 if(i>0 && list.size() != 0)
                     character = list.get(i-1);
                 else
-                    character = new GameCharacter("No characters left after deletiong", 0, GameClass.priest, 0,0,0,0,0,0);
+                    character = new GameCharacter("No characters left after deletiong", 0, GameClass.Priest, 0,0,0,0,0,0);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);

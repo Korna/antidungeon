@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.R;
 
 /**

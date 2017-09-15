@@ -4,16 +4,21 @@ package kom.hikeside.Custom;
  * Created by Koma on 19.08.2017.
  */
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import kom.hikeside.R;
+import kom.hikeside.Singleton;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> implements View.OnClickListener {
 
@@ -79,6 +84,20 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         public ViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.imageView_build);
+            Singleton instance = Singleton.getInstance();
+
+            try {
+                // get input stream
+                InputStream ims = instance.context.getAssets().open("items/armour_1.png");
+                // load image as Drawable
+                Drawable d = Drawable.createFromStream(ims, null);
+                // set image to ImageView
+                image.setImageDrawable(d);
+            }
+            catch(IOException ex) {
+                Log.e("assets", ex.toString());
+            }
+
             text = (TextView) itemView.findViewById(R.id.textView_name_build);
         }
 

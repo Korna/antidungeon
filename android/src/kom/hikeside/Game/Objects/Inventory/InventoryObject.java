@@ -1,21 +1,21 @@
 package kom.hikeside.Game.Objects.Inventory;
 
-import kom.hikeside.Game.Objects.ObjList;
-
 /**
  * Created by Koma on 16.08.2017.
  */
 
 public class InventoryObject {
     String name;
-    int weight;
+    String description;
+   // int weight;
     int levelRequered;
     ObjList.inventory type;
 
     public InventoryObject(){}
 
-    public InventoryObject(String name, int levelRequered, ObjList.inventory type) {
+    public InventoryObject(String name, String description, int levelRequered, ObjList.inventory type) {
         this.name = name;
+        this.description = description;
         //this.weight = weight;
         this.levelRequered = levelRequered;
         this.type = type;

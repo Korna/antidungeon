@@ -54,7 +54,7 @@ import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.BuildFragment;
 import kom.hikeside.layoutCode.Profile.GameProfileActivity;
-import kom.hikeside.libgdx.LibraryObjects;
+import kom.hikeside.Content.LibraryObjects;
 
 public class MapsActivity extends FragmentActivity implements
        // OnMapReadyCallback,
@@ -81,6 +81,9 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.fragment_maps_gui);
 
         context = this;
+
+        instance.context = context;
+
         if(googleServiceAvailable()){
           //  initMap();
             initInterface();
@@ -318,12 +321,20 @@ public class MapsActivity extends FragmentActivity implements
         ArrayList<Place> list = new ArrayList<>();
         for(LatLng latLng : tempList){
             MapView type = Randomizer.getSimpleObject();
-            String name = "generated " + type.name();
-            if(type == MapView.enemy)
-                name = Randomizer.simpleMonster();
-            if(type == MapView.boss)
-                name = Randomizer.simpleBoss();
-            list.add(new Place("id", instance.user.getUid(), name, "description", latLng.latitude, latLng.longitude, type));
+            String title = "Generic " + type.name();
+
+            LibraryObjects.LibraryMonsters monsterName;
+            if(type == MapView.enemy) {
+                monsterName = Randomizer.simpleMonster();
+                title = monsterName.name();
+            }
+            if(type == MapView.boss){
+                monsterName = Randomizer.simpleMonster();
+                title = monsterName.name();
+            }
+
+
+            list.add(new Place("id", instance.user.getUid(), title, "description", latLng.latitude, latLng.longitude, type));
         }
 
 

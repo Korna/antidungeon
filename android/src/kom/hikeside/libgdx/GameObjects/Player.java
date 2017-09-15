@@ -1,16 +1,11 @@
 package kom.hikeside.libgdx.GameObjects;
 
-import com.badlogic.gdx.graphics.Texture;
-
 import java.util.concurrent.TimeUnit;
 
 import kom.hikeside.Game.Mechanic.Randomizer;
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
-
-import static kom.hikeside.Game.Objects.GameClasses.GameClass.archer;
 
 /**
  * Created by Koma on 08.09.2017.
@@ -43,15 +38,15 @@ public class Player extends GameObject{
         int add = 0;
 
         switch(gameCharacter.getGameClass()){
-            case archer:
+            case Archer:
                 add = gameCharacter.getAgility();
                 break;
-            case warrior:
-            case knight:
+            case Warrior:
+            case Knight:
                 add = gameCharacter.getStrength();
                 break;
-            case mage:
-            case priest:
+            case Mage:
+            case Priest:
                 add = gameCharacter.getIntelligence();
                 break;
         }

@@ -1,12 +1,12 @@
 package kom.hikeside;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 import kom.hikeside.Atom.UserData;
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameCharacter;
 
 /**
  * Created by Koma on 14.08.2017.
@@ -27,8 +27,8 @@ public class Singleton {
 
     public LatLng myPosition;
     public FirebaseUser user;
-    public DatabaseReference myRef;
 
+    public Context context;
     public void setMyPosition(LatLng pos){
         if(pos.latitude!= 0 && pos.longitude !=0)
             myPosition = pos;

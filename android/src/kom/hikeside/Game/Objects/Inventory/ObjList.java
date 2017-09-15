@@ -1,4 +1,4 @@
-package kom.hikeside.Game.Objects;
+package kom.hikeside.Game.Objects.Inventory;
 
 
 
@@ -11,7 +11,8 @@ public class ObjList {//что, если, когда рядом зомби, на
 
     public enum inventory{
         drink, food, backpack, gun, bandage, medkit, plank,//can be placed as crafted on map
-        instrument, scrapMetal
+        instrument, scrapMetal,
+        PotionHeal, Armour, Weapon
     }
 
 

@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Game.Objects.GameCharacter;
+import kom.hikeside.Content.GameClass;
 import kom.hikeside.R;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
 
@@ -30,7 +30,7 @@ public class ProfileCharacterFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile_character, container, false);
 
 
-        GameCharacter character = new GameCharacter("Random", 1, GameClass.archer, 5,10,5,10,5,7);
+        GameCharacter character = new GameCharacter("Random", 1, GameClass.Archer, 5,10,5,10,5,7);
 
         Bundle args = new Bundle();
         args.putSerializable("GameCharacter", character);

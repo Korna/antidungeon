@@ -25,9 +25,10 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 
+import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Game.Mechanic.Randomizer;
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Game.Objects.GameCharacter;
+import kom.hikeside.Content.GameClass;
 import kom.hikeside.libgdx.BundleToLib;
 import kom.hikeside.libgdx.Entities.Status;
 import kom.hikeside.libgdx.Entities.TexturedBody;
@@ -37,7 +38,7 @@ import kom.hikeside.libgdx.GameMechanics.BodyBuilder;
 import kom.hikeside.libgdx.GameObjects.Enemy;
 import kom.hikeside.libgdx.GameObjects.GameObject;
 import kom.hikeside.libgdx.GameObjects.Player;
-import kom.hikeside.libgdx.LibraryObjects;
+import kom.hikeside.Content.LibraryObjects;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -112,7 +113,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         try {
             gameCharacter = bundle.gameCharacters.get(0);
         }catch(Exception e){
-            gameCharacter = LibraryObjects.getGameCharacter(GameClass.priest);
+            gameCharacter = LibraryObjects.getGameCharacter(GameClass.Priest);
             Log.e("erroe", e.toString());
         }
         //просчет позиции героя, если он один
@@ -140,11 +141,11 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
     private Enemy loadEnemies(BundleToLib bundle, BodyBuilder bodyBuilder){
 
-        String monsterId;
+        LibraryMonsters monsterId;
         try {
             monsterId = bundle.enemyNames.get(0);
             bundle.enemyNames.clear();
-            Log.w("loaded name is", monsterId);
+            Log.w("loaded name is", monsterId.name());
         }catch(Exception e){
             monsterId = Randomizer.simpleMonster();
             Log.e("error", e.toString());
@@ -156,7 +157,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         if(LibraryObjects.isBoss(monsterId))
             textureScale = 6.5f;
 
-        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, coordinateManager(enemyArrayList.size())), monsterId, textureScale);
+        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, coordinateManager(enemyArrayList.size())), monsterId.name(), textureScale);
 
 
         enemy.setGameObjectView(enemyView);

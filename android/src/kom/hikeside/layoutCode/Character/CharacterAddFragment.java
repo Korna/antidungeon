@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Game.Objects.GameCharacter;
+import kom.hikeside.Content.GameClass;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.StatsFragment;
-import kom.hikeside.libgdx.LibraryObjects;
+import kom.hikeside.Content.LibraryObjects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +29,7 @@ public class CharacterAddFragment extends Fragment {
     }
 
 
-    GameCharacter character = new GameCharacter("NotChosen", 0, GameClass.priest, 0,0,0,0,0,0);
+    GameCharacter character = new GameCharacter("NotChosen", 0, GameClass.Priest, 0,0,0,0,0,0);
     Bundle args = new Bundle();
     StatsFragment statsFragment = new StatsFragment();
 
@@ -46,7 +46,7 @@ public class CharacterAddFragment extends Fragment {
         button_archer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = LibraryObjects.getGameCharacter(GameClass.archer);
+                character = LibraryObjects.getGameCharacter(GameClass.Archer);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -58,7 +58,7 @@ public class CharacterAddFragment extends Fragment {
         button_knight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = LibraryObjects.getGameCharacter(GameClass.knight);
+                character = LibraryObjects.getGameCharacter(GameClass.Knight);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -69,7 +69,7 @@ public class CharacterAddFragment extends Fragment {
         button_warrior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = LibraryObjects.getGameCharacter(GameClass.warrior);
+                character = LibraryObjects.getGameCharacter(GameClass.Warrior);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -80,7 +80,7 @@ public class CharacterAddFragment extends Fragment {
         button_priest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = LibraryObjects.getGameCharacter(GameClass.priest);
+                character = LibraryObjects.getGameCharacter(GameClass.Priest);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
@@ -91,7 +91,7 @@ public class CharacterAddFragment extends Fragment {
         button_mage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character = LibraryObjects.getGameCharacter(GameClass.mage);
+                character = LibraryObjects.getGameCharacter(GameClass.Mage);
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);
