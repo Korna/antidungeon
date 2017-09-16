@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import kom.hikeside.Content.MainItemType;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
@@ -51,28 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        ImageView imageView = null;
-
-        InputStream in_s = getClass().getClassLoader().getResourceAsStream("ui.png");
 
 
-
-        Uri imageUris = Uri.fromFile(new File("//android_asset/uis.png"));
-       // String ss = imageUris.getEncodedPath();
-       // Log.w("lle:", ss);
-
-        Uri imageUri = Uri.fromFile(new File("file:///android_asset//ui.png"));
-        String s = imageUri.getEncodedPath();
-        Log.w("lle:", s);
-
-        try {
-            Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-        }catch(IOException e){
-            Log.e("lel", e.toString());
-        }
-
-        //String hm = Environment.getDataDirectory();
-        // imageView.setImageBitmap(bm);
 
         mAuth = FirebaseAuth.getInstance();
 

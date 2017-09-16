@@ -1,5 +1,9 @@
 package kom.hikeside.Custom;
 
+import android.graphics.drawable.Drawable;
+
+import kom.hikeside.Content.MainItemType;
+
 /**
  * Created by Koma on 17.08.2017.
  */
@@ -7,17 +11,17 @@ package kom.hikeside.Custom;
 public class ModelView {//View&model object
     String itemModelId;
 
-    String name;
+    public String concreteType;
+    public MainItemType mainItemType;
+    Drawable icon;
     int amount;
 
-    String picture;
 
-    public ModelView(String itemModelId, String name, int amount) {
-
+    public ModelView(String itemModelId, String concreteType, int amount, Drawable icon, MainItemType mainType) {
         this.itemModelId = itemModelId;
-        this.name = name;
+        this.concreteType = concreteType;
         this.amount = amount;
-
+        this.mainItemType = mainType;
     }
 
 
@@ -37,11 +41,11 @@ public class ModelView {//View&model object
         this.itemModelId = itemModelId;
     }
 
-    public String getName() {
-        return name;
+    public String getConcreteType() {
+        return concreteType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setConcreteType(String name) {
+        this.concreteType = name;
     }
 }

@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Game.MapView;
-import kom.hikeside.Game.Objects.Types.Dots;
 
 /**
  * Created by Koma on 15.08.2017.
@@ -25,25 +24,9 @@ import kom.hikeside.Game.Objects.Types.Dots;
 public class MapObjBuilder {//проблемное место - карта. к ней колоссальное число запросов будет
 
 
-    private Dots rotate(Dots poly, int angle){
 
 
-        return poly;
-    }
 
-    public PolylineOptions prepare(LatLng latLng, Dots poly){
-        double cfg = 0.0001;
-        PolylineOptions p = new PolylineOptions().geodesic(true);
-
-        LatLng c;
-        for(LatLng obj : poly.pointList) {//latLng.latitude + obj.y, latLng.longitude + obj.x
-            c = new LatLng(latLng.latitude + obj.longitude * cfg, latLng.longitude + obj.latitude * cfg);
-            p.add(c);
-        }
-
-        p.color(Color.GRAY);
-        return p;
-    }
 
     public Object smartBuild(GoogleMap map,Place place){
         MapView type = place.getType();

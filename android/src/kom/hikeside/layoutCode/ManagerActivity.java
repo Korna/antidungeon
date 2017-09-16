@@ -18,6 +18,8 @@ import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.AddPlaceFragment;
 
+import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
+
 public class ManagerActivity extends AppCompatActivity {
 
 
@@ -38,7 +40,7 @@ public class ManagerActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView_manager);
         list = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("marks");
+        databaseReference = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_MARKS);
 
 
 

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,23 +50,27 @@ public class InventoryAdapter extends ArrayAdapter<ModelView> {
 
         ModelView item = itemList.get(position);
 
-        textViewName.setText(item.getName() + "");
+        textViewName.setText(item.getConcreteType() + "");
         textViewAmount.setText(item.getAmount() + "");
 
         ImageView image = (ImageView) row.findViewById(R.id.imageView_item) ;
 
 
+
+        Drawable d;
+
         try {
-            // get input stream
-            InputStream ims = getContext().getAssets().open("items/gold.png");
-            // load image as Drawable
-            Drawable d = Drawable.createFromStream(ims, null);
-            // set image to ImageView
-            image.setImageDrawable(d);
-        }
-        catch(IOException ex) {
+            InputStream ims = getContext().getAssets().open("items/" + item.getConcreteType() + ".png");
+            d = Drawable.createFromStream(ims, null);
+
+        } catch(IOException ex) {
             Log.e("assets", ex.toString());
+            d = ContextCompat.getDrawable(getContext(), android.R.drawable.ic_delete);
         }
+
+
+        image.setImageDrawable(d);
+
 
         return row;
     }

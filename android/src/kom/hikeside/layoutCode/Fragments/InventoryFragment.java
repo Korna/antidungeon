@@ -2,7 +2,9 @@ package kom.hikeside.layoutCode.Fragments;
 
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +18,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import kom.hikeside.Custom.InventoryAdapter;
 import kom.hikeside.Custom.ModelView;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Game.Objects.BuildItems;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
+
+import static com.badlogic.gdx.math.MathUtils.random;
+import static kom.hikeside.Constants.FB_DIRECTORY_INVENTORY;
+import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
 
 
 public class InventoryFragment extends Fragment {//сетка с инвентарем
@@ -53,12 +63,27 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
         gvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
+
+                ModelView modelView = list.get(position);
+                Singleton instance = Singleton.getInstance();
+                BuildItems buildItems = instance.currentGameCharacter.buildItems;
+                buildItems.addItem(modelView.mainItemType, modelView.concreteType);
+                UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
+                FBHandler.setBuildItema(buildItems, instance.userData.getCurrentCharacter());
+                Log.i("added", "item " + modelView.getConcreteType());
+
                 adapter.itemList.remove(position);
                 adapter.notifyDataSetChanged();
+
             }
         });
 
         adjustGridView();
+
+
+
+
 
         return v;
     }
@@ -72,14 +97,14 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
 
     }
 
-    DatabaseReference databaseReference;//дб на серваке
     @Override
     public void onStart(){
         super.onStart();
 
         Singleton instance = Singleton.getInstance();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(instance.user.getUid()).child("inventory");
+        DatabaseReference databaseReference;
+        databaseReference = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(instance.user.getUid()).child(FB_DIRECTORY_INVENTORY);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,8 +114,10 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
 
                 for(DataSnapshot snap : dataSnapshot.getChildren()){
                     InventoryObject model = snap.getValue(InventoryObject.class);
-                    ModelView viewModel = new ModelView(snap.getKey(), model.getName(), 1);
-                    Log.d("added:", model.getName() + " firebase key is:" + snap.getKey());
+
+                    ModelView viewModel = new ModelView(snap.getKey(), model.getConcreteType(), random.nextInt(3), null, model.getMainType());
+
+                    Log.d("added:", model.getConcreteType() + " firebase key is:" + snap.getKey());
                     adapter.itemList.add(viewModel);
                 }
 
@@ -102,7 +129,12 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
 
             }
         });
+
+
+
     }
+
+
 
 
 

@@ -25,6 +25,8 @@ public class Singleton {
     public UserData userData = new UserData();
     public GameCharacter currentGameCharacter = null;
 
+
+
     public LatLng myPosition;
     public FirebaseUser user;
 

@@ -5,11 +5,11 @@ import android.util.Log;
 import com.badlogic.gdx.utils.Array;
 
 import kom.hikeside.Content.LibraryMonsters;
+import kom.hikeside.Content.MainItemType;
 import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Objects.MapViewPriority;
-import kom.hikeside.Game.Objects.Inventory.ObjList;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
-import kom.hikeside.Content.LibraryObjects;
+
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static kom.hikeside.Constants.BOSSES_NUMBERS;
@@ -39,10 +39,10 @@ public class Randomizer {
     }
 
 
-    public static ObjList.inventory getSimpleItem(){
-        int randomIndex = random.nextInt(ObjList.inventory.values().length);
+    public static MainItemType getSimpleItem(){
+        int randomIndex = random.nextInt(MainItemType.values().length);
 
-        return ObjList.inventory.values() [randomIndex];
+        return MainItemType.values() [randomIndex];
     }
 
     public static int getAttackValue(AttackModel model){

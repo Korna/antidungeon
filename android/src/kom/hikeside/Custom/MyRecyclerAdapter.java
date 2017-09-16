@@ -5,6 +5,7 @@ package kom.hikeside.Custom;
  */
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Game.Objects.BuildItems;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 
@@ -41,17 +44,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     @Override public void onBindViewHolder(final ViewHolder holder, int position) {
         final ModelView item = items.get(position);
         holder.itemView.setTag(item);
-        holder.text.setText(item.getName());
+        holder.text.setText(item.getConcreteType());
 
 
 
     }
+
 
     @Override public int getItemCount() {
         return items.size();
     }
 
     @Override public void onClick(View view) {
+        Log.d("clicked", "item");
         if (itemClickListener != null) {
             ModelView model = (ModelView) view.getTag();
             itemClickListener.onItemClick(view, model);

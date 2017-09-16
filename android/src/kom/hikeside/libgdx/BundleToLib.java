@@ -15,7 +15,7 @@ import kom.hikeside.libgdx.GameMechanics.EnemyModel;
 
 public class BundleToLib {
     //singleton pattern
-    private static volatile BundleToLib instance = new BundleToLib();
+    private static volatile BundleToLib instance = new BundleToLib();// TODO look for error descr java.lang.ExceptionInInitializerError
     public static BundleToLib getInstance(){
         return instance;
     }

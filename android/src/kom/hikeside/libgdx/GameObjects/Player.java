@@ -39,15 +39,15 @@ public class Player extends GameObject{
 
         switch(gameCharacter.getGameClass()){
             case Archer:
-                add = gameCharacter.getAgility();
+                add = gameCharacter.buildStats.getAgility();
                 break;
             case Warrior:
             case Knight:
-                add = gameCharacter.getStrength();
+                add = gameCharacter.buildStats.getStrength();
                 break;
             case Mage:
             case Priest:
-                add = gameCharacter.getIntelligence();
+                add = gameCharacter.buildStats.getIntelligence();
                 break;
         }
 

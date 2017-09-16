@@ -40,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import kom.hikeside.Atom.Place;
+import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Custom.MarkerInfoWindows.FightFragment;
 import kom.hikeside.Custom.MarkerInfoWindows.LootFragment;
 import kom.hikeside.FBDBHandler.FBPlace;
@@ -55,6 +56,8 @@ import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.BuildFragment;
 import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 import kom.hikeside.Content.LibraryObjects;
+
+import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
 
 public class MapsActivity extends FragmentActivity implements
        // OnMapReadyCallback,
@@ -282,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private void loadMarkers(){
         db = new FBPlace();
-        FirebaseDatabase.getInstance().getReference("marks").addValueEventListener(//глобальный и постоянный прослушиватель всех данных marks
+        FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_MARKS).addValueEventListener(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -323,7 +326,7 @@ public class MapsActivity extends FragmentActivity implements
             MapView type = Randomizer.getSimpleObject();
             String title = "Generic " + type.name();
 
-            LibraryObjects.LibraryMonsters monsterName;
+            LibraryMonsters monsterName;
             if(type == MapView.enemy) {
                 monsterName = Randomizer.simpleMonster();
                 title = monsterName.name();

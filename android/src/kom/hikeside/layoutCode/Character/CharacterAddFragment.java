@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import kom.hikeside.Game.Objects.BuildStats;
 import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Content.GameClass;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
@@ -29,7 +30,7 @@ public class CharacterAddFragment extends Fragment {
     }
 
 
-    GameCharacter character = new GameCharacter("NotChosen", 0, GameClass.Priest, 0,0,0,0,0,0);
+    GameCharacter character = new GameCharacter("NotChosen", 0, GameClass.Priest, new BuildStats(0,0,0,0,0,0));
     Bundle args = new Bundle();
     StatsFragment statsFragment = new StatsFragment();
 

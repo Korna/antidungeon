@@ -2,7 +2,10 @@ package kom.hikeside.Game.Mechanic;
 
 import java.util.ArrayList;
 
+import kom.hikeside.Content.MainItemType;
 import kom.hikeside.Game.MapView;
+import kom.hikeside.Game.Objects.Inventory.ItemArmor;
+import kom.hikeside.Game.Objects.Inventory.ItemWeapon;
 import kom.hikeside.Game.Objects.Inventory.PotionHeal;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Game.Objects.Inventory.Weapon;
@@ -22,13 +25,13 @@ public class FromMapGetter {//
 
         switch(type){
             case bag:
-                items.add(new Weapon());
-                items.add(LibraryObjects.getArmour("armour_" + (random.nextInt(2) + 1)));
-                return items;
             case treasureChest:
-                items.add(LibraryObjects.getArmour("armour_" + (random.nextInt(2) + 1)));
             case backpack:
-                items.add(new PotionHeal());
+                items.add(new InventoryObject(ItemArmor.Leather.name(), MainItemType.Armour));
+                items.add(new InventoryObject(ItemArmor.Mail.name(), MainItemType.Armour));
+                items.add(new InventoryObject(ItemArmor.Robe.name(), MainItemType.Armour));
+                items.add(new InventoryObject(ItemWeapon.Sword.name(), MainItemType.Weapon));
+                items.add(new InventoryObject(ItemWeapon.Axe.name(), MainItemType.Weapon));
                 return items;
             default:
                 return null;
@@ -37,3 +40,14 @@ public class FromMapGetter {//
     }
 
 }
+
+
+
+//
+//
+//что, если в тип отсылать имя класса? а потом инстансить его и проверять принадлежность по суперклассу?
+//
+//
+//
+//
+//

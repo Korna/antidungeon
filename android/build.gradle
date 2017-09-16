@@ -15,7 +15,7 @@ android {
     }
 
 
-    dexOptions{
+    dexOptions {
         //incremental true
         maxProcessCount 8
     }
@@ -94,6 +94,11 @@ android {
         compile 'com.android.support:multidex:1.0.1'
 
         compile 'com.appolica:interactive-info-window:v1.0.6'
+
+        compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.6@aar') {
+            transitive = true
+        }
+
     }
     apply plugin: 'com.google.gms.google-services'
 /*

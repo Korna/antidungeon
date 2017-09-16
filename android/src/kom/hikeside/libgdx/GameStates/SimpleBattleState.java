@@ -78,7 +78,8 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         super(gsm);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        buildTable();
+        stage.addActor(buildActionsTable());
+        //stage.addActor(buildInfoTable());
         world = gsm.world;
         b2dr = new Box2DDebugRenderer();
         batch = new SpriteBatch();
@@ -379,6 +380,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         batch.draw(texture_background, 0, (32*3)*5, (32*4)*5, (32*3)*5);
         batch.end();
 
+
         if(true)
             b2dr.render(world, maincamera.combined);
 
@@ -418,7 +420,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
 
     TextButton.TextButtonStyle textButtonStyle;
-    private void buildTable() {
+    private Table buildActionsTable() {
 
         //creating font
         BitmapFont white = Game.res.getBitmapFont("white_font");
@@ -448,7 +450,27 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         table.add(addButton(OBJECT_HEAL)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
 
 
-        stage.addActor(table);
+        return table;
+    }
+    private Table buildInfoTable(){
+        BitmapFont white = Game.res.getBitmapFont("white_font");
+
+        TextureAtlas mainMenuAtlas = Game.res.getTextureAtlas("ui_buttons");
+        Skin skin = new Skin(mainMenuAtlas);
+
+        Table table = new Table(skin);
+        table.setBounds(GAME_WIDTH*0.05f, (GAME_HEIGHT*0.9f)/2, GAME_WIDTH/2, GAME_HEIGHT/2);
+
+        final int BUTTON_HEIGHT = GAME_WIDTH/20;
+        final int BUTTON_WIDTH = GAME_WIDTH/10;
+
+        table.add(addButton(OBJECT_ATTACK)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
+        table.row().pad(100);
+        table.add(addButton(OBJECT_DEFENCE)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
+        table.row().pad(1);
+        table.add(addButton(OBJECT_HEAL)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
+
+        return table;
     }
     private TextButton addButton(final String text){
 

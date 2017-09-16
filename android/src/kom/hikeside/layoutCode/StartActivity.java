@@ -26,7 +26,8 @@ import kom.hikeside.layoutCode.Character.CharacterActivity;
 import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity {//TODO сделать минимальную привязку к данным класса в связек клиент-сервр
+    //т.е чтоб имелось просто название типа и линковка к таблице с модификацией параметров, если она есть
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -44,11 +45,6 @@ public class StartActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         accountDataLoader();
-
-
-
-
-
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

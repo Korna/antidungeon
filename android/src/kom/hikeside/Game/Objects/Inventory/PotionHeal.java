@@ -1,5 +1,7 @@
 package kom.hikeside.Game.Objects.Inventory;
 
+import kom.hikeside.Content.MainItemType;
+
 /**
  * Created by Koma on 18.08.2017.
  */
@@ -7,7 +9,7 @@ package kom.hikeside.Game.Objects.Inventory;
 public class PotionHeal extends Consumable {
 
     public PotionHeal(){
-        super(PotionHeal.class.getSimpleName(), "",   1, ObjList.inventory.PotionHeal);
+        super(PotionHeal.class.getSimpleName(), "",   1, MainItemType.Consumable);
     }
 
 

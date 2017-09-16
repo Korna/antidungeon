@@ -4,9 +4,11 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.ArrayList;
 
+import kom.hikeside.Game.Objects.BuildStats;
 import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Game.Objects.Inventory.Armour;
-import kom.hikeside.Game.Objects.Inventory.ObjList;
+
+import kom.hikeside.Game.Objects.Inventory.ItemArmor;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AbilityModel;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
@@ -38,19 +40,19 @@ public class LibraryObjects {
         GameCharacter gameCharacter = null;
         switch(gameClass){
             case Archer:
-                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, 5, 10, 5, 7, 7, 5);
+                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, new BuildStats(5, 10, 5, 7, 7, 5));
                 break;
             case Warrior:
-                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, 10, 5, 5, 5, 5, 10);
+                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, new BuildStats(10, 5, 5, 5, 5, 10));
                 break;
             case Knight:
-                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, 10, 5, 5, 5, 7, 7);
+                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, new BuildStats(10, 5, 5, 5, 7, 7));
                 break;
             case Mage:
-                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, 5, 5, 10, 5, 5, 10);
+                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, new BuildStats(5, 5, 10, 5, 5, 10));
                 break;
             case Priest:
-                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, 5, 5, 10, 5, 7, 7);
+                gameCharacter = new GameCharacter(gameClass.name(), 1, gameClass, new BuildStats(5, 5, 10, 5, 7, 7));
                 break;
         }
 
@@ -101,7 +103,7 @@ public class LibraryObjects {
             case Elephant:
                 enemy = new Enemy(getEnemyModel("model_11"), name, getAttackModel(weak_accurate));
                 break;
-            case Knight:
+            case War_Knight:
                 enemy = new Enemy(getEnemyModel("model_12"), name, getAttackModel(weak_loose_ranged));
                 break;
             case War_Goblin:
@@ -176,7 +178,7 @@ public class LibraryObjects {
                 enemy = new EnemyModel(70, 2, 50, "Elephant", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_12":
-                enemy = new EnemyModel(100, 2, 50, "Knight", "Insane project of mad wizard", getAbilityModel("ability_1"));
+                enemy = new EnemyModel(100, 2, 50, "War_Knight", "Insane project of mad wizard", getAbilityModel("ability_1"));
                 break;
             case "model_13":
                 enemy = new EnemyModel(70, 1, 50, "War Goblin", "Insane project of mad wizard", getAbilityModel("ability_1"));
@@ -286,10 +288,10 @@ public class LibraryObjects {
         Armour armour = new Armour(5, 1, 1, armorEffects);
         switch(name){
             case "armour_1":
-                armour = new Armour("Leather", "dud", 1, ObjList.inventory.Armour, 1, 0, 0.05f, armorEffects);
+                armour = new Armour(ItemArmor.Leather.name(), "dud", 1, MainItemType.Armour, 1, 0, 0.05f, armorEffects);
                 break;
             case "armour_2":
-                armour = new Armour("Improved Leather", "dud", 1, ObjList.inventory.Armour, 2, 0, 0.05f, armorEffects);
+                armour = new Armour("Improved Leather", "dud", 1, MainItemType.Armour, 2, 0, 0.05f, armorEffects);
                 break;
 
         }

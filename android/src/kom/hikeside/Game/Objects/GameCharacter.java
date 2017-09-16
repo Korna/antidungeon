@@ -18,6 +18,8 @@ public class GameCharacter implements Serializable {
     int skillPoints;
     String inventoryKey;//или хранить объект Inventory?
 
+    public BuildStats buildStats;
+    public BuildItems buildItems = new BuildItems();
 
     GameClass gameClass;
 
@@ -26,13 +28,6 @@ public class GameCharacter implements Serializable {
     int maxStamina = 50;
 
 
-    int strength;//
-    int agility;//больше ивентов в день можно посещать
-    int intelligence;//больше интеллект = больше опыта
-
-    int luck;
-    int stamina;//резист у крону
-    int will;//в каком числе ивентов в день может учавствовать?
 
     public GameCharacter(){
         //пустой конструктор для получения данных с FB
@@ -46,65 +41,15 @@ public class GameCharacter implements Serializable {
         this.key = key;
     }
 
-    public GameCharacter(String name, int lvl, GameClass gameClass, int strength, int agility, int intelligence, int luck, int stamina, int will) {
+    public GameCharacter(String name, int lvl, GameClass gameClass, BuildStats buildStats) {
         this.name = name;
         this.lvl = lvl;
         this.gameClass = gameClass;
-        this.strength = strength;
-        this.agility = agility;
-        this.intelligence = intelligence;
-        this.luck = luck;
-        this.stamina = stamina;
-        this.will = will;
+        this.buildStats = buildStats;
+
     }
 
-    public int getStrength() {
-        return strength;
-    }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public int getAgility() {
-        return agility;
-    }
-
-    public void setAgility(int agility) {
-        this.agility = agility;
-    }
-
-    public int getIntelligence() {
-        return intelligence;
-    }
-
-    public void setIntelligence(int intelligence) {
-        this.intelligence = intelligence;
-    }
-
-    public int getLuck() {
-        return luck;
-    }
-
-    public void setLuck(int luck) {
-        this.luck = luck;
-    }
-
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
-    }
-
-    public int getWill() {
-        return will;
-    }
-
-    public void setWill(int will) {
-        this.will = will;
-    }
 
     public String getName() {
         return name;
@@ -154,4 +99,7 @@ public class GameCharacter implements Serializable {
     public void setMaxStamina(int maxStamina) {
         this.maxStamina = maxStamina;
     }
+
+
+
 }

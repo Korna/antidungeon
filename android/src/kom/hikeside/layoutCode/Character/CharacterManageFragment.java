@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import kom.hikeside.Game.Objects.BuildStats;
 import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Content.GameClass;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
@@ -24,11 +25,11 @@ import kom.hikeside.layoutCode.Fragments.StatsFragment;
 public class CharacterManageFragment extends Fragment {
 
 
-    GameCharacter character = new GameCharacter(" ", 0, GameClass.Priest, 0,0,0,0,0,0);
+    GameCharacter character = new GameCharacter(" ", 0, GameClass.Priest, new BuildStats(0,0,0,0,0,0));
     Bundle args = new Bundle();
     StatsFragment statsFragment = new StatsFragment();
 
-    int i = 0;
+    private int i = 0;
 
     public CharacterManageFragment() {
         // Required empty public constructor
@@ -47,13 +48,12 @@ public class CharacterManageFragment extends Fragment {
 
 
 
-        Button buttonForward = (Button) v.findViewById(R.id.button_character_forward);
+        Button buttonForward = (Button) v.findViewById(R.id.button_character_forward);//TODO: fix bug here somewhere
         buttonForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(list.size() > i + 1){
                     ++i;
-
                     character = list.get(i);
                     View v = statsFragment.getView();
                     statsFragment.loadCharacterCommon(v, character);
@@ -93,7 +93,7 @@ public class CharacterManageFragment extends Fragment {
                 if(i>0 && list.size() != 0)
                     character = list.get(i-1);
                 else
-                    character = new GameCharacter("No characters left after deletiong", 0, GameClass.Priest, 0,0,0,0,0,0);
+                    character = new GameCharacter("No characters left after deletiong", 0, GameClass.Priest, new BuildStats(0,0,0,0,0,0));
 
                 View v = statsFragment.getView();
                 statsFragment.loadCharacterCommon(v, character);

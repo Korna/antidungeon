@@ -14,10 +14,18 @@ import java.util.ArrayList;
 
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Atom.UserData;
+import kom.hikeside.Game.Objects.BuildItems;
 import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Singleton;
 import kom.hikeside.libgdx.BundleToLib;
+
+import static kom.hikeside.Constants.FB_DIRECTORY_BUILD_ITEMS;
+import static kom.hikeside.Constants.FB_DIRECTORY_CHARS;
+import static kom.hikeside.Constants.FB_DIRECTORY_INVENTORY;
+import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
+import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
+import static kom.hikeside.Constants.FB_DIRECTORY_USER_DATA;
 
 /**
  * Created by Koma on 05.09.2017.
@@ -35,12 +43,10 @@ public class UserDataFBHandler {
 
         if(items != null) {
 
-            reference = FirebaseDatabase.getInstance().getReference("users").child(uid).child("inventory");
+            reference = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_INVENTORY);
 
             for(InventoryObject item : items){
-                String tableItemId =
-                        reference.push()
-                                .getKey();//ключ остается заголовком объекта, но не полем объекта
+                String tableItemId = reference.push().getKey();//ключ остается заголовком объекта, но не полем объекта
 
                 reference.child(tableItemId).setValue(item);
             }
@@ -48,11 +54,9 @@ public class UserDataFBHandler {
         }
 
     }
-    private void deleteItem(){
 
-    }
     public void addPlace(Place place){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("marks");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_MARKS);
         String key = ref.push().getKey();
 
         place.setId(key);
@@ -65,7 +69,7 @@ public class UserDataFBHandler {
     public void deletePlace(String key){
         //запрос к удаленной бд на удаление
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query marksQuery = ref.child("marks").orderByChild("id").equalTo(key);
+        Query marksQuery = ref.child(FB_DIRECTORY_MARKS).orderByChild("id").equalTo(key);
 
         marksQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -88,7 +92,7 @@ public class UserDataFBHandler {
     public void setCurrentCharacter(String currentCharacterKey){
         DatabaseReference reference;
 
-        reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        reference = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid);
         String tableCharId = reference.push().getKey();//ключ остается заголовком объекта, но не полем объекта
         reference.child(tableCharId).setValue(currentCharacterKey);
     }
@@ -100,7 +104,7 @@ public class UserDataFBHandler {
     public void addCharacter(GameCharacter character){
         DatabaseReference reference;
 
-        reference = FirebaseDatabase.getInstance().getReference("users").child(uid).child("characters");
+        reference = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_CHARS);
 
         String tableCharId = reference.push().getKey();//ключ остается заголовком объекта, но не полем объекта
         reference.child(tableCharId).setValue(character);
@@ -128,7 +132,7 @@ public class UserDataFBHandler {
         });*/
 
 
-        Task s = ref.child("users").child(uid).child("characters").child(key).removeValue();
+        Task s = ref.child(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_CHARS).child(key).removeValue();
 
         Log.w( "delete", "removed from firebase");
     }
@@ -137,9 +141,9 @@ public class UserDataFBHandler {
         final ArrayList<GameCharacter> list = new ArrayList<>();
 
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
 
-        ref.child(uid).child("characters").addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
+        ref.child(uid).child(FB_DIRECTORY_CHARS).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -163,11 +167,10 @@ public class UserDataFBHandler {
     UserData object = null;
     public UserData getUserData(){
 
-        FirebaseDatabase.getInstance().getReference("users").child(uid).child("userData").addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
+        FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_USER_DATA).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d("onDataChange", "loaded userData");
                         object = dataSnapshot.getValue(UserData.class);
 
 
@@ -176,6 +179,7 @@ public class UserDataFBHandler {
                         if(object != null) {
                             Singleton instance = Singleton.getInstance();
                             instance.currentGameCharacter = getGameCharacter(object.getCurrentCharacter());
+                            Log.i("onDataChange", "current game Char Loaded");
                         }
                         else{
                             Log.e("onDataChange", "character not set");
@@ -190,15 +194,15 @@ public class UserDataFBHandler {
     public UserData createNewUserData(){//возвращает дефолтно созданный аккаунт юзера
         UserData userData = new UserData(uid, 100, 1, 0);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
 
-        ref.child(uid).child("userData").setValue(userData);
+        ref.child(uid).child(FB_DIRECTORY_USER_DATA).setValue(userData);
 
         return userData;
     }
 
     public UserData updateUserData(UserData userData){//возвращает дефолтно созданный аккаунт юзера
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
 
        // ref.child(uid).child("userData").setValue(userData);
 
@@ -206,16 +210,16 @@ public class UserDataFBHandler {
     }
 
     public void updateUserDataCharacterStatus(String status) {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
-            ref.child(uid).child("userData").child("currentCharacter").setValue(status);
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
+            ref.child(uid).child(FB_DIRECTORY_USER_DATA).child("currentCharacter").setValue(status);
     }
 
     private GameCharacter gameCharacter = null;
     public GameCharacter getGameCharacter(final String key){
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
 
-        ref.child(uid).child("characters").child(key).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
+        ref.child(uid).child(FB_DIRECTORY_CHARS).child(key).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -224,6 +228,8 @@ public class UserDataFBHandler {
                         try {
                             gameCharacter.setKey(key);
                             Log.d("found gameChar", gameCharacter.getName() + " " + gameCharacter.getKey());
+                            Singleton instance = Singleton.getInstance();
+                            instance.currentGameCharacter = gameCharacter;
                             BundleToLib bundle = BundleToLib.getInstance();
                             bundle.gameCharacters.add(gameCharacter);
                         }catch(Exception e){
@@ -239,6 +245,15 @@ public class UserDataFBHandler {
                 });
 
         return gameCharacter;
+    }
+
+    public void setBuildItema(BuildItems buildItema, String characterKey){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
+
+
+        ref.child(uid).child(FB_DIRECTORY_CHARS).child(characterKey).child(FB_DIRECTORY_BUILD_ITEMS).setValue(buildItema);
+
+
     }
 
 
