@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    tools:showIn="@layout/activity_main">
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_below="@+id/button_logout"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="markers"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="56dp"
+        android:text="LogOut" />
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/button_maps_game"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Map" />
+
+        <Button
+            android:id="@+id/button_fast_game"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@+id/button_character"
+            android:layout_alignStart="@+id/button_profile"
+            android:text="Battle" />
+
+        <Button
+            android:id="@+id/button_profile"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@+id/button3"
+            android:text="Profile" />
+
+        <Button
+            android:id="@+id/button_items"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@+id/button_character"
+            android:layout_alignParentStart="true"
+            android:text="Items" />
+
+        <Button
+            android:id="@+id/button_character"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_above="@+id/button3"
+            android:layout_alignParentStart="true"
+            android:text="Characters" />
+
+    </LinearLayout>
+
+</RelativeLayout>

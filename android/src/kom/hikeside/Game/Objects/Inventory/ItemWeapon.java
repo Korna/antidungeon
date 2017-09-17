@@ -5,5 +5,5 @@ package kom.hikeside.Game.Objects.Inventory;
  */
 
 public enum ItemWeapon {
-    Sword, Axe
+    Sword, Axe, Wand
 }

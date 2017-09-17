@@ -51,7 +51,8 @@ public class InventoryAdapter extends ArrayAdapter<ModelView> {
         ModelView item = itemList.get(position);
 
         textViewName.setText(item.getConcreteType() + "");
-        textViewAmount.setText(item.getAmount() + "");
+        if(item.getAmount() != 0)
+            textViewAmount.setText(item.getAmount() + "");
 
         ImageView image = (ImageView) row.findViewById(R.id.imageView_item) ;
 

@@ -5,7 +5,7 @@ package kom.hikeside.Content;
  */
 
 public enum MainItemType {
-    Armour, Weapon, Consumable, Ring, Accessory, Shield, Head;
+    Armour, Weapon, Consumable, Ring, Accessory, Shield, Head, Legs;
     public enum BackPack{
         Big, small
 

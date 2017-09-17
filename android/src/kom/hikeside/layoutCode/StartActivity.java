@@ -1,169 +1,127 @@
 package kom.hikeside.layoutCode;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import kom.hikeside.AndroidLauncher;
+import kom.hikeside.Atom.UserData;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.FirebaseMultiQuery;
+import kom.hikeside.MyValueEventListener;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
-import kom.hikeside.layoutCode.Character.CharacterActivity;
-import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 
+import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
+import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
+import static kom.hikeside.Constants.FB_DIRECTORY_USER_DATA;
 
-public class StartActivity extends AppCompatActivity {//TODO сделать минимальную привязку к данным класса в связек клиент-сервр
-    //т.е чтоб имелось просто название типа и линковка к таблице с модификацией параметров, если она есть
-
+public class StartActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     Singleton instance = Singleton.getInstance();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
 
 
         mAuth = FirebaseAuth.getInstance();
-        accountDataLoader();
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 instance.user = firebaseAuth.getCurrentUser();
                 if (instance.user != null) {
-                    Log.d("init", "onAuthStateChanged:signed_in:" + instance.user.getUid());
+                    Log.d("init", "onAuthStateChanged:signed_in:" + instance.user.getDisplayName());
                 } else {
                     Log.d("init", "onAuthStateChanged:signed_out");
                 }
 
             }
         };
-
         mAuth.addAuthStateListener(mAuthListener);
 
-
-        loadInterface();
-    }
-    private void accountDataLoader(){
-        UserDataFBHandler FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
-        instance.userData = FBHandler.getUserData();
-    }
-
-    private void loadInterface(){
-
-        Button buttonLogin = (Button) findViewById(R.id.button2);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        Task task = accountDataLoader().getTask();
+        task.addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            public void onComplete(@NonNull Task task) {
+                Log.i("yay", "completed");
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-
-            }
-        });
-
-        Button manager = (Button) findViewById(R.id.button3);
-        manager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ManagerActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        Button markers = (Button) findViewById(R.id.button_markers);
-        markers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MarkersActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        Button game = (Button) findViewById(R.id.button_game);
-        game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AndroidLauncher.class);
-                startActivity(intent);
-
-            }
-        });
-
-        Button profile  = (Button) findViewById(R.id.button_profile);
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GameProfileActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        Button character  = (Button) findViewById(R.id.button_character);
-        character.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CharacterActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+                finish();
 
             }
         });
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_start, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    UserData userData = null;
+    private TaskCompletionSource accountDataLoader(){
+        String uid = "";
+        try {
+            uid = mAuth.getCurrentUser().getUid();
+        }catch(NullPointerException e){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_USER_DATA);
+
+
+        final TaskCompletionSource s = new TaskCompletionSource();
+
+        ref.addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        userData = dataSnapshot.getValue(UserData.class);
+
+
+                        // TODO !fix this shit
+                        // TODO fix this shit
+                        if(userData != null) {
+                            Singleton instance = Singleton.getInstance();
+                            instance.userData = userData;
+                            s.setResult(userData);
+
+                            Log.i("onDataChange", "current game Char Loaded:" + userData.getCurrentCharacter());
+                        }
+                        else{
+                            Log.e("onDataChange", "character not set");
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        s.setException(databaseError.toException());
+                    }
+                });
+
+
+
+       // MyValueEventListener heh = new MyValueEventListener(ref, s);
+
+            return s;
+        }
+
+
+
 }

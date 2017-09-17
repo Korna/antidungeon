@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import static kom.hikeside.Constants.FB_DIRECTORY_USER_DATA;
  */
 
 public class UserDataFBHandler {
-    String uid;//id of any user
+    private String uid;//id of any user
 
     public UserDataFBHandler(String uid){
         this.uid = uid;
@@ -49,6 +50,7 @@ public class UserDataFBHandler {
                 String tableItemId = reference.push().getKey();//ключ остается заголовком объекта, но не полем объекта
 
                 reference.child(tableItemId).setValue(item);
+
             }
 
         }
@@ -71,8 +73,7 @@ public class UserDataFBHandler {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query marksQuery = ref.child(FB_DIRECTORY_MARKS).orderByChild("id").equalTo(key);
 
-        marksQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
+        ValueEventListener eventDeleteMark = new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     snap.getRef().removeValue();
@@ -84,7 +85,9 @@ public class UserDataFBHandler {
             public void onCancelled(DatabaseError databaseError) {
                 Log.e( "onCancelled", databaseError.toString());
             }
-        });
+        };
+
+        marksQuery.addListenerForSingleValueEvent(eventDeleteMark);
 
     }
 
@@ -161,25 +164,29 @@ public class UserDataFBHandler {
                 });
 
 
+
+
         return list;
     }
 
-    UserData object = null;
+    UserData userData = new UserData();
     public UserData getUserData(){
 
         FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_USER_DATA).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        object = dataSnapshot.getValue(UserData.class);
+                        userData = dataSnapshot.getValue(UserData.class);
 
 
                         // TODO !fix this shit
                         // TODO fix this shit
-                        if(object != null) {
+                        if(userData != null) {
                             Singleton instance = Singleton.getInstance();
-                            instance.currentGameCharacter = getGameCharacter(object.getCurrentCharacter());
-                            Log.i("onDataChange", "current game Char Loaded");
+                            instance.userData = userData;
+                            instance.currentGameCharacter = getGameCharacter(userData.getCurrentCharacter());
+
+                            Log.i("onDataChange", "current game Char Loaded:" + userData.getCurrentCharacter());
                         }
                         else{
                             Log.e("onDataChange", "character not set");
@@ -188,7 +195,7 @@ public class UserDataFBHandler {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
-        return object;
+        return userData;
     }
 
     public UserData createNewUserData(){//возвращает дефолтно созданный аккаунт юзера
@@ -246,6 +253,29 @@ public class UserDataFBHandler {
 
         return gameCharacter;
     }
+
+    BuildItems buildItems = null;
+    public BuildItems getBuildItems(final String key){
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
+
+        ref.child(uid).child(FB_DIRECTORY_CHARS).child(key).child(FB_DIRECTORY_BUILD_ITEMS).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        buildItems = dataSnapshot.getValue(BuildItems.class);
+
+
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+
+        return buildItems;
+    }
+
 
     public void setBuildItema(BuildItems buildItema, String characterKey){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);

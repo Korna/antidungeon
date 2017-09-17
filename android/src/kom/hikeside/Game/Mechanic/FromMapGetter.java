@@ -4,7 +4,12 @@ import java.util.ArrayList;
 
 import kom.hikeside.Content.MainItemType;
 import kom.hikeside.Game.MapView;
+import kom.hikeside.Game.Objects.Inventory.ItemAccessory;
 import kom.hikeside.Game.Objects.Inventory.ItemArmor;
+import kom.hikeside.Game.Objects.Inventory.ItemHead;
+import kom.hikeside.Game.Objects.Inventory.ItemLegs;
+import kom.hikeside.Game.Objects.Inventory.ItemRing;
+import kom.hikeside.Game.Objects.Inventory.ItemShield;
 import kom.hikeside.Game.Objects.Inventory.ItemWeapon;
 import kom.hikeside.Game.Objects.Inventory.PotionHeal;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
@@ -30,8 +35,21 @@ public class FromMapGetter {//
                 items.add(new InventoryObject(ItemArmor.Leather.name(), MainItemType.Armour));
                 items.add(new InventoryObject(ItemArmor.Mail.name(), MainItemType.Armour));
                 items.add(new InventoryObject(ItemArmor.Robe.name(), MainItemType.Armour));
+
                 items.add(new InventoryObject(ItemWeapon.Sword.name(), MainItemType.Weapon));
                 items.add(new InventoryObject(ItemWeapon.Axe.name(), MainItemType.Weapon));
+                items.add(new InventoryObject(ItemWeapon.Wand.name(), MainItemType.Weapon));
+
+                items.add(new InventoryObject(ItemHead.Helm_Berserker.name(), MainItemType.Head));
+
+                items.add(new InventoryObject(ItemLegs.Fancy_Boots.name(), MainItemType.Legs));
+
+                items.add(new InventoryObject(ItemShield.Wooden_Shield.name(), MainItemType.Shield));
+                items.add(new InventoryObject(ItemShield.Simple_Book.name(), MainItemType.Shield));
+
+                items.add(new InventoryObject(ItemRing.Golden_Ring.name(), MainItemType.Ring));
+
+                items.add(new InventoryObject(ItemAccessory.Azure_Pendant.name(), MainItemType.Accessory));
                 return items;
             default:
                 return null;
