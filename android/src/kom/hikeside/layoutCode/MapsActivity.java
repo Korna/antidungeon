@@ -34,18 +34,25 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import kom.hikeside.Atom.Place;
+import kom.hikeside.Atom.UserData;
 import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Custom.MarkerInfoWindows.FightFragment;
 import kom.hikeside.Custom.MarkerInfoWindows.LootFragment;
 import kom.hikeside.FBDBHandler.FBPlace;
+import kom.hikeside.Game.Map.MapFacade;
 import kom.hikeside.Game.Map.MapHandler;
 import kom.hikeside.Game.MapView;
 import kom.hikeside.Game.Mechanic.CollectionHandler;
@@ -61,81 +68,81 @@ import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 import kom.hikeside.Content.LibraryObjects;
 
 import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
+import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
+import static kom.hikeside.Constants.FB_DIRECTORY_USER_DATA;
 
 public class MapsActivity extends FragmentActivity implements
        // OnMapReadyCallback,
         InfoWindowManager.WindowShowListener,
         GoogleMap.OnMarkerClickListener{
     private static final int MY_LOCATION_REQUEST_CODE = 1;
-    private static final int REQ_PERMISSION = 2;
+    public static final int REQ_PERMISSION = 2;
 
 
     Singleton instance = Singleton.getInstance();
-    MapObjBuilder builder = new MapObjBuilder();
 
 
     CollectionHandler cHandler = new CollectionHandler();
     FBPlace db = new FBPlace();
+    MapFacade mapFacade = new MapFacade();
 
 
-    private GoogleMap mMap;
-    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // врубаем фуллскрин
-       // requestWindowFeature(Window.FEATURE_NO_TITLE);
-       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.fragment_maps_gui);
-
-        context = this;
-
-        instance.context = context;
-
+        instance.context = this;
         if(googleServiceAvailable()){
             initInterface();
+            initMap();
         }else{
             Toast.makeText(this, "Services not available", Toast.LENGTH_SHORT).show();
         }
 
-        final MapInfoWindowFragment mapInfoWindowFragment = (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapInfoWindowFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
-
-                mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
-                mMap.getUiSettings().setTiltGesturesEnabled(false);
-                mMap.getUiSettings().setMapToolbarEnabled(false);
-
-                loadMarkers();
-
-                MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.retro);
-                googleMap.setMapStyle(style);
-
-                mMap.setOnMarkerClickListener(MapsActivity.this);
-                setCamera(mMap, myLocation());//тут также происходит занесение инфы о местоположении в синглтон посредство функции MyLocation
-
-                if(checkPermission())
-                    mMap.setMyLocationEnabled(true);
-                else
-                    askPermission();
-
-            }
-        });
-
-        infoWindowManager = mapInfoWindowFragment.infoWindowManager();
-        infoWindowManager.setHideOnFling(true);
-        infoWindowManager.setWindowShowListener(MapsActivity.this);
 
 
         BuildFragment buildFragment = new BuildFragment();
         android.app.FragmentManager manager = getFragmentManager();
         manager.beginTransaction().replace(R.id.layout_map_build, buildFragment, buildFragment.getTag()).commit();
 
+
+    }
+    private TaskCompletionSource accountDataLoader(){
+        final TaskCompletionSource s = new TaskCompletionSource();
+        return s;
     }
 
+
+    private void initMap(){
+        final MapInfoWindowFragment mapInfoWindowFragment = (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        final TaskCompletionSource taskToLoad = new TaskCompletionSource();
+        mapFacade.setUpMap(mapInfoWindowFragment, taskToLoad);
+        infoWindowManager = mapInfoWindowFragment.infoWindowManager();
+        infoWindowManager.setHideOnFling(true);
+        infoWindowManager.setWindowShowListener(MapsActivity.this);
+
+
+        Task task = taskToLoad.getTask();
+        task.addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                loadMarkers();
+                mapFacade.setUpMapStyle(getApplicationContext());
+                mapFacade.setOnMarkerClickListener(MapsActivity.this);
+                if(checkPermission())
+                    mapFacade.setUserLocationEnabled(true);
+                else
+                    askPermission();
+                mapFacade.setCamera(myLocation());
+            }
+        });
+
+
+
+
+
+
+    }
 
     private InfoWindowManager infoWindowManager;
 
@@ -254,7 +261,7 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 generateMarkers();
-                setCamera(mMap, myLocation());
+                mapFacade.setCamera(myLocation());
             }
         });
 
@@ -275,7 +282,7 @@ public class MapsActivity extends FragmentActivity implements
                         Log.d("onDataChange", "refreshing markers");
 
                         cHandler.clear();
-                        mMap.clear();
+                        mapFacade.clear();
 
                         db.FBlist.clear();
 
@@ -283,7 +290,7 @@ public class MapsActivity extends FragmentActivity implements
 
                         for(Place place : db.FBlist){
 
-                            Marker marker = (Marker) builder.smartBuild(mMap, place);
+                            Marker marker = mapFacade.build(place);
                             String id = marker.getId();
                             cHandler.keyViewMap.put(place.getId(), marker);
 
@@ -299,8 +306,6 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void generateMarkers(){
-        //cHandler.clear();
-        //mMap.clear();
         CoordinateGenerator og = new CoordinateGenerator();
         ArrayList<LatLng> tempList = og.initGenerate(myLocation(), 1, false);//координаты
 
@@ -330,7 +335,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
-            Marker marker = (Marker) builder.smartBuild(mMap, place);
+            Marker marker = mapFacade.build(place);
             String id = marker.getId();
 
             cHandler.keyViewMap.put(place.getId(), marker);
@@ -354,10 +359,10 @@ public class MapsActivity extends FragmentActivity implements
         // modelObject.put(place.getId(), place);
         //  mapObject.put(place.getId(), builder.smartBuild(mMap, place));
 
-        Marker mapObject = (Marker) builder.smartBuild(mMap, place);
-        String id = mapObject.getId();
+        Marker marker = mapFacade.build(place);
+        String id = marker.getId();
 
-        cHandler.keyViewMap.put(place.getId(), mapObject);
+        cHandler.keyViewMap.put(place.getId(), marker);
         cHandler.idModelMap.put(id, place);
     }
 
@@ -409,39 +414,21 @@ public class MapsActivity extends FragmentActivity implements
         }
     };
 
-    private void setCamera(GoogleMap googleMap, LatLng latLng){
-        CameraPosition cameraPosition;
-        try {
-            cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).bearing(0).tilt(0).build();
-        }catch(NullPointerException e){
-            Log.e("Error", e.toString());
-            latLng = new LatLng(0, 0);
-            cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).bearing(0).tilt(0).build();
-        }
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
 
-    private boolean checkPermission() {
-        Log.d("checkPermission", "checkPermission()");
-        return ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ;
-    }
 
-    private void askPermission() {
-        Log.d("askPermission", "askPermission()");
-        ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQ_PERMISSION);
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d("onRequestPermissions", "onRequestPermissionsResult()");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("onRequestPermissions", "onRequestPermissionsResult()");
         switch ( requestCode ) {
             case REQ_PERMISSION: {
                 if ( grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
                     // Permission granted
                     if(checkPermission())
-                        mMap.setMyLocationEnabled(true);
+                        mapFacade.setUserLocationEnabled(true);
 
                 } else {
                     // Permission denied
@@ -450,6 +437,15 @@ public class MapsActivity extends FragmentActivity implements
                 break;
             }
         }
+    }
+    public boolean checkPermission() {
+        Log.d("checkPermission", "checkPermission()");
+        return ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ;
+    }
+
+    private void askPermission() {
+        Log.d("askPermission", "askPermission()");
+        ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQ_PERMISSION);
     }
 
 
