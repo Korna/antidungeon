@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Game.Map.Quest;
 import kom.hikeside.Game.Objects.BuildItems;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
@@ -45,6 +46,24 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         final ModelView item = items.get(position);
         holder.itemView.setTag(item);
         holder.text.setText(item.getConcreteType());
+
+        Singleton instance = Singleton.getInstance();
+        try {
+
+            InputStream ims = null;
+            try {
+                ims = instance.context.getAssets().open("items/" + item.getConcreteType() + ".png");
+            }catch(NullPointerException e){
+                Log.e("NPE", e.toString());
+            }
+            // load image as Drawable
+            Drawable d = Drawable.createFromStream(ims, null);
+            // set image to ImageView
+            holder.image.setImageDrawable(d);
+        }
+        catch(IOException ex) {
+            Log.e("assets", ex.toString());
+        }
 
 
 
@@ -78,9 +97,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         this.itemClickListener = listener;
     }
 
-    private static int setColorAlpha(int color, int alpha) {
-        return (alpha << 24) | (color & 0x00ffffff);
-    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
@@ -89,11 +106,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         public ViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.imageView_build);
-            Singleton instance = Singleton.getInstance();
+
 
             try {
                 // get input stream
-                InputStream ims = instance.context.getAssets().open("items/armour_1.png");
+                InputStream ims = itemView.getContext().getAssets().open("items/armour_1.png");
                 // load image as Drawable
                 Drawable d = Drawable.createFromStream(ims, null);
                 // set image to ImageView

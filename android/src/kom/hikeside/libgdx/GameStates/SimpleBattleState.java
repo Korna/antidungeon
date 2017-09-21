@@ -262,9 +262,6 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
         final float NATURAL_HP_AMOUNT = 0.1f;
 
-       // from = player;
-      //  to = enemy;
-
         switch(action){
             case OBJECT_ATTACK:
                 from.wasteStaminaForAttack();

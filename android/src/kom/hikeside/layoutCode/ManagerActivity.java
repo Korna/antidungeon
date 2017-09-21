@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import kom.hikeside.Atom.Place;
-import kom.hikeside.Custom.MarkAdapter;
+import kom.hikeside.Custom.Adapters.MarkAdapter;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 import kom.hikeside.layoutCode.Fragments.AddPlaceFragment;

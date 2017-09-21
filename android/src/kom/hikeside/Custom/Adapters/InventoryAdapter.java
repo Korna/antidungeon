@@ -1,4 +1,4 @@
-package kom.hikeside.Custom;
+package kom.hikeside.Custom.Adapters;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import kom.hikeside.Custom.ModelView;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 

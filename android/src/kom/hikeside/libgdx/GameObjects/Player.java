@@ -1,9 +1,12 @@
 package kom.hikeside.libgdx.GameObjects;
 
+import android.media.effect.Effect;
+
 import java.util.concurrent.TimeUnit;
 
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.Game.Objects.GameCharacter;
+import kom.hikeside.Game.Objects.Inventory.ItemTypesClassess.Armour;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
@@ -15,7 +18,7 @@ public class Player extends GameObject{
 
     public GameCharacter gameCharacter;
 
-
+    Armour armour = new Armour();
 
 
     public Player(TexturedBody playerView, GameCharacter gameCharacter, AttackModel attackModel){
@@ -56,6 +59,32 @@ public class Player extends GameObject{
         else
             return 0;
     }
+    public Effect getAttackEffect(){
+
+        return new Effect() {
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public void apply(int inputTexId, int width, int height, int outputTexId) {
+
+            }
+
+            @Override
+            public void setParameter(String parameterKey, Object value) {
+
+            }
+
+            @Override
+            public void release() {
+
+            }
+        };
+
+    }
+
     @Override
     public void ActionMove(){
         final float speed = 100;
@@ -79,8 +108,20 @@ public class Player extends GameObject{
                 this.interrupt();
             }
         }.start();
+    }
+
+    public void getAttacked(AttackModel attackModel){
+        int valueOfAttack = Randomizer.getAttackValue(attackModel);
+        valueOfAttack -= armour.absorbDamage;
+
+        this.stunned = Randomizer.getStun(attackModel);
+
+        if(valueOfAttack > 0)
+            this.setCurrentHp(this.getCurrentHp() - valueOfAttack);
+        else{
 
 
+        }
     }
 
 

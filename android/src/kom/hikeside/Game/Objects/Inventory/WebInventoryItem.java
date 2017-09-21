@@ -1,7 +1,5 @@
 package kom.hikeside.Game.Objects.Inventory;
 
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -10,7 +8,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import kom.hikeside.Custom.ModelView;
+import kom.hikeside.Game.Objects.Inventory.ItemTypesClassess.Armour;
 import kom.hikeside.Singleton;
 
 import static com.badlogic.gdx.math.MathUtils.random;

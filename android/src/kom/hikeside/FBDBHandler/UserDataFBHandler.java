@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -25,6 +26,7 @@ import static kom.hikeside.Constants.FB_DIRECTORY_BUILD_ITEMS;
 import static kom.hikeside.Constants.FB_DIRECTORY_CHARS;
 import static kom.hikeside.Constants.FB_DIRECTORY_INVENTORY;
 import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
+import static kom.hikeside.Constants.FB_DIRECTORY_QUESTS;
 import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
 import static kom.hikeside.Constants.FB_DIRECTORY_USER_DATA;
 
@@ -175,21 +177,39 @@ public class UserDataFBHandler {
         FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS).child(uid).child(FB_DIRECTORY_USER_DATA).addListenerForSingleValueEvent(//глобальный и постоянный прослушиватель всех данных marks
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        userData = dataSnapshot.getValue(UserData.class);
-
+                    public void onDataChange(DataSnapshot dataSnapshot) {// TODO: он можно ззатрансформить даже абсурдные объекты. надо проверять каждый раз
+                        try {
+                            userData = dataSnapshot.getValue(UserData.class);
+                        }catch(DatabaseException e){
+                            Log.e("cantTransferUD", e.toString());
+                            userData = null;
+                        }
 
                         // TODO !fix this shit
                         // TODO fix this shit
+                        Singleton instance = Singleton.getInstance();
                         if(userData != null) {
-                            Singleton instance = Singleton.getInstance();
                             instance.userData = userData;
-                            instance.currentGameCharacter = getGameCharacter(userData.getCurrentCharacter());
+                            String keyOfChar;
+
+                            try {
+                                keyOfChar = userData.getCurrentCharacter();
+
+                                instance.currentGameCharacter = getGameCharacter(keyOfChar);
+                            }catch(NullPointerException npe){//в случае, если cast произошел криво
+                                Log.e("transferUD", npe.toString());
+
+                                instance.userData = null;
+                                instance.currentGameCharacter = null;
+                            }
+
 
                             Log.i("onDataChange", "current game Char Loaded:" + userData.getCurrentCharacter());
                         }
                         else{
                             Log.e("onDataChange", "character not set");
+                            instance.userData = userData;
+                            instance.currentGameCharacter = null;
                         }
                     }
                     @Override
@@ -230,8 +250,15 @@ public class UserDataFBHandler {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            gameCharacter = dataSnapshot.getValue(GameCharacter.class);
+                        }catch(DatabaseException de){
+                            Log.e("databaseError", de.toString());
+                            gameCharacter = null;
+                            return;
 
-                        gameCharacter = dataSnapshot.getValue(GameCharacter.class);
+                        }
+
                         try {
                             gameCharacter.setKey(key);
                             Log.d("found gameChar", gameCharacter.getName() + " " + gameCharacter.getKey());
@@ -282,8 +309,13 @@ public class UserDataFBHandler {
 
 
         ref.child(uid).child(FB_DIRECTORY_CHARS).child(characterKey).child(FB_DIRECTORY_BUILD_ITEMS).setValue(buildItema);
+    }
+
+    public void acceptQuest(String keyOfQuest){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
 
 
+        ref.child(uid).child(FB_DIRECTORY_USER_DATA).child(FB_DIRECTORY_QUESTS).setValue(keyOfQuest);
     }
 
 

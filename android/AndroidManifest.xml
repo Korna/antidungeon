@@ -23,7 +23,6 @@
         android:name="kom.hikeside.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
-
     <service
         android:name="eu.acme.service.FireBaseInstanceIdService"
         android:exported="false">
@@ -87,7 +86,6 @@
         <activity
             android:name=".layoutCode.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".layoutCode.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -108,11 +106,11 @@
             android:name=".AndroidLauncher"
             android:theme="@style/GdxTheme" />
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".layoutCode.AchievementsActivity"></activity>
     </application>
 
 </manifest>

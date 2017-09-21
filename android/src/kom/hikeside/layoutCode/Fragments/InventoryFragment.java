@@ -2,9 +2,7 @@ package kom.hikeside.layoutCode.Fragments;
 
 
 import android.app.Fragment;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +16,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import kom.hikeside.Custom.InventoryAdapter;
+import kom.hikeside.Custom.Adapters.InventoryAdapter;
 import kom.hikeside.Custom.ModelView;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.Game.Objects.BuildItems;
@@ -67,6 +63,7 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
 
                 ModelView modelView = list.get(position);
                 Singleton instance = Singleton.getInstance();
+
                 BuildItems buildItems = instance.currentGameCharacter.buildItems;
                 buildItems.addItem(modelView.mainItemType, modelView.concreteType);
                 UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
@@ -81,16 +78,12 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
 
         adjustGridView();
 
-
-
-
-
         return v;
     }
 
     private void adjustGridView() {
-        gvMain.setNumColumns(3);
-        gvMain.setColumnWidth(220);
+        gvMain.setNumColumns(5);
+        gvMain.setColumnWidth(200);
         gvMain.setVerticalSpacing(5);
         gvMain.setHorizontalSpacing(5);
         gvMain.setStretchMode(GridView.STRETCH_SPACING_UNIFORM);

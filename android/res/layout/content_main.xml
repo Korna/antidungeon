@@ -9,14 +9,6 @@
     tools:showIn="@layout/activity_main">
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_below="@+id/button_logout"
-        android:layout_alignParentEnd="true" />
-
-    <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +30,8 @@
         android:layout_height="400dp"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
 
         <Button
             android:id="@+id/button_maps_game"
@@ -59,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_above="@+id/button3"
-            android:text="Profile" />
+            android:text="Character" />
 
         <Button
             android:id="@+id/button_items"
@@ -78,5 +71,15 @@
             android:text="Characters" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/linearLayout"
+        android:layout_alignTop="@+id/button_logout"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="15dp" />
 
 </RelativeLayout>

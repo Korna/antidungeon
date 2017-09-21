@@ -1,6 +1,7 @@
 package kom.hikeside;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,8 +23,10 @@ public class Singleton {
         return instance;
     }
 
-    public UserData userData = new UserData();
-    public GameCharacter currentGameCharacter = null;
+    @Nullable
+    public UserData userData = new UserData();//nullable
+    @Nullable
+    public GameCharacter currentGameCharacter = null;//nullable
 
 
 

@@ -26,17 +26,6 @@
         android:layout_alignParentTop="true" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/f_button_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_today"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="69dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <android.support.design.widget.FloatingActionButton
         android:id="@+id/f_button"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -59,16 +48,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/f_button" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/f_button_loot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="26dp"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_manage"
-        android:layout_above="@+id/f_button"
-        android:layout_alignStart="@+id/f_button" />
-
     <RelativeLayout
         android:id="@+id/layout_map_build"
         android:layout_width="match_parent"
@@ -78,5 +57,30 @@
         android:layout_toStartOf="@+id/f_button_add">
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/f_button_profile"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="profile" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/f_button_profile"
+        android:layout_below="@+id/f_button_profile"
+        android:text="Friends" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button2"
+        android:text="Button" />
 
 </RelativeLayout>

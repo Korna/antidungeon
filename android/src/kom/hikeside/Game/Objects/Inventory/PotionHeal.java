@@ -1,6 +1,7 @@
 package kom.hikeside.Game.Objects.Inventory;
 
 import kom.hikeside.Content.MainItemType;
+import kom.hikeside.Game.Objects.Inventory.ItemTypesClassess.Consumable;
 
 /**
  * Created by Koma on 18.08.2017.

@@ -4,7 +4,6 @@ package kom.hikeside.layoutCode.Profile;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -16,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.badlogic.gdx.graphics.Color;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import kom.hikeside.Custom.InventoryAdapter;
+import kom.hikeside.Custom.Adapters.InventoryAdapter;
 import kom.hikeside.Custom.ModelView;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.Game.Objects.BuildItems;
@@ -35,7 +33,6 @@ import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
 
-import static android.R.attr.path;
 import static com.badlogic.gdx.math.MathUtils.random;
 import static kom.hikeside.Constants.FB_DIRECTORY_INVENTORY;
 import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
@@ -52,6 +49,9 @@ public class ProfileInventoryFragment extends Fragment {
     GridView gvMain;
     InventoryAdapter adapter;
 
+
+    private BuildItems buildItems;
+
     public ProfileInventoryFragment() {
         // Required empty public constructor
     }
@@ -60,16 +60,20 @@ public class ProfileInventoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_profile_inventory
-                , container, false);
+        View v = inflater.inflate(R.layout.fragment_profile_inventory, container, false);
 
 
 
         loadImageViews(v);
 
         final Singleton instance = Singleton.getInstance();
-        final BuildItems buildItems = instance.currentGameCharacter.buildItems;
 
+        try {
+            buildItems = instance.currentGameCharacter.buildItems;
+        }catch(NullPointerException npe){
+            Log.e("not loaded", npe.toString());
+            buildItems = new BuildItems();
+        }
 
         loadDrawable(buildItems);
 
@@ -141,7 +145,17 @@ public class ProfileInventoryFragment extends Fragment {
         imageViewArrayList.add(imageViewRing);
         imageViewArrayList.add(imageViewAccessory);
         imageViewArrayList.add(imageViewHands);
+
+        for(final ImageView imageView : imageViewArrayList){
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView.setImageDrawable(null);
+                }
+            });
+        }
     }
+
     private void loadDrawable(BuildItems buildItems){
         ArrayList<String> itemNames = new ArrayList<String>();
 

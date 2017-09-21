@@ -101,11 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                 textEmail.setText("");
                 textPass.setText("");
                 signUp(email, pass);
-                FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
-                instance.userData = FBHandler.getUserData();
-
-
-
             }
         });
     }
@@ -116,12 +111,13 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Регистрация провалена", Toast.LENGTH_SHORT).show();
-                        }else{
+                        if (task.isSuccessful()) {
                             instance.userData = FBHandler.createNewUserData();
                             Toast.makeText(LoginActivity.this, "Регистрация прошла успешно", Toast.LENGTH_SHORT).show();
                             //TODO offerToUpdateAccountData();
+
+                        }else{
+                            Toast.makeText(LoginActivity.this, "Регистрация провалена", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -137,11 +133,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Заход провалена", Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Succeed", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                            startActivity(intent);
+                            finish();
                         }else{
-                            Toast.makeText(LoginActivity.this, "Заход прошла успешно", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(LoginActivity.this, "Wrong login or password", Toast.LENGTH_SHORT).show();
                         }
 
                     }

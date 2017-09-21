@@ -8,23 +8,26 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Title"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/tv_button"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_desc"
+        android:layout_centerHorizontal="true"
+        android:text="Loot" />
 
     <TextView
         android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name"
-        android:layout_marginTop="15dp"
-        android:text="Info" />
-
-    <Button
-        android:id="@+id/tv_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="35dp"
-        android:layout_toEndOf="@+id/tv_name"
-        android:text="Loot" />
+        android:layout_centerHorizontal="true"
+        android:text="Description" />
 
 </RelativeLayout>

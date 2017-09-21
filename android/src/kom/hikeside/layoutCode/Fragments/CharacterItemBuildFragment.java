@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -64,10 +65,14 @@ public class CharacterItemBuildFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot)
                     // throws NullPointerException
                     {
-                        BuildItems buildItems = dataSnapshot.getValue(BuildItems.class);
-                        ArrayList<String> itemNames = new ArrayList<String>();
-
-
+                        BuildItems buildItems;
+                        try {
+                            buildItems = dataSnapshot.getValue(BuildItems.class);
+                        }catch(DatabaseException de){
+                            Log.e("buildItems", de.toString());
+                            buildItems = null;
+                        }
+                        ArrayList<String> itemNames = new ArrayList<>();
 
                         try{
                             itemNames.add(buildItems.armour.name());//он может всё равно добавлять нулл
@@ -151,8 +156,6 @@ public class CharacterItemBuildFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_character_item_build, container, false);
-
-
         //this.setRetainInstance(true);
 
         ImageView imageViewAccessory = (ImageView) v.findViewById(R.id.imageView_accessory);
@@ -164,7 +167,6 @@ public class CharacterItemBuildFragment extends Fragment {
         ImageView imageViewLegs = (ImageView) v.findViewById(R.id.imageView_legs);
         ImageView imageViewHands= (ImageView) v.findViewById(R.id.imageView_hands);
 
-
         list.add(imageViewBody);
         list.add(imageViewHandRight);
         list.add(imageViewHandLeft);
@@ -173,6 +175,15 @@ public class CharacterItemBuildFragment extends Fragment {
         list.add(imageViewRing);
         list.add(imageViewAccessory);
         list.add(imageViewHands);
+
+        for(final ImageView imageView : list){
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView.setImageDrawable(null);
+                }
+            });
+        }
 
         return v;
     }

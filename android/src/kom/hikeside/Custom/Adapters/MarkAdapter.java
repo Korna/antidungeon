@@ -1,4 +1,4 @@
-package kom.hikeside.Custom;
+package kom.hikeside.Custom.Adapters;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;

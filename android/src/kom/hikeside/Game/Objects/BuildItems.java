@@ -1,15 +1,13 @@
 package kom.hikeside.Game.Objects;
 
 import kom.hikeside.Content.MainItemType;
-import kom.hikeside.Game.Objects.Inventory.Armour;
-import kom.hikeside.Game.Objects.Inventory.ItemAccessory;
-import kom.hikeside.Game.Objects.Inventory.ItemArmor;
-import kom.hikeside.Game.Objects.Inventory.ItemHead;
-import kom.hikeside.Game.Objects.Inventory.ItemLegs;
-import kom.hikeside.Game.Objects.Inventory.ItemRing;
-import kom.hikeside.Game.Objects.Inventory.ItemShield;
-import kom.hikeside.Game.Objects.Inventory.ItemWeapon;
-import kom.hikeside.Game.Objects.Inventory.Weapon;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemAccessory;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemHead;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemLegs;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemRing;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemShield;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemWeapon;
 
 /**
  * Created by Koma on 16.09.2017.

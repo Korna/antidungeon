@@ -7,7 +7,17 @@ import com.badlogic.gdx.utils.Array;
 import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Content.MainItemType;
 import kom.hikeside.Game.MapView;
+import kom.hikeside.Game.Objects.Inventory.InventoryObject;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemAccessory;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemHead;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemLegs;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemRing;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemShield;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemWeapon;
 import kom.hikeside.Game.Objects.MapViewPriority;
+import kom.hikeside.libgdx.Entities.Status;
+import kom.hikeside.libgdx.Game;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 
@@ -39,10 +49,52 @@ public class Randomizer {
     }
 
 
-    public static MainItemType getSimpleItem(){
+    public static InventoryObject getSimpleItem(){
+        return getConcreteItem(getMainTypeItem());
+    }
+
+    private static MainItemType getMainTypeItem(){
         int randomIndex = random.nextInt(MainItemType.values().length);
 
         return MainItemType.values() [randomIndex];
+    }
+    public static InventoryObject getConcreteItem(MainItemType mainItemType){
+        String concreteItem = "Golden_Ring";
+        int randomIndex;
+
+        switch(mainItemType){
+            case Shield:
+                randomIndex = random.nextInt(ItemShield.values().length);
+                concreteItem = ItemShield.values() [randomIndex].name();
+                break;
+            case Legs:
+                randomIndex = random.nextInt(ItemLegs.values().length);
+                concreteItem = ItemLegs.values() [randomIndex].name();
+                break;
+            case Weapon:
+                randomIndex = random.nextInt(ItemWeapon.values().length);
+                concreteItem = ItemWeapon.values() [randomIndex].name();
+                break;
+            case Accessory:
+                randomIndex = random.nextInt(ItemAccessory.values().length);
+                concreteItem = ItemAccessory.values() [randomIndex].name();
+                break;
+            case Armour:
+                randomIndex = random.nextInt(ItemArmor.values().length);
+                concreteItem = ItemArmor.values() [randomIndex].name();
+                break;
+            case Consumable:
+            case Head:
+                randomIndex = random.nextInt(ItemHead.values().length);
+                concreteItem = ItemHead.values() [randomIndex].name();
+                break;
+            case Ring:
+                randomIndex = random.nextInt(ItemRing.values().length);
+                concreteItem = ItemRing.values() [randomIndex].name();
+                break;
+        }
+
+        return new InventoryObject(concreteItem, mainItemType);
     }
 
     public static int getAttackValue(AttackModel model){
@@ -51,6 +103,30 @@ public class Randomizer {
             return random.nextInt(model.highestDamage - model.lowestDamage) + model.lowestDamage;
         else
             return 0;
+    }
+
+    public static boolean isGotHit(AttackModel model){
+        float chance = random.nextFloat();
+        if(chance < model.chanceToHit)
+            return true;
+        else
+            return false;
+    }
+
+    public static boolean getStun(AttackModel model){//полностью построен на шансах атаки
+        final int SUCCESS_STUN_AMOUNT = 20;
+        //stun
+        boolean makeStun = false;
+        int j = 1;
+
+        for(int i = 1; i <= SUCCESS_STUN_AMOUNT; ++i){
+            if (Randomizer.getStun(model))
+                ++j;
+        }
+        if(j >= SUCCESS_STUN_AMOUNT)
+            makeStun = true;
+
+        return makeStun;
     }
 
     public static String[] battleFieldTexture(){

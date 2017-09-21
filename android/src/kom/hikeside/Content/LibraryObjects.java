@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import kom.hikeside.Game.Objects.BuildStats;
 import kom.hikeside.Game.Objects.GameCharacter;
-import kom.hikeside.Game.Objects.Inventory.Armour;
+import kom.hikeside.Game.Objects.Inventory.ItemTypesClassess.Armour;
 
-import kom.hikeside.Game.Objects.Inventory.ItemArmor;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
 import kom.hikeside.libgdx.Entities.TexturedBody;
 import kom.hikeside.libgdx.GameMechanics.AbilityModel;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;

@@ -4,17 +4,14 @@ import java.util.ArrayList;
 
 import kom.hikeside.Content.MainItemType;
 import kom.hikeside.Game.MapView;
-import kom.hikeside.Game.Objects.Inventory.ItemAccessory;
-import kom.hikeside.Game.Objects.Inventory.ItemArmor;
-import kom.hikeside.Game.Objects.Inventory.ItemHead;
-import kom.hikeside.Game.Objects.Inventory.ItemLegs;
-import kom.hikeside.Game.Objects.Inventory.ItemRing;
-import kom.hikeside.Game.Objects.Inventory.ItemShield;
-import kom.hikeside.Game.Objects.Inventory.ItemWeapon;
-import kom.hikeside.Game.Objects.Inventory.PotionHeal;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemAccessory;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemHead;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemLegs;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemRing;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemShield;
+import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemWeapon;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
-import kom.hikeside.Game.Objects.Inventory.Weapon;
-import kom.hikeside.Content.LibraryObjects;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -32,24 +29,49 @@ public class FromMapGetter {//
             case bag:
             case treasureChest:
             case backpack:
-                items.add(new InventoryObject(ItemArmor.Leather.name(), MainItemType.Armour));
-                items.add(new InventoryObject(ItemArmor.Mail.name(), MainItemType.Armour));
-                items.add(new InventoryObject(ItemArmor.Robe.name(), MainItemType.Armour));
 
-                items.add(new InventoryObject(ItemWeapon.Sword.name(), MainItemType.Weapon));
-                items.add(new InventoryObject(ItemWeapon.Axe.name(), MainItemType.Weapon));
-                items.add(new InventoryObject(ItemWeapon.Wand.name(), MainItemType.Weapon));
+                for(int i = 0; i < ItemArmor.values().length; ++i){
+                    ItemArmor item = ItemArmor.values()[i];
 
-                items.add(new InventoryObject(ItemHead.Helm_Berserker.name(), MainItemType.Head));
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
 
-                items.add(new InventoryObject(ItemLegs.Fancy_Boots.name(), MainItemType.Legs));
+                for(int i = 0; i < ItemWeapon.values().length; ++i){
+                    ItemWeapon item = ItemWeapon.values()[i];
 
-                items.add(new InventoryObject(ItemShield.Wooden_Shield.name(), MainItemType.Shield));
-                items.add(new InventoryObject(ItemShield.Simple_Book.name(), MainItemType.Shield));
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
 
-                items.add(new InventoryObject(ItemRing.Golden_Ring.name(), MainItemType.Ring));
+                for(int i = 0; i < ItemHead.values().length; ++i){
+                    ItemHead item = ItemHead.values()[i];
 
-                items.add(new InventoryObject(ItemAccessory.Azure_Pendant.name(), MainItemType.Accessory));
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
+
+                for(int i = 0; i < ItemLegs.values().length; ++i){
+                    ItemLegs item = ItemLegs.values()[i];
+
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
+
+                for(int i = 0; i < ItemShield.values().length; ++i){
+                    ItemShield item = ItemShield.values()[i];
+
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
+
+                for(int i = 0; i < ItemRing.values().length; ++i){
+                    ItemRing item = ItemRing.values()[i];
+
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
+
+                for(int i = 0; i < ItemAccessory.values().length; ++i){
+                    ItemAccessory item = ItemAccessory.values()[i];
+
+                    items.add(new InventoryObject(item.name(), item.getType()));
+                }
+
                 return items;
             default:
                 return null;

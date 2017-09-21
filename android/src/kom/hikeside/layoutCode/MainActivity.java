@@ -55,17 +55,21 @@ public class MainActivity extends AppCompatActivity {//TODO сделать ми�
             }
         };
 
+
         mAuth.addAuthStateListener(mAuthListener);
 
 
         loadInterface();
+
+        UserDataFBHandler FBHandler = new UserDataFBHandler(mAuth.getCurrentUser().getUid());
+        instance.userData = FBHandler.getUserData();
     }
 
 
 
 
     private void loadInterface(){
-
+/*
         Button buttonLogin = (Button) findViewById(R.id.button2);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity {//TODO сделать ми�
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         Button manager = (Button) findViewById(R.id.button3);
         manager.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +107,6 @@ public class MainActivity extends AppCompatActivity {//TODO сделать ми�
         });
 
 
-
         Button profile  = (Button) findViewById(R.id.button_profile);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +130,11 @@ public class MainActivity extends AppCompatActivity {//TODO сделать ми�
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
