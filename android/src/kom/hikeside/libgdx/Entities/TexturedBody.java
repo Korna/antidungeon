@@ -12,12 +12,15 @@ public class TexturedBody extends MySprite {
     float x;
     float y;
 
+    int textureSize = 32;
+
     public TexturedBody(Body body, Texture tex) {
         super(body);
+
         x = body.getPosition().x;
         y = body.getPosition().y;
 
-        TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
+        TextureRegion[] sprites = TextureRegion.split(tex, textureSize, textureSize)[0];
 
         setAnimation(sprites, 1 / 12f);
     }
@@ -27,13 +30,13 @@ public class TexturedBody extends MySprite {
         x = body.getPosition().x;
         y = body.getPosition().y;
 
-        TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
+        TextureRegion[] sprites = TextureRegion.split(tex, textureSize, textureSize)[0];
 
         setAnimation(sprites, 1 / 12f);
     }
 
     public void changeTexture(Texture tex){
-        TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
+        TextureRegion[] sprites = TextureRegion.split(tex, textureSize, textureSize)[0];
 
         setAnimation(sprites, 1 / 12f);
     }

@@ -56,8 +56,8 @@ public class CharacterManageFragment extends Fragment {
                     ++i;
                     character = list.get(i);
                     View v = statsFragment.getView();
-                    statsFragment.loadCharacterCommon(v, character);
-                    statsFragment.loadCharacterStats(v, character);
+                    statsFragment.initGui(v);
+
                 }
 
             }
@@ -70,8 +70,8 @@ public class CharacterManageFragment extends Fragment {
                     --i;
                     character = list.get(i);
                     View v = statsFragment.getView();
-                    statsFragment.loadCharacterCommon(v, character);
-                    statsFragment.loadCharacterStats(v, character);
+                    statsFragment.initGui(v);
+
                 }
 
             }
@@ -90,14 +90,14 @@ public class CharacterManageFragment extends Fragment {
                 }
 
 
-                if(i>0 && list.size() != 0)
+                if(i > 0 && list.size() != 0)
                     character = list.get(i-1);
                 else
                     character = new GameCharacter("No characters left after deletiong", 0, GameClass.Priest, new BuildStats(0,0,0,0,0,0));
 
                 View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                statsFragment.initGui(v);
+
             }
         });
 

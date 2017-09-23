@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,17 +10,19 @@
         android:id="@+id/layout_common_stats"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_above="@+id/layout_character_stats"
+        android:layout_marginTop="42dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/textView_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/layout_character_stats"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="155dp"
-            android:text="Class" />
+
+            android:layout_marginStart="122dp"
+            android:text="Class"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/textView_lvl"
@@ -38,112 +41,201 @@
             android:text="Name" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout_character_stats"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="110dp">
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/layout_common_stats"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView_will"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView_intelligence"
-            android:layout_alignBottom="@+id/textView_intelligence"
-            android:layout_alignParentEnd="true"
-            android:text="0" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView_stamina"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:text="0" />
+            <ImageView
+                android:id="@+id/imageView_strength"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView_luck"
-            android:layout_toStartOf="@+id/textView_luck"
-            android:text="Luck" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Strength: "
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/textView_stamina"
-            android:text="Stamina" />
+            <TextView
+                android:id="@+id/textView_strength"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
+                android:text="notLoaded"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_intelligence"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView5"
-            android:layout_toEndOf="@+id/textView5"
-            android:text="0" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView3"
-            android:layout_marginTop="36dp"
-            android:text="Agility" />
+            <ImageView
+                android:id="@+id/imageView_agility"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView_will"
-            android:layout_toStartOf="@+id/textView_will"
-            android:text="Will" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Agility: "
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView4"
-            android:layout_marginTop="37dp"
-            android:text="Intelligence" />
+            <TextView
+                android:id="@+id/textView_agility"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/textView5"
+                android:layout_toEndOf="@+id/textView3"
+                android:gravity="center_vertical"
+                android:text="notLoaded"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_agility"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView5"
-            android:layout_toEndOf="@+id/textView4"
-            android:text="0" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView_luck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView_agility"
-            android:layout_toEndOf="@+id/textView10"
-            android:text="0" />
+            <ImageView
+                android:id="@+id/imageView_intelligence"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
-        <TextView
-            android:id="@+id/textView_strength"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView4"
-            android:layout_toEndOf="@+id/textView3"
-            android:text="0" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Intelligence: "
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView_intelligence"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/textView5"
+                android:layout_toEndOf="@+id/textView5"
+                android:gravity="center_vertical"
+                android:text="notLoaded"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Strength" />
-    </RelativeLayout>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView_will"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_add_circle_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Will: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView_will"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_alignBaseline="@+id/textView_intelligence"
+                android:layout_alignBottom="@+id/textView_intelligence"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:text="notLoaded"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView_stamina"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_add_circle_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Stamina: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView_stamina"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
+                android:text="notLoaded"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView_luck"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_add_circle_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Luck: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView_luck"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/textView_agility"
+                android:layout_toEndOf="@+id/textView10"
+                android:gravity="center_vertical"
+                android:text="notLoaded"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

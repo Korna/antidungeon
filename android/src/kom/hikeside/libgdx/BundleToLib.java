@@ -1,5 +1,7 @@
 package kom.hikeside.libgdx;
 
+import com.google.android.gms.tasks.TaskCompletionSource;
+
 import java.util.ArrayList;
 
 import kom.hikeside.Content.LibraryMonsters;
@@ -26,7 +28,8 @@ public class BundleToLib {
 
     //output
     private boolean playerIsDead = false;
-    private boolean enemyIsDead = false;
+    private boolean victory = false;
+    public TaskCompletionSource taskCompletionSource = null;
 
 
     public ArrayList<GameCharacter> gameCharacters = new ArrayList<>();
@@ -41,13 +44,18 @@ public class BundleToLib {
 
     }
 
-    public void initialization(boolean isCoop, ArrayList<GameCharacter> gameCharacters, ArrayList<EnemyModel> enemyModels) {
-        this.isCoop = isCoop;
-        this.gameCharacters = gameCharacters;
-      //  this.enemyModels = enemyModels;
+
+
+
+    public boolean isVictory() {
+        return victory;
     }
 
+    public void setVictory(boolean victory) {
+        this.victory = victory;
+    }
 
-
-
+    public void setNewTask(){
+        taskCompletionSource = new TaskCompletionSource();
+    }
 }

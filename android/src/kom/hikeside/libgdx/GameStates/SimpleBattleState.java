@@ -86,12 +86,13 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
 
         BundleToLib bundle = BundleToLib.getInstance();
-        BodyBuilder bodyBuilder = new BodyBuilder(GAME_WIDTH/2, GAME_HEIGHT/2, world);
+        bundle.setVictory(false);
 
+
+        BodyBuilder bodyBuilder = new BodyBuilder(GAME_WIDTH/2, GAME_HEIGHT/2, world);
 
         Enemy enemy = loadEnemies(bundle, bodyBuilder);
         enemyArrayList.add(enemy);
-
         for(int i = 0; i < random.nextInt(3); ++i){
             enemyArrayList.add(loadEnemies(bundle, bodyBuilder));
         }
@@ -168,11 +169,25 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     }
 
     private float coordinateManager(int amount){
-        float positionChange = amount * -150;
+        int coordinateOffset = -150;
+        float positionChange = amount * coordinateOffset;
 
         float position = GAME_HEIGHT /  (2 * 2f);
         return position + positionChange;
+    }
 
+    private void battleWon(){
+        BundleToLib bundle = BundleToLib.getInstance();
+        bundle.setVictory(true);
+        Log.d("battle", " is won");
+        bundle.taskCompletionSource.setResult(true);
+        Gdx.app.exit();
+    }
+    private void playerIsDeadAction(){
+        BundleToLib bundle = BundleToLib.getInstance();
+        bundle.setVictory(false);
+        bundle.taskCompletionSource.setResult(false);
+        Gdx.app.exit();
     }
 
 
@@ -341,14 +356,15 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
     private void turn(){
 
         for(Enemy enemy : enemyArrayList)
-            if(enemy.hasHp())
+            if(!enemy.isDead())
                 makeAction(Randomizer.action(), enemy, playerArrayList.get(random.nextInt(playerArrayList.size())));//TODO сделать другую систему определения
 
 
         for(Player player : playerArrayList)
             if(!player.hasHp()){
                 Log.w("you", "are dead");
-                Gdx.app.exit();
+
+                playerIsDeadAction();
             }
 
 
@@ -500,7 +516,13 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
                     }
 
                     makeAction(text, playerArrayList.get(0), selectedEnemy);
-                    turn();
+
+                    if(allEnemiesAreDead())
+                        battleWon();
+                    else{
+                        turn();
+                    }
+
 
 
                     notifyPlayers();
@@ -512,6 +534,13 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         });
 
         return buttonPlay;
+    }
+    private boolean allEnemiesAreDead(){
+        for(Enemy enemy : enemyArrayList){
+            if(!enemy.isDead())
+                return false;
+        }
+        return true;
     }
 
 

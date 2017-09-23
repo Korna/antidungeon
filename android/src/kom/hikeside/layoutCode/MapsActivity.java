@@ -2,7 +2,6 @@ package kom.hikeside.layoutCode;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,14 +10,17 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -27,49 +29,45 @@ import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import kom.hikeside.AndroidLauncher;
 import kom.hikeside.Atom.Place;
-import kom.hikeside.Atom.UserData;
 import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Custom.MarkerInfoWindows.FightFragment;
 import kom.hikeside.Custom.MarkerInfoWindows.LootFragment;
+import kom.hikeside.Custom.ModelView;
+import kom.hikeside.Custom.MyDialogFragment;
+import kom.hikeside.Custom.MyRecyclerAdapter;
+import kom.hikeside.Custom.OnRecyclerViewItemClickListener;
 import kom.hikeside.FBDBHandler.FBPlace;
 import kom.hikeside.Game.Map.MapFacade;
-import kom.hikeside.Game.Map.MapHandler;
-import kom.hikeside.Game.MapView;
+import kom.hikeside.Content.MapView;
 import kom.hikeside.Game.Mechanic.CollectionHandler;
 import kom.hikeside.Game.Mechanic.FromMapGetter;
-import kom.hikeside.Game.Map.MapObjBuilder;
 import kom.hikeside.Game.Map.CoordinateGenerator;
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;
-import kom.hikeside.layoutCode.Fragments.BuildFragment;
 import kom.hikeside.layoutCode.Profile.GameProfileActivity;
 import kom.hikeside.Content.LibraryObjects;
+import kom.hikeside.libgdx.BundleToLib;
 
 import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
-import static kom.hikeside.Constants.FB_DIRECTORY_USERS;
-import static kom.hikeside.Constants.FB_DIRECTORY_USER_DATA;
 
 public class MapsActivity extends FragmentActivity implements
        // OnMapReadyCallback,
@@ -98,19 +96,17 @@ public class MapsActivity extends FragmentActivity implements
         }else{
             Toast.makeText(this, "Services not available", Toast.LENGTH_SHORT).show();
         }
+    }
 
-
-
-        BuildFragment buildFragment = new BuildFragment();
-        android.app.FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().replace(R.id.layout_map_build, buildFragment, buildFragment.getTag()).commit();
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
 
     }
-    private TaskCompletionSource accountDataLoader(){
-        final TaskCompletionSource s = new TaskCompletionSource();
-        return s;
-    }
+
+
+
 
 
     private void initMap(){
@@ -147,10 +143,9 @@ public class MapsActivity extends FragmentActivity implements
     private InfoWindowManager infoWindowManager;
 
 
-    Place selectedPlace = null;
     InfoWindow infoWindow = null;//глобальная переменная тк нужно закрывать окно по требованию
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(Marker marker) {//мы можем передавать таск в фрагмент и ждать пока придет результат
 
         String id = marker.getId();
         final Place placeToInteract = cHandler.idModelMap.get(id);//здесь может выскочить null pointer
@@ -170,7 +165,53 @@ public class MapsActivity extends FragmentActivity implements
             case boss:
             case enemy:
                 infoWindow = new InfoWindow(marker, markerSpec, f);
-                f.LoadWindowInfo(placeToInteract.getName(), placeToInteract.getDescription());//однако требуется понимать какой фрагмент именно загружать инфой
+
+               // MyDialogFragment dialogFragment = MyDialogFragment.newInstance();
+
+               // dialogFragment.show(getSupportFragmentManager(), null);
+
+                DialogInterface.OnClickListener dialogInterface = new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+
+                        GameCharacter character;
+                        BundleToLib bundle = BundleToLib.getInstance();
+                        bundle.enemyNames.clear();
+                        bundle.enemyNames.add(LibraryMonsters.valueOf(placeToInteract.getName()));
+
+
+                        Intent intent = new Intent(getApplicationContext(), AndroidLauncher.class);
+                        startActivity(intent);
+
+                        bundle.taskCompletionSource = new TaskCompletionSource();
+
+                        Task task = bundle.taskCompletionSource.getTask();
+                        dialog.cancel();
+                        task.addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                Boolean object = (Boolean) task.getResult();
+                                if(object){
+                                     setupRewardDialog();
+                                    Log.w("SHOWING", "ot");
+                                    try {
+                                        TimeUnit.MILLISECONDS.sleep(200);
+                                    }catch(InterruptedException e){
+                                        Log.e("interrput", e.toString());
+                                    }
+
+
+                                }else{
+                                    //setupFailDialog();
+                                    Log.e("NOO", "ot");
+                                }
+
+
+                            }
+                        });
+                    }
+                };
+
+                f.LoadWindowInfo(placeToInteract.getName(), placeToInteract.getDescription(), dialogInterface);//однако требуется понимать какой фрагмент именно загружать инфой
                 f.loadPlace(placeToInteract);
                 break;
             case treasureChest:
@@ -183,7 +224,7 @@ public class MapsActivity extends FragmentActivity implements
                 }catch(Exception e){
                     lvlText = "Unknown";
                 }
-                DialogInterface.OnClickListener dialogInterface = new DialogInterface.OnClickListener() {
+                DialogInterface.OnClickListener dialogInterfaceLoot = new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
 
                         FBHandler.addItemInUserInventory(new FromMapGetter().getItems(type));
@@ -197,7 +238,7 @@ public class MapsActivity extends FragmentActivity implements
                     }
                 };
 
-                l.LoadWindowInfo(placeToInteract.getName(), lvlText, dialogInterface);
+                l.LoadWindowInfo(placeToInteract.getName(), lvlText, dialogInterfaceLoot);
                 break;
             default:
                 infoWindow = null;
@@ -205,13 +246,38 @@ public class MapsActivity extends FragmentActivity implements
         }
 
         if (infoWindow != null) {
-            selectedPlace = placeToInteract;
             infoWindowManager.toggle(infoWindow, true);
-
 
         }
 
         return true;
+    }
+
+    private void setupRewardDialog(){
+
+        final AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
+
+        alertDialog.setTitle("Reward");
+        alertDialog.setMessage("You won");
+        Log.d("dialog", "You won");
+        //alertDialog.setIcon(R.drawable.ic_vpn_key_black_24dp);
+
+
+        alertDialog.setPositiveButton("Take",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+
+                        dialog.cancel();
+                        MyDialogFragment dialogFragment = MyDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), null);
+
+
+
+                    }
+                });
+
+
+        alertDialog.show();
     }
 
 
@@ -227,33 +293,6 @@ public class MapsActivity extends FragmentActivity implements
         });
 
 
-
-        FloatingActionButton fButtonInteract = (FloatingActionButton) findViewById(R.id.f_button);
-        fButtonInteract.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<String> list = cHandler.nearby(myLocation());
-
-                if(selectedPlace!=null) {
-                    Log.d("interact", "selected");
-
-                    String key = selectedPlace.getId();
-
-                    if(MapHandler.includesId(key, list)){
-                        Log.d("includes:", key);
-
-                        FBHandler.deletePlace(key);
-
-                        cHandler.localDeleteMark(key);
-
-                        //отруб окна
-                        infoWindowManager.toggle(infoWindow, true);
-
-                      }
-
-                }
-            }
-        });
 
 
         FloatingActionButton fButtonAdd = (FloatingActionButton) findViewById(R.id.f_button_add);
@@ -289,11 +328,9 @@ public class MapsActivity extends FragmentActivity implements
                         db.receive(dataSnapshot);
 
                         for(Place place : db.FBlist){
-
                             Marker marker = mapFacade.build(place);
                             String id = marker.getId();
                             cHandler.keyViewMap.put(place.getId(), marker);
-
                             cHandler.idModelMap.put(id, place);
 
 
@@ -332,14 +369,11 @@ public class MapsActivity extends FragmentActivity implements
         for(Place place : list){
 
             FBHandler.addPlace(place);
+           // Marker marker = mapFacade.build(place);
+           // String id = marker.getId();
 
-
-
-            Marker marker = mapFacade.build(place);
-            String id = marker.getId();
-
-            cHandler.keyViewMap.put(place.getId(), marker);
-            cHandler.idModelMap.put(id, place);
+           // cHandler.keyViewMap.put(place.getId(), marker);
+           // cHandler.idModelMap.put(id, place);
 
         }
 
@@ -348,35 +382,6 @@ public class MapsActivity extends FragmentActivity implements
 
 
     UserDataFBHandler FBHandler = new UserDataFBHandler(instance.user.getUid());
-
-    private void addNewMark(String uid, String name, String description, LatLng latLng, MapView type){
-
-
-        Place place = new Place("key", uid, name, description, latLng.latitude, latLng.longitude, type);
-
-        FBHandler.addPlace(place);
-
-        // modelObject.put(place.getId(), place);
-        //  mapObject.put(place.getId(), builder.smartBuild(mMap, place));
-
-        Marker marker = mapFacade.build(place);
-        String id = marker.getId();
-
-        cHandler.keyViewMap.put(place.getId(), marker);
-        cHandler.idModelMap.put(id, place);
-    }
-
-
-
-
-
-
-    private Place getModel(String id){
-
-       // return modelObject.get(id);
-        LatLng l = myLocation();
-        return new Place(" ", " ", " Name", "description", l.latitude, l.longitude, MapView.enemy);
-    }
 
     private LatLng myLocation(){
         LatLng l = null;
@@ -483,5 +488,11 @@ public class MapsActivity extends FragmentActivity implements
     public void onWindowHidden(@NonNull InfoWindow infoWindow) {
 //        Log.d("debug", "onWindowHidden: " + infoWindow);
     }
+/*
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+        super.onSaveInstanceState(outState);
+    }*/
 
 }

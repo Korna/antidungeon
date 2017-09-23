@@ -16,7 +16,7 @@ public class Status {
     private float width;
     private float height;
     private Texture texture;
-    private final int TIME_SHOW_STATUS = 110;
+    private final int TIME_SHOW_STATUS = 120;//2 секунды aka 120 апдейтов скрина
     private boolean showing = true;
 
     public Status(Body body, Texture texture){

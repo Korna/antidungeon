@@ -89,10 +89,10 @@
         <activity
             android:name=".layoutCode.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light"/>
         <activity
             android:name=".layoutCode.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity android:name=".layoutCode.ManagerActivity" />
         <activity android:name=".layoutCode.MarkersActivity" />
         <activity
@@ -104,7 +104,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AndroidLauncher"
-            android:theme="@style/GdxTheme" />
+            android:theme="@style/Theme.AppCompat.Light" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -14,6 +14,7 @@ public class Constants {
     public static final String FB_DIRECTORY_CHARS = "Chars";
     public static final String FB_DIRECTORY_USER_DATA = UserData.class.getSimpleName();
     public static final String FB_DIRECTORY_BUILD_ITEMS = "buildItems";
+    public static final String FB_DIRECTORY_BUILD_STATS = "buildStats";
     public static final String FB_DIRECTORY_QUESTS = "Quests";
 
 

@@ -5,7 +5,7 @@ package kom.hikeside.Atom;
  */
 
 public class WebData {
-    protected String webKey;
+    protected String webKey;//primary key
     public WebData(){
 
     }

@@ -82,7 +82,7 @@ public class InventoryFragment extends Fragment {//сетка с инвента�
     }
 
     private void adjustGridView() {
-        gvMain.setNumColumns(5);
+        gvMain.setNumColumns(4);
         gvMain.setColumnWidth(200);
         gvMain.setVerticalSpacing(5);
         gvMain.setHorizontalSpacing(5);

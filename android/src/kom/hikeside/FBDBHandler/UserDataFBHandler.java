@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import kom.hikeside.Atom.Place;
 import kom.hikeside.Atom.UserData;
 import kom.hikeside.Game.Objects.BuildItems;
+import kom.hikeside.Game.Objects.BuildStats;
 import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Singleton;
 import kom.hikeside.libgdx.BundleToLib;
 
 import static kom.hikeside.Constants.FB_DIRECTORY_BUILD_ITEMS;
+import static kom.hikeside.Constants.FB_DIRECTORY_BUILD_STATS;
 import static kom.hikeside.Constants.FB_DIRECTORY_CHARS;
 import static kom.hikeside.Constants.FB_DIRECTORY_INVENTORY;
 import static kom.hikeside.Constants.FB_DIRECTORY_MARKS;
@@ -307,8 +309,13 @@ public class UserDataFBHandler {
     public void setBuildItema(BuildItems buildItema, String characterKey){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
 
-
         ref.child(uid).child(FB_DIRECTORY_CHARS).child(characterKey).child(FB_DIRECTORY_BUILD_ITEMS).setValue(buildItema);
+    }
+
+    public void setBuildStats(BuildStats buildStats, String characterKey){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FB_DIRECTORY_USERS);
+
+        ref.child(uid).child(FB_DIRECTORY_CHARS).child(characterKey).child(FB_DIRECTORY_BUILD_STATS).setValue(buildStats);
     }
 
     public void acceptQuest(String keyOfQuest){

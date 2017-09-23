@@ -2,8 +2,7 @@ package kom.hikeside.Game.Mechanic;
 
 import java.util.ArrayList;
 
-import kom.hikeside.Content.MainItemType;
-import kom.hikeside.Game.MapView;
+import kom.hikeside.Content.MapView;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemAccessory;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemHead;

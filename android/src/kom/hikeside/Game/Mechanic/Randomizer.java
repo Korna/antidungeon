@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Content.MainItemType;
-import kom.hikeside.Game.MapView;
+import kom.hikeside.Content.MapView;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemAccessory;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
@@ -16,8 +16,6 @@ import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemRing;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemShield;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemWeapon;
 import kom.hikeside.Game.Objects.MapViewPriority;
-import kom.hikeside.libgdx.Entities.Status;
-import kom.hikeside.libgdx.Game;
 import kom.hikeside.libgdx.GameMechanics.AttackModel;
 
 

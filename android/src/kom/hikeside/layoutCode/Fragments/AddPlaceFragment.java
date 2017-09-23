@@ -17,7 +17,7 @@ import android.widget.EditText;
 import com.google.android.gms.maps.model.LatLng;
 
 import kom.hikeside.Atom.Place;
-import kom.hikeside.Game.MapView;
+import kom.hikeside.Content.MapView;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.R;
 import kom.hikeside.Singleton;

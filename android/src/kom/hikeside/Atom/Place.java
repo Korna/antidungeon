@@ -1,16 +1,14 @@
 package kom.hikeside.Atom;
 
-import android.support.annotation.NonNull;
-
-import kom.hikeside.Game.MapView;
+import kom.hikeside.Content.MapView;
 
 /**
  * Created by Koma on 13.08.2017.
  */
 
-public class Place{
+public class Place extends WebData{
 
-    String id;//primary key needed for Progress\Status online table
+   // String id;//primary key needed for Progress\Status online table
 
     String uid;//user id
     String name;//name
@@ -24,7 +22,7 @@ public class Place{
     public Place(){}
 
     public Place(String id, String uid, String name, String description, double latitude, double longtitude, MapView type) {
-        this.id = id;
+        this.webKey = id;
         this.uid = uid;
         this.name = name;
         this.description = description;
@@ -34,11 +32,11 @@ public class Place{
     }
 
     public String getId() {
-        return id;
+        return webKey;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.webKey = id;
     }
 
     public String getUid() {

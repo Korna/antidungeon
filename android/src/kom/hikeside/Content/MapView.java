@@ -1,4 +1,4 @@
-package kom.hikeside.Game;
+package kom.hikeside.Content;
 
 /**
  * Created by Koma on 16.08.2017.

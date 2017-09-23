@@ -50,8 +50,8 @@ public class CharacterAddFragment extends Fragment {
                 character = LibraryObjects.getGameCharacter(GameClass.Archer);
 
                 View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                statsFragment.initGui(v);
+
             }
         });
 
@@ -62,8 +62,8 @@ public class CharacterAddFragment extends Fragment {
                 character = LibraryObjects.getGameCharacter(GameClass.Knight);
 
                 View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                statsFragment.initGui(v);
+
             }
         });
         Button button_warrior = (Button) v.findViewById(R.id.button_warrior);
@@ -73,8 +73,8 @@ public class CharacterAddFragment extends Fragment {
                 character = LibraryObjects.getGameCharacter(GameClass.Warrior);
 
                 View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                statsFragment.initGui(v);
+
             }
         });
         Button button_priest = (Button) v.findViewById(R.id.button_priest);
@@ -84,8 +84,8 @@ public class CharacterAddFragment extends Fragment {
                 character = LibraryObjects.getGameCharacter(GameClass.Priest);
 
                 View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                statsFragment.initGui(v);
+
             }
         });
         Button button_mage = (Button) v.findViewById(R.id.button_mage);
@@ -95,8 +95,8 @@ public class CharacterAddFragment extends Fragment {
                 character = LibraryObjects.getGameCharacter(GameClass.Mage);
 
                 View v = statsFragment.getView();
-                statsFragment.loadCharacterCommon(v, character);
-                statsFragment.loadCharacterStats(v, character);
+                statsFragment.initGui(v);
+
             }
         });
 
@@ -125,10 +125,6 @@ public class CharacterAddFragment extends Fragment {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layout_select_stats, statsFragment, statsFragment.getTag()).addToBackStack(statsFragment.getTag()).commit();
-
-
-
-
 
         return v;
     }

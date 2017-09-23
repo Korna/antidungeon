@@ -10,7 +10,7 @@ import kom.hikeside.Content.GameClass;
 
 public class GameCharacter implements Serializable {
     private static final long serialVersionUID = -2163051469151804394L;
-    private String key;
+    private String key;//java bean - класс, имеющий setter&getter для всех полей
     String name;
     int lvl;
 
@@ -100,6 +100,25 @@ public class GameCharacter implements Serializable {
         this.maxStamina = maxStamina;
     }
 
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public int getSkillPoints() {
+        return skillPoints;
+    }
+
+    public void setSkillPoints(int skillPoints) {
+        this.skillPoints = skillPoints;
+    }
+    //привязка одного скилла к другому
+    //переливание одного скилла в другой
+    //обеспечение одного другим
+    //подпитывание нескольких
 
 
 }

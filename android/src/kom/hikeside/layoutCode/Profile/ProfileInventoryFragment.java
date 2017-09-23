@@ -116,13 +116,13 @@ public class ProfileInventoryFragment extends Fragment {
     }
 
     private void adjustGridView() {
-        gvMain.setNumColumns(5);
+        gvMain.setNumColumns(4);
         gvMain.setColumnWidth(200);
       //  gvMain.setBackgroundColor(0xFF0000FF);
 
         gvMain.setVerticalSpacing(10);
         gvMain.setHorizontalSpacing(10);
-        gvMain.setStretchMode(GridView.STRETCH_SPACING_UNIFORM);
+        gvMain.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
 
     }
 
@@ -134,7 +134,7 @@ public class ProfileInventoryFragment extends Fragment {
         ImageView imageViewHandLeft = (ImageView) v.findViewById(R.id.imageView_hand_shield);
         ImageView imageViewHandRight = (ImageView) v.findViewById(R.id.imageView_weapon);
         ImageView imageViewLegs = (ImageView) v.findViewById(R.id.imageView_legs);
-        ImageView imageViewHands= (ImageView) v.findViewById(R.id.imageView_hands);
+        ImageView imageViewHands = (ImageView) v.findViewById(R.id.imageView_hands);
 
 
         imageViewArrayList.add(imageViewBody);
