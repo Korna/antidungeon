@@ -25,9 +25,10 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 
+import kom.hikeside.Content.LibraryMonsters;
 import kom.hikeside.Game.Mechanic.Randomizer;
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
-import kom.hikeside.Game.Objects.GameClasses.GameClass;
+import kom.hikeside.Game.Objects.GameCharacter;
+import kom.hikeside.Content.GameClass;
 import kom.hikeside.libgdx.BundleToLib;
 import kom.hikeside.libgdx.Entities.Status;
 import kom.hikeside.libgdx.Entities.TexturedBody;
@@ -37,7 +38,7 @@ import kom.hikeside.libgdx.GameMechanics.BodyBuilder;
 import kom.hikeside.libgdx.GameObjects.Enemy;
 import kom.hikeside.libgdx.GameObjects.GameObject;
 import kom.hikeside.libgdx.GameObjects.Player;
-import kom.hikeside.libgdx.LibraryObjects;
+import kom.hikeside.Content.LibraryObjects;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -77,7 +78,8 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         super(gsm);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        buildTable();
+        stage.addActor(buildActionsTable());
+        //stage.addActor(buildInfoTable());
         world = gsm.world;
         b2dr = new Box2DDebugRenderer();
         batch = new SpriteBatch();
@@ -112,7 +114,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         try {
             gameCharacter = bundle.gameCharacters.get(0);
         }catch(Exception e){
-            gameCharacter = LibraryObjects.getGameCharacter(GameClass.priest);
+            gameCharacter = LibraryObjects.getGameCharacter(GameClass.Priest);
             Log.e("erroe", e.toString());
         }
         //просчет позиции героя, если он один
@@ -140,11 +142,11 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
     private Enemy loadEnemies(BundleToLib bundle, BodyBuilder bodyBuilder){
 
-        String monsterId;
+        LibraryMonsters monsterId;
         try {
             monsterId = bundle.enemyNames.get(0);
             bundle.enemyNames.clear();
-            Log.w("loaded name is", monsterId);
+            Log.w("loaded name is", monsterId.name());
         }catch(Exception e){
             monsterId = Randomizer.simpleMonster();
             Log.e("error", e.toString());
@@ -156,7 +158,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         if(LibraryObjects.isBoss(monsterId))
             textureScale = 6.5f;
 
-        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, coordinateManager(enemyArrayList.size())), monsterId, textureScale);
+        TexturedBody enemyView = createTextured(bodyBuilder.createPlayerBody(GAME_WIDTH  / (1.5f * 2f) + 50, coordinateManager(enemyArrayList.size())), monsterId.name(), textureScale);
 
 
         enemy.setGameObjectView(enemyView);
@@ -259,9 +261,6 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
             return;
 
         final float NATURAL_HP_AMOUNT = 0.1f;
-
-       // from = player;
-      //  to = enemy;
 
         switch(action){
             case OBJECT_ATTACK:
@@ -378,6 +377,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         batch.draw(texture_background, 0, (32*3)*5, (32*4)*5, (32*3)*5);
         batch.end();
 
+
         if(true)
             b2dr.render(world, maincamera.combined);
 
@@ -417,7 +417,7 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
 
 
     TextButton.TextButtonStyle textButtonStyle;
-    private void buildTable() {
+    private Table buildActionsTable() {
 
         //creating font
         BitmapFont white = Game.res.getBitmapFont("white_font");
@@ -447,7 +447,27 @@ public class SimpleBattleState extends GameState {//обычная одиноч�
         table.add(addButton(OBJECT_HEAL)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
 
 
-        stage.addActor(table);
+        return table;
+    }
+    private Table buildInfoTable(){
+        BitmapFont white = Game.res.getBitmapFont("white_font");
+
+        TextureAtlas mainMenuAtlas = Game.res.getTextureAtlas("ui_buttons");
+        Skin skin = new Skin(mainMenuAtlas);
+
+        Table table = new Table(skin);
+        table.setBounds(GAME_WIDTH*0.05f, (GAME_HEIGHT*0.9f)/2, GAME_WIDTH/2, GAME_HEIGHT/2);
+
+        final int BUTTON_HEIGHT = GAME_WIDTH/20;
+        final int BUTTON_WIDTH = GAME_WIDTH/10;
+
+        table.add(addButton(OBJECT_ATTACK)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
+        table.row().pad(100);
+        table.add(addButton(OBJECT_DEFENCE)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
+        table.row().pad(1);
+        table.add(addButton(OBJECT_HEAL)).height(BUTTON_HEIGHT).width(BUTTON_WIDTH);
+
+        return table;
     }
     private TextButton addButton(final String text){
 

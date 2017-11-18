@@ -2,10 +2,13 @@ package kom.hikeside.layoutCode.Fragments;
 
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +16,14 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import kom.hikeside.Content.MainItemType;
 import kom.hikeside.Custom.ModelView;
 import kom.hikeside.Custom.MyRecyclerAdapter;
 import kom.hikeside.Custom.OnRecyclerViewItemClickListener;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Game.Objects.BuildItems;
 import kom.hikeside.R;
+import kom.hikeside.Singleton;
 
 
 public class BuildFragment extends Fragment {//recyclerView фрагмент с горизонтальной прокруткой
@@ -43,6 +50,7 @@ public class BuildFragment extends Fragment {//recyclerView фрагмент с 
             @Override
             public void onItemClick(View view, ModelView viewModel) {
                 adapter.remove(viewModel);
+
             }
         });
 
@@ -56,7 +64,8 @@ public class BuildFragment extends Fragment {//recyclerView фрагмент с 
     private List<ModelView> createMockList() {
         List<ModelView> items = new ArrayList<>();
         for (int i = 1; i <=20; i++) {
-            items.add(new ModelView("key", "Item " + i, 1));
+            Drawable d = ContextCompat.getDrawable(getActivity(), android.R.drawable.ic_delete);
+            items.add(new ModelView("key", "Item " + i, 1, d, MainItemType.Armour));
         }
         return items;
     }

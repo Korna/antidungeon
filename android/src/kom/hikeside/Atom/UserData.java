@@ -1,5 +1,9 @@
 package kom.hikeside.Atom;
 
+import java.util.ArrayList;
+
+import kom.hikeside.Game.Map.Quest;
+
 /**
  * Created by Koma on 13.08.2017.
  */
@@ -10,6 +14,7 @@ public class UserData {
     int money;
     String currentCharacter = null;
     int rank;
+    ArrayList<Quest> AcceptedQuests = new ArrayList<>();
 
     int dailyBonus;//счетчик обнуляется каждый день в 00 00
     //подсчитывает число взятых ивентов

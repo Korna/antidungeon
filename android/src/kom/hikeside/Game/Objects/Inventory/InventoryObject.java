@@ -1,35 +1,43 @@
 package kom.hikeside.Game.Objects.Inventory;
 
-import kom.hikeside.Game.Objects.ObjList;
+import kom.hikeside.Content.MainItemType;
 
 /**
  * Created by Koma on 16.08.2017.
  */
 
-public class InventoryObject {
-    String name;
-    int weight;
-    int levelRequered;
-    ObjList.inventory type;
+public class InventoryObject {//TODO: организовать FB названия в виде названий объектов, а не ключей
+    String concreteType;//конкретный объект
+    MainItemType mainType;//тип объекта
+    String modifiedKey;//если есть модификация (на будущее)
+
+    //в рантайме мы будем проверять, не является ли обьект instanceof(armour, weapon итд), чтоб совершать в интерфейсе какие то с ним действия
+
+
 
     public InventoryObject(){}
 
-    public InventoryObject(String name, int levelRequered, ObjList.inventory type) {
-        this.name = name;
+    public InventoryObject(String name, MainItemType type) {
+        this.concreteType = name;
+      //  this.description = description;
         //this.weight = weight;
-        this.levelRequered = levelRequered;
-        this.type = type;
+
+        this.mainType = type;
     }
 
-    public String getName() {
-        return name;
+    public String getConcreteType() {
+        return concreteType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setConcreteType(String name) {
+        this.concreteType = name;
     }
 
-    private String image;//не надо здесь вообще, но пусть будет. поскольку уникальность ограничивается более широким классом. т.е нет смысла держать это поле тут. и даже вообще в этих типах.
-    // что то типа линкера потом ввести при отображении, который по enum всё определит
+    public MainItemType getMainType() {
+        return mainType;
+    }
 
+    public void setMainType(MainItemType mainType) {
+        this.mainType = mainType;
+    }
 }

@@ -12,9 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import kom.hikeside.AndroidLauncher;
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Atom.Place;
+import kom.hikeside.Content.LibraryMonsters;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.R;
 import kom.hikeside.libgdx.BundleToLib;
+import kom.hikeside.Content.LibraryObjects;
 
 /**
  * Created by Koma on 29.08.2017.
@@ -84,7 +87,7 @@ public class FightFragment extends Fragment {
                         GameCharacter character;
                         BundleToLib bundle = BundleToLib.getInstance();
                         bundle.enemyNames.clear();
-                        bundle.enemyNames.add(title);
+                        bundle.enemyNames.add(LibraryMonsters.valueOf(title));
 
                         Intent intent = new Intent(getActivity(), AndroidLauncher.class);
                         startActivity(intent);
@@ -106,7 +109,7 @@ public class FightFragment extends Fragment {
     String title;
     String lvlText;
 
-    public void setInfo(){
+    private void setInfo(){
 
         textViewName.setText(title);
         textViewLvl.setText(lvlText);
@@ -115,6 +118,11 @@ public class FightFragment extends Fragment {
     public void LoadWindowInfo(String title, String text){
         this.title = title;
         this.lvlText = text;
+
+    }
+    private Place place;
+    public void loadPlace(Place place){
+        this.place = place;
 
     }
 

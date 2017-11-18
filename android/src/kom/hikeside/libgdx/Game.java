@@ -6,11 +6,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import kom.hikeside.Content.LibraryMonsters;
+import kom.hikeside.Content.LibraryObjects;
 import kom.hikeside.libgdx.Managers.ContentManager;
 import kom.hikeside.libgdx.Managers.GameStateManagement;
 
 import static kom.hikeside.Constants.AMOUNT_BODIES;
-import static kom.hikeside.Constants.AMOUNT_MONSTERS;
 import static kom.hikeside.Constants.OBJECT_ATTACK;
 import static kom.hikeside.Constants.OBJECT_DEFENCE;
 import static kom.hikeside.Constants.OBJECT_HEAL;
@@ -54,20 +55,21 @@ public class Game extends ApplicationAdapter {
 	}
 
 	private void loadAssets(){
-
-		for(int i = 1; i <= AMOUNT_MONSTERS; ++i)
-			res.loadTexture("monsters/monster_" + i + ".png", "monster_" + i);
+		int length = LibraryMonsters.values().length;
+		for(int i = 0; i < length; ++i){
+			res.loadTexture("monsters/" + LibraryMonsters.values()[i] + ".png", LibraryMonsters.values()[i].name());
+		}
 
 		int i = 1;
-		res.loadTexture("heroes/hero_" + i + ".png", "knight");
+		res.loadTexture("heroes/hero_" + i + ".png", "Knight");
 		++i;
-		res.loadTexture("heroes/hero_" + i + ".png", "priest");
+		res.loadTexture("heroes/hero_" + i + ".png", "Priest");
 		++i;
-		res.loadTexture("heroes/hero_" + i + ".png", "archer");
+		res.loadTexture("heroes/hero_" + i + ".png", "Archer");
 		++i;
-		res.loadTexture("heroes/hero_" + i + ".png", "warrior");
+		res.loadTexture("heroes/hero_" + i + ".png", "Warrior");
 		++i;
-		res.loadTexture("heroes/hero_" + i + ".png", "mage");
+		res.loadTexture("heroes/hero_" + i + ".png", "Mage");
 
 
 		res.loadTexture("battle_backgrounds/grass.png", "grass_1");
@@ -80,6 +82,10 @@ public class Game extends ApplicationAdapter {
 
 		res.loadTexture("battle_backgrounds/village_1_up.png", "village_1_up");
 		res.loadTexture("battle_backgrounds/village_1_down.png", "village_1_down");
+		res.loadTexture("battle_backgrounds/village_2_up.png", "village_2_up");
+		res.loadTexture("battle_backgrounds/village_2_down.png", "village_2_down");
+		res.loadTexture("battle_backgrounds/mountains_1_up.png", "mountains_1_up");
+		res.loadTexture("battle_backgrounds/mountains_1_down.png", "mountains_1_down");
 
 		res.loadTexture("battle_backgrounds/orange_brick.png", "orange_brick");
 		res.loadTexture("battle_backgrounds/brown_stone.png", "brown_stone");

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.R;
 
 /**
@@ -53,17 +53,17 @@ public class StatsFragment extends Fragment {
 
         TextView textView_will = (TextView) v.findViewById(R.id.textView_will);
 
-        textView_strength.setText(" " + character.getStrength());
+        textView_strength.setText(" " + character.buildStats.getStrength());
 
-        textView_agility.setText(" " +character.getAgility());
+        textView_agility.setText(" " +character.buildStats.getAgility());
 
-        textView_intelligence.setText(" " +character.getIntelligence());
+        textView_intelligence.setText(" " +character.buildStats.getIntelligence());
 
-        textView_stamina.setText(" " +character.getStamina());
+        textView_stamina.setText(" " +character.buildStats.getStamina());
 
-        textView_luck.setText(" " +character.getLuck());
+        textView_luck.setText(" " +character.buildStats.getLuck());
 
-        textView_will.setText(" " +character.getLuck());
+        textView_will.setText(" " +character.buildStats.getWill());
 
     }
 

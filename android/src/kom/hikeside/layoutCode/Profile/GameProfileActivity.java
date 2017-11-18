@@ -55,6 +55,8 @@ public class GameProfileActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
 }

@@ -1,10 +1,10 @@
 package kom.hikeside.libgdx;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 
-import kom.hikeside.Game.Objects.GameClasses.GameCharacter;
+import kom.hikeside.Content.LibraryMonsters;
+import kom.hikeside.Content.LibraryObjects;
+import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.Singleton;
 import kom.hikeside.FBDBHandler.UserDataFBHandler;
 import kom.hikeside.libgdx.GameMechanics.EnemyModel;
@@ -15,7 +15,7 @@ import kom.hikeside.libgdx.GameMechanics.EnemyModel;
 
 public class BundleToLib {
     //singleton pattern
-    private static volatile BundleToLib instance = new BundleToLib();
+    private static volatile BundleToLib instance = new BundleToLib();// TODO look for error descr java.lang.ExceptionInInitializerError
     public static BundleToLib getInstance(){
         return instance;
     }
@@ -31,7 +31,7 @@ public class BundleToLib {
 
     public ArrayList<GameCharacter> gameCharacters = new ArrayList<>();
     //public ArrayList<EnemyModel> enemyModels = new ArrayList<>();
-    public ArrayList<String> enemyNames = new ArrayList<>();
+    public ArrayList<LibraryMonsters> enemyNames = new ArrayList<>();
 
     public BundleToLib(){
         Singleton instance = Singleton.getInstance();

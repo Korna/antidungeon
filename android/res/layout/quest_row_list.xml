@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="500dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_name"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Name"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView_description"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:text="Description" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_weight="1"
+                android:text="Reward" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_get_quest"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Accept" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_reward"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

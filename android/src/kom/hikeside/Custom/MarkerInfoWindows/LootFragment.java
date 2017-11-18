@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import kom.hikeside.Atom.Place;
+import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Game.Map.MapHandler;
+import kom.hikeside.Game.Mechanic.CollectionHandler;
 import kom.hikeside.R;
 
 /**
@@ -26,6 +33,7 @@ import kom.hikeside.R;
 public class LootFragment extends Fragment {
     TextView textViewTitle;
     TextView textViewInfo;
+    DialogInterface.OnClickListener dialogInterface;
 
     @Nullable
     @Override
@@ -76,15 +84,7 @@ public class LootFragment extends Fragment {
         //alertDialog.setIcon(R.drawable.ic_vpn_key_black_24dp);
 
 
-        alertDialog.setPositiveButton("ОК",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int which) {
-                        Toast.makeText(getActivity(), "Looting...", Toast.LENGTH_SHORT).show();
-                       //getLoot
-
-
-                    }
-                });
+        alertDialog.setPositiveButton("ОК", dialogInterface);//TODO проверить на ошибки
 
         alertDialog.setNegativeButton("Назад",
                 new DialogInterface.OnClickListener() {
@@ -104,10 +104,13 @@ public class LootFragment extends Fragment {
         textViewInfo.setText(text);
 
     }
-    public void LoadWindowInfo(String title, String text){
+    public void LoadWindowInfo(String title, String text, DialogInterface.OnClickListener dialogInterface){
         this.title = title;
         this.text = text;
+        this.dialogInterface = dialogInterface;
 
     }
+
+
 
 }

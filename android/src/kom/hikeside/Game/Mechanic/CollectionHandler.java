@@ -44,7 +44,6 @@ public class CollectionHandler{    //TODO функция add complete MV, кот
 
             keyViewMap.remove(key);//удаление из памяти
             idModelMap.remove(id);//удаление из памяти
-
         }else{
             Log.e("localDeleteMark", "cant find by ID");
         }
