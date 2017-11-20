@@ -29,9 +29,10 @@
         android:layout_width="150dp"
         android:layout_height="400dp"
         android:orientation="vertical"
+        android:id="@+id/linearLayout"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:layout_marginBottom="14dp">
 
         <Button
             android:id="@+id/button_maps_game"
@@ -69,6 +70,12 @@
             android:layout_above="@+id/button3"
             android:layout_alignParentStart="true"
             android:text="Characters" />
+
+        <Button
+            android:id="@+id/button_achievements"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Achievements" />
 
     </LinearLayout>
 

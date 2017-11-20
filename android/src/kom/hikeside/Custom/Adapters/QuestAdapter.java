@@ -17,15 +17,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import kom.hikeside.Content.MainItemType;
+import kom.hikeside.Models.MainItemType;
 import kom.hikeside.Custom.ModelView;
 import kom.hikeside.Custom.MyRecyclerAdapter;
 import kom.hikeside.Custom.OnRecyclerViewItemClickListener;
-import kom.hikeside.FBDBHandler.UserDataFBHandler;
+import kom.hikeside.Service.UserDataFBHandler;
 import kom.hikeside.Game.Map.Quest;
 import kom.hikeside.Game.Mechanic.Randomizer;
 import kom.hikeside.R;
-import kom.hikeside.Singleton;
+import kom.hikeside.Service.Singleton;
 
 /**
  * Created by Koma on 18.09.2017.
@@ -61,12 +61,16 @@ public class QuestAdapter extends ArrayAdapter<Quest> {
         buttonGetQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Singleton instance = Singleton.getInstance();
+                Singleton instance = Singleton.getInstance();//определяем uid
                 String uid = instance.user.getUid();
 
-                UserDataFBHandler FBHandler = new UserDataFBHandler(uid);
-
+                UserDataFBHandler FBHandler = new UserDataFBHandler(uid);//принимаем для него квест
                 FBHandler.acceptQuest(questList.get(position).getName());
+
+                Quest quest = new Quest("webKey", questList.get(position).getName(), "markekKey", false);
+                instance.userData.acceptedQuests.add(quest);
+                questList.remove(position);//удаляем его
+
 
 
             }

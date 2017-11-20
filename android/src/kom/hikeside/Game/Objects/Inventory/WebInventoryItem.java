@@ -9,7 +9,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import kom.hikeside.Game.Objects.Inventory.ItemTypesClassess.Armour;
-import kom.hikeside.Singleton;
+import kom.hikeside.Service.Singleton;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static kom.hikeside.Constants.FB_DIRECTORY_INVENTORY;

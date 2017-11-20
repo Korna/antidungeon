@@ -2,7 +2,7 @@ package kom.hikeside.Game.Objects.Inventory.ItemTypesClassess;
 
 import java.util.ArrayList;
 
-import kom.hikeside.Content.MainItemType;
+import kom.hikeside.Models.MainItemType;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 
 /**

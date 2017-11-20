@@ -2,19 +2,27 @@ package kom.hikeside.Game.Map;
 
 import java.util.ArrayList;
 
-import kom.hikeside.Atom.WebData;
-import kom.hikeside.Game.Objects.Inventory.InventoryObject;
+import kom.hikeside.Models.Atom.WebData;
 
 /**
  * Created by Koma on 18.09.2017.
  */
 
 public class Quest extends WebData{
-    String name;
-    String keyOfMark = null;//если это завязано на уничтожении врага
+    private String name;//quest type
+   private String keyOfMark = null;//если это завязано на уничтожении врага
     boolean isCompleted;
     ArrayList<String>  rewardItemsList = new ArrayList<>();
 
+    public Quest(){}
+
+    public Quest(String webKey, String name, String keyOfMark, boolean isCompleted) {
+        super(webKey);
+        this.name = name;
+        this.keyOfMark = keyOfMark;
+        this.isCompleted = isCompleted;
+
+    }
 
     public String getName() {
         return name;

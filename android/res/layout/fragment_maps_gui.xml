@@ -22,8 +22,8 @@
         android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/f_button_add"
@@ -32,10 +32,10 @@
         android:clickable="true"
         app:backgroundTint="@android:color/holo_green_dark"
         app:srcCompat="@android:drawable/ic_menu_add"
-        android:layout_marginEnd="18dp"
-        android:layout_marginTop="49dp"
-        android:layout_below="@+id/button5"
-        android:layout_alignEnd="@+id/button5" />
+        android:layout_marginEnd="19dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="28dp" />
 
     <Button
         android:id="@+id/f_button_profile"
@@ -55,12 +55,21 @@
         android:layout_below="@+id/f_button_profile"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:id="@+id/button5"
+    <TextView
+        android:id="@+id/textView_maps_hp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentStart="true" />
+        android:layout_alignEnd="@+id/f_button_add"
+        android:layout_alignTop="@+id/f_button_profile"
+        android:text="0/0 Hp" />
+
+    <TextView
+        android:id="@+id/textView_maps_exp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/f_button_profile"
+        android:layout_alignBottom="@+id/f_button_profile"
+        android:layout_alignEnd="@+id/textView_maps_hp"
+        android:text="0/0 Experience" />
 
 </RelativeLayout>

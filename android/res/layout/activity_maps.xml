@@ -5,4 +5,4 @@
     android:name="com.google.android.gms.maps.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kom.hikeside.layoutCode.MapsActivity" />
+    tools:context="kom.hikeside.View.MapsActivity" />

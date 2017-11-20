@@ -22,8 +22,6 @@ public class CoordinateGenerator {//а надо ли отдельно созда
 
 
 // зависимость от лвла, вещей, предыдущей активности, местоположения итд, а также, находится ли около выбранного дома юзер
-
-
     public ArrayList<LatLng>initGenerate(LatLng myCoordinate, int lvl, boolean isPremium){//генерация при загрузке приложения(по идее надо делать server push, чтоб лишь раз в сутки можно было)
         // отправляет айди юзера и время, после котоорго всё пропадет
         ArrayList<LatLng> list = new ArrayList<>();

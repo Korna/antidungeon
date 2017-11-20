@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kom.hikeside.layoutCode.Fragments.StatsFragment">
+    tools:context=".View.layoutCode.Fragments.StatsFragment">
 
 
     <RelativeLayout

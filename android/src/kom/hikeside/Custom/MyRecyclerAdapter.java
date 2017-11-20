@@ -5,7 +5,6 @@ package kom.hikeside.Custom;
  */
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import kom.hikeside.FBDBHandler.UserDataFBHandler;
-import kom.hikeside.Game.Map.Quest;
-import kom.hikeside.Game.Objects.BuildItems;
 import kom.hikeside.R;
-import kom.hikeside.Singleton;
+import kom.hikeside.Service.Singleton;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> implements View.OnClickListener {
 

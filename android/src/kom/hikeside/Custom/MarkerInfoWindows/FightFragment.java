@@ -1,47 +1,31 @@
 package kom.hikeside.Custom.MarkerInfoWindows;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import kom.hikeside.AndroidLauncher;
-import kom.hikeside.Atom.Place;
-import kom.hikeside.Content.LibraryMonsters;
-import kom.hikeside.Content.MainItemType;
+import kom.hikeside.Models.Atom.Place;
+import kom.hikeside.Models.MainItemType;
 import kom.hikeside.Custom.ModelView;
-import kom.hikeside.Custom.MyDialogFragment;
 import kom.hikeside.Custom.MyRecyclerAdapter;
 import kom.hikeside.Custom.OnRecyclerViewItemClickListener;
 import kom.hikeside.Game.Mechanic.Randomizer;
-import kom.hikeside.Game.Objects.GameCharacter;
 import kom.hikeside.R;
-import kom.hikeside.libgdx.BundleToLib;
-import kom.hikeside.Content.LibraryObjects;
 
 /**
  * Created by Koma on 29.08.2017.

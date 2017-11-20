@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import kom.hikeside.Atom.Place;
+import kom.hikeside.Models.Atom.Place;
 import kom.hikeside.Game.Map.MapObjInteracter;
 
 /**

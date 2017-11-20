@@ -2,7 +2,7 @@ package kom.hikeside.Custom;
 
 import android.graphics.drawable.Drawable;
 
-import kom.hikeside.Content.MainItemType;
+import kom.hikeside.Models.MainItemType;
 
 /**
  * Created by Koma on 17.08.2017.

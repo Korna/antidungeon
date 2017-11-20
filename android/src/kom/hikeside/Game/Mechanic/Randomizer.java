@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.badlogic.gdx.utils.Array;
 
-import kom.hikeside.Content.LibraryMonsters;
-import kom.hikeside.Content.MainItemType;
-import kom.hikeside.Content.MapView;
+import kom.hikeside.Models.LibraryMonsters;
+import kom.hikeside.Models.MainItemType;
+import kom.hikeside.Models.MapView;
 import kom.hikeside.Game.Objects.Inventory.InventoryObject;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemAccessory;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemArmor;
@@ -16,7 +16,7 @@ import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemRing;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemShield;
 import kom.hikeside.Game.Objects.Inventory.ItemLists.ItemWeapon;
 import kom.hikeside.Game.Objects.MapViewPriority;
-import kom.hikeside.libgdx.GameMechanics.AttackModel;
+import kom.hikeside.Game.libgdx.GameMechanics.AttackModel;
 
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -58,6 +58,7 @@ public class Randomizer {
     }
     public static InventoryObject getConcreteItem(MainItemType mainItemType){
         String concreteItem = "Golden_Ring";
+
         int randomIndex;
 
         switch(mainItemType){

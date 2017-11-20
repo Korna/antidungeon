@@ -1,11 +1,6 @@
 package kom.hikeside.Game.Map;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
@@ -18,11 +13,9 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.TaskCompletionSource;
 
-import kom.hikeside.Atom.Place;
+import kom.hikeside.Models.Atom.Place;
 import kom.hikeside.R;
-import kom.hikeside.layoutCode.MapsActivity;
-
-import static kom.hikeside.layoutCode.MapsActivity.REQ_PERMISSION;
+import kom.hikeside.View.MapsActivity;
 
 /**
  * Created by Koma on 21.09.2017.

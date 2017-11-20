@@ -74,7 +74,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".layoutCode.StartActivity"
+            android:name=".View.StartActivity"
             android:label="AntiDungeon"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -84,22 +84,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".layoutCode.MainActivity"
+            android:name=".View.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".layoutCode.MapsActivity"
+            android:name=".View.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".layoutCode.LoginActivity"
+            android:name=".View.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light" />
-        <activity android:name=".layoutCode.ManagerActivity" />
-        <activity android:name=".layoutCode.MarkersActivity" />
+        <activity android:name=".View.ManagerActivity" />
+        <activity android:name=".View.MarkersActivity" />
         <activity
-            android:name=".layoutCode.Profile.GameProfileActivity"
+            android:name=".View.layoutCode.Profile.GameProfileActivity"
             android:label="@string/title_activity_game_profile" />
         <activity
-            android:name=".layoutCode.Character.CharacterActivity"
+            android:name=".View.layoutCode.Character.CharacterActivity"
             android:label="@string/title_activity_character"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -110,7 +110,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".layoutCode.AchievementsActivity"></activity>
+        <activity android:name=".View.AchievementsActivity"></activity>
     </application>
 
 </manifest>

@@ -17,8 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import kom.hikeside.Atom.Place;
-import kom.hikeside.Content.MapView;
+import kom.hikeside.Models.Atom.Place;
+import kom.hikeside.Models.MapView;
 
 /**
  * Created by Koma on 15.08.2017.

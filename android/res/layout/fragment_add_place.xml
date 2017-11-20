@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".layoutCode.Fragments.AddPlaceFragment">
+    tools:context=".View.layoutCode.Fragments.AddPlaceFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

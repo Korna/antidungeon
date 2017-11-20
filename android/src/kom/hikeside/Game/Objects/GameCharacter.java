@@ -2,7 +2,7 @@ package kom.hikeside.Game.Objects;
 
 import java.io.Serializable;
 
-import kom.hikeside.Content.GameClass;
+import kom.hikeside.Models.GameClass;
 
 /**
  * Created by Koma on 05.09.2017.
@@ -14,8 +14,8 @@ public class GameCharacter implements Serializable {
     String name;
     int lvl;
 
-    int experience;
-    int skillPoints;
+    private int experience;
+    private int skillPoints;
     String inventoryKey;//или хранить объект Inventory?
 
     public BuildStats buildStats;
@@ -23,9 +23,12 @@ public class GameCharacter implements Serializable {
 
     GameClass gameClass;
 
-    int maxHp = 100;
-    int maxMp = 50;
-    int maxStamina = 50;
+    private int maxHp = 100;
+    private int maxMp = 50;
+    private int maxStamina = 50;
+
+    private int currentHp;
+    private int currentMp;
 
 
 
@@ -115,10 +118,20 @@ public class GameCharacter implements Serializable {
     public void setSkillPoints(int skillPoints) {
         this.skillPoints = skillPoints;
     }
+
+    public void addSkillPoints(int skillPoints){
+        this.skillPoints += skillPoints;
+    }
+    public void decreaseSkillPoint(){
+        this.skillPoints--;
+    }
     //привязка одного скилла к другому
     //переливание одного скилла в другой
     //обеспечение одного другим
     //подпитывание нескольких
 
 
+    public int getCurrentHp() {
+        return currentHp;
+    }
 }

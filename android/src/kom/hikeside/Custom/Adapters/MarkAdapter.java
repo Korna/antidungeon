@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import kom.hikeside.Atom.Place;
+import kom.hikeside.Models.Atom.Place;
 import kom.hikeside.R;
 
 /**

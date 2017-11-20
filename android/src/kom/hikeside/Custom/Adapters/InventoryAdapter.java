@@ -1,8 +1,6 @@
 package kom.hikeside.Custom.Adapters;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +18,6 @@ import java.util.List;
 
 import kom.hikeside.Custom.ModelView;
 import kom.hikeside.R;
-import kom.hikeside.Singleton;
 
 /**
  * Created by Koma on 17.08.2017.

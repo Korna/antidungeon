@@ -2,7 +2,7 @@ package kom.hikeside.Game.Objects;
 
 import com.badlogic.gdx.utils.Array;
 
-import kom.hikeside.Content.MapView;
+import kom.hikeside.Models.MapView;
 
 /**
  * Created by Koma on 04.09.2017.

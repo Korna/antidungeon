@@ -1,6 +1,6 @@
 package kom.hikeside.Game.Objects.Inventory;
 
-import kom.hikeside.Content.MainItemType;
+import kom.hikeside.Models.MainItemType;
 import kom.hikeside.Game.Objects.Inventory.ItemTypesClassess.Consumable;
 
 /**

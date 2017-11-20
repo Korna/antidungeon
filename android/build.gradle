@@ -91,12 +91,19 @@ android {
 
         compile 'com.google.android.gms:play-services-maps:11.0.4'
 
+        compile 'com.jakewharton:butterknife:7.0.1'
+
         compile 'com.android.support:multidex:1.0.1'
 
         compile 'com.appolica:interactive-info-window:v1.0.6'
         compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.6@aar') {
             transitive = true
         }
+
+        compile 'com.android.support:design:25.3.1'
+        compile 'com.android.support:support-vector-drawable:25.3.1'
+        compile 'com.android.support:support-v4:25.3.1'
+        compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     }
     apply plugin: 'com.google.gms.google-services'
@@ -209,9 +216,4 @@ idea {
         }
     }
 }
-dependencies {
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-vector-drawable:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-}
+

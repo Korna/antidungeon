@@ -3,6 +3,6 @@
     android:id="@+id/layout_profile_character"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kom.hikeside.layoutCode.Profile.ProfileCharacterFragment">
+    tools:context=".View.layoutCode.Profile.ProfileCharacterFragment">
 
 </FrameLayout>

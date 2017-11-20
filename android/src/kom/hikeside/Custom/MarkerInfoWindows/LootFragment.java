@@ -9,21 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import kom.hikeside.Atom.Place;
-import kom.hikeside.FBDBHandler.UserDataFBHandler;
-import kom.hikeside.Game.Map.MapHandler;
-import kom.hikeside.Game.Mechanic.CollectionHandler;
 import kom.hikeside.R;
 
 /**

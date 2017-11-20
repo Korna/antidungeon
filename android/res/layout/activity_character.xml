@@ -5,7 +5,7 @@
     android:id="@+id/layout_character"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kom.hikeside.layoutCode.Character.CharacterActivity">
+    tools:context=".View.layoutCode.Character.CharacterActivity">
 
     <Button
         android:id="@+id/button_add_character_layout"

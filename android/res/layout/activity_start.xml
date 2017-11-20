@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kom.hikeside.layoutCode.StartActivity">
+    tools:context="kom.hikeside.View.StartActivity">
 
     <ProgressBar
         android:id="@+id/progressBar2"
-        style="@style/Widget.AppCompat.ProgressBar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_centerHorizontal="true"
